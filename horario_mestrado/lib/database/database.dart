@@ -1,8 +1,7 @@
-//RESPONSÁVEL APENAS POR INICIAR E CONFIGUAR A BASE DE DADOS
-
-//import 'dart:convert';
+// database.dart
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'database_seeder.dart';
 
 class DatabaseProvider {
   static final DatabaseProvider _instance = DatabaseProvider._internal();
@@ -25,7 +24,7 @@ class DatabaseProvider {
 
     return await openDatabase(
       path,
-      version: 1, // Incrementar a versão se houver mudanças no esquema
+      version: 1, //Incrementa se mudar a versão da base de dados
       onCreate: _createDB,
     );
   }
@@ -33,8 +32,8 @@ class DatabaseProvider {
   Future<void> _createDB(Database db, int version) async {
     await db.execute('''
       CREATE TABLE Periodo (
-        periodoID INTEGER PRIMARY KEY AUTOINCREMENT,
-        diaSemana INTEGER,
+        periodoID INTEGER PRIMARY KEY,
+        diaSemana TEXT,
         horaInicio TEXT,
         horaFim TEXT
       )
@@ -42,36 +41,34 @@ class DatabaseProvider {
 
     await db.execute('''
       CREATE TABLE Cadeira (
-        cadeiraID INTEGER PRIMARY KEY AUTOINCREMENT,
+        cadeiraID INTEGER PRIMARY KEY,
         nome TEXT,
         sigla TEXT,
         ano INTEGER,
-        semestre INTEGER,
-        FOREIGN KEY (pomodoroID) REFERENCES Pomodoro(pomodoroID)
+        semestre INTEGER
       )
     ''');
 
     await db.execute('''
       CREATE TABLE Horario (
         horarioID INTEGER PRIMARY KEY,
+        cadeiraID INTEGER,
+        periodoID INTEGER,
+        ano INTEGER,
+        semestre INTEGER,
+        sala TEXT,
+        data TEXT,
         FOREIGN KEY (periodoID) REFERENCES Periodo(periodoID),
         FOREIGN KEY (cadeiraID) REFERENCES Cadeira(cadeiraID)
-        ano INTEGER,
-        semestre INTEGER
       )
     ''');
 
-    await db.insert('Definicoes', {
-      'id': 1,
-      'nome': null,
-      'idioma': 'pt',
-      'modoEscuro': 0, //0 = false, 1 = true
-      'protegido': 0, //0 = false, 1 = true
-      'codigo': null,
-      'contaCriada': 0, //0 = false, 1 = true
-    });
+    //Adiciona os dados à base de dados com os JSON
+    final seeder = DatabaseSeeder(db);
+    await seeder.seedDatabase();
   }
 
+  //Apagar a base de dados (usado para reset)
   Future<void> deleteDatabaseFile() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'mestrado_horario.db');
