@@ -25,7 +25,7 @@ class DatabaseSeeder {
         "diaSemana": p["diaSemana"],
         "horaInicio": p["horaInicial"],
         "horaFim": p["horaFinal"],
-      }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima casoo exista algum conflito
+      }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima caso exista algum conflito
     }
 
     //Inserir Cadeiras
@@ -36,7 +36,8 @@ class DatabaseSeeder {
         "sigla": c["sigla"],
         "ano": c["ano"],
         "semestre": c["semestre"],
-      }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima casoo exista algum conflito
+        "informacao": c["informacao"] ?? "Sem Informação",
+      }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima caso exista algum conflito
     }
 
     //Inserir Horário

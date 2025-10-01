@@ -1,0 +1,13 @@
+v1
+Página das Cadeiras - Com Filtro por Ano e Semestre
+Adicionar Informação ás Cadeiras
+Layout simples e bonito
+
+v2
+Talvez depois adicionar CRUD para adicionar mais cadeiras, periodos e horarios
+Tem de ser guardados no json tmb
+
+v3
+Talvez notas de aulas? (Coisas necessárias)
+Talvez exames/frequências
+Talvez trabalhos/projetos a entregar

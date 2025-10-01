@@ -45,7 +45,8 @@ class DatabaseProvider {
         nome TEXT,
         sigla TEXT,
         ano INTEGER,
-        semestre INTEGER
+        semestre INTEGER,
+        informacao TEXT
       )
     ''');
 

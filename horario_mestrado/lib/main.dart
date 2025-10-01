@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+//PAGES
+import 'pages/class_info.dart';
+import 'pages/calendar.dart';
+//MODELS
+import 'models/horario.dart';
+import 'models/cadeira.dart';
+import 'models/periodo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,10 +38,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: {
         '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
-        // Define other routes here
+        '/calendar': (context) => const CalendarioPage(),
+        '/classInfo': (context) { //usando uma rota nomeada com parâmetros/argumentos
+          final args = ModalRoute.of(context)!.settings.arguments as Horario;
+          return AulaInformacao(horario: args); // Passa os argumentos para a página
+        },
       },
     );
   }
@@ -115,6 +125,12 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/calendar');
+              },
+              child: const Text('Go to Calendar'),
             ),
           ],
         ),

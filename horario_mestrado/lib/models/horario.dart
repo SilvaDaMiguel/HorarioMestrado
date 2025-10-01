@@ -5,6 +5,7 @@ class Horario {
   final int ano;
   final int semestre;
   final String data;
+  final String sala;
 
   Horario({
     required this.horarioID,
@@ -13,6 +14,7 @@ class Horario {
     required this.ano,
     required this.semestre,
     required this.data,
+    required this.sala,
   });
 
   factory Horario.fromMap(Map<String, dynamic> map) => Horario(
@@ -22,6 +24,7 @@ class Horario {
     ano: map['ano'],
     semestre: map['semestre'],
     data: map['data'],
+    sala: map['sala'],
   );
 
   Map<String, dynamic> toMap() => {
@@ -31,5 +34,6 @@ class Horario {
     'ano': ano,
     'semestre': semestre,
     'data': data,
+    'sala': sala,
   };
 }
