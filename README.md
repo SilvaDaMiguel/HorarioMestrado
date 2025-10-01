@@ -4,4 +4,5 @@ Visto o Mestrado não ter um horário fixo, desenvolvi esta aplicação para est
 Esta aplicação engloba:
 
 -> Ficheiros JSON
+
 -> Calendário
