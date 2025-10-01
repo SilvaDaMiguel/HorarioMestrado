@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "nome": "Design de Interfaces",
+    "sigla": "DI",
+    "ano": 1,
+    "semestre": 1
+  },
+  {
+    "id": 2,
+    "nome": "Integração em Sistemas Inteligentes",
+    "sigla": "ISI",
+    "ano": 1,
+    "semestre": 1
+  },
+  {
+    "id": 3,
+    "nome": "Sistemas de Informação em Dispositivos Móveis",
+    "sigla": "SIDM",
+    "ano": 1,
+    "semestre": 1
+  },
+  {
+    "id": 4,
+    "nome": "Planeamento e Gestão de Projetos",
+    "sigla": "PGP",
+    "ano": 1,
+    "semestre": 1
+  },
+  {
+    "id": 5,
+    "nome": "Análise Inteligente de Dados",
+    "sigla": "AID",
+    "ano": 1,
+    "semestre": 1
+  }
+]
