@@ -1,11 +1,12 @@
-// class_info.dart
 import 'package:flutter/material.dart';
-// DATABASE
+import 'package:horario_mestrado/components/info_box.dart';
+//DATABASE
 import '../database/database_service.dart';
-// MODELS
+//MODELS
 import '../models/horario.dart';
 import '../models/cadeira.dart';
 import '../models/periodo.dart';
+//COMPONENTS
 
 class AulaInformacao extends StatefulWidget {
   final Horario horario;
@@ -34,9 +35,19 @@ class _AulaInformacaoState extends State<AulaInformacao> {
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
 
+    //TEXTO
+    double tamanhoTexto = comprimento * 0.035;
+    double tamanhoTitulo = comprimento * 0.05;
+    double tamanhoSubTexto = tamanhoTexto * 0.5;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Informações da Aula'),
+        title: Text(
+          'Aula do dia ${widget.horario.data}',
+          style: TextStyle(
+            fontSize: tamanhoTitulo,
+          ),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -44,6 +55,42 @@ class _AulaInformacaoState extends State<AulaInformacao> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //PERÍODO
+            FutureBuilder<Periodo>(
+              future: _periodoFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Erro ao carregar período: ${snapshot.error}');
+                } else if (!snapshot.hasData) {
+                  return const Text('Período não encontrado');
+                }
+
+                final periodo = snapshot.data!;
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.timer),
+                    Text(
+                      '${periodo.horaInicio} - ${periodo.horaFim}',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                );
+              },
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.room),
+                Text(
+                  widget.horario.sala,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
             //CADEIRA
             FutureBuilder<Cadeira>(
               future: _cadeiraFuture,
@@ -61,52 +108,22 @@ class _AulaInformacaoState extends State<AulaInformacao> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${cadeira.sigla} - ${cadeira.nome}",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      '${cadeira.sigla} - ${cadeira.nome}',
+                      style: TextStyle(
+                          fontSize: tamanhoTitulo, fontWeight: FontWeight.bold),
                     ),
+                    const SizedBox(height: 16),
                     Text(
-                      "Informação: ${cadeira.informacao}",
-                      style: TextStyle(fontSize: 12),
+                      "Informação da Cadeira:",
+                      style: TextStyle(
+                        fontSize: tamanhoTexto,
+                      ),
                     ),
+                    InfoBox(informacao: cadeira.informacao),
                   ],
                 );
               },
             ),
-            Text(
-              "Aula do dia ${widget.horario.data}",
-              style: TextStyle(fontSize: 18),
-            ),
-            //PERÍODO
-            FutureBuilder<Periodo>(
-              future: _periodoFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Erro ao carregar período: ${snapshot.error}');
-                } else if (!snapshot.hasData) {
-                  return const Text('Período não encontrado');
-                }
-
-                final periodo = snapshot.data!;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Hora: ${periodo.horaInicio} - ${periodo.horaFim}",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                );
-              },
-            ),
-            Text(
-              "Sala: ${widget.horario.sala}",
-              style: TextStyle(fontSize: 18),
-            ),
-            
-            const SizedBox(height: 16),
-            
           ],
         ),
       ),

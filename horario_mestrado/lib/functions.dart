@@ -17,10 +17,11 @@ String formatarHora(String hora) {
     String horas = partes[0].padLeft(2, '0');
     String minutos = partes[1].padLeft(2, '0');
 
-    //Formatar a hora para o formato "Hora H Minutos"
-    return "${horas}H$minutos";
+    //Formatar a hora para o formato 'Hora H Minutos'
+    return '${horas}H$minutos';
   } catch (e) {
     // Se houver um erro, retorna uma string de erro
     return 'Formato de hora inválido';
   }
 }
+

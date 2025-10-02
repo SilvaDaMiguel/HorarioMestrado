@@ -29,16 +29,18 @@ class DatabaseSeeder {
     }
 
     //Inserir Cadeiras
-    for (var c in cadeiras) {
-      await db.insert("Cadeira", {
-        "cadeiraID": c["id"],
-        "nome": c["nome"],
-        "sigla": c["sigla"],
-        "ano": c["ano"],
-        "semestre": c["semestre"],
-        "informacao": c["informacao"] ?? "Sem Informação",
-      }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima caso exista algum conflito
-    }
+    //Inserir Cadeiras
+for (var c in cadeiras) {
+  await db.insert("Cadeira", {
+    "cadeiraID": c["id"],
+    "nome": c["nome"],
+    "sigla": c["sigla"],
+    "ano": c["ano"],
+    "semestre": c["semestre"],
+    "informacao": c["informacao"] ?? "Sem Informação",
+    "professores": jsonEncode(c["professores"] ?? []), // 🔹 salvar como string JSON
+  }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima caso exista algum conflito
+}
 
     //Inserir Horário
     for (var h in horarios) {

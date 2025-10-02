@@ -41,7 +41,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
   void carregarEventos(List<Horario> horarios) {
     eventos = {}; // limpa antes
     for (var horario in horarios) {
-      DateTime dia = removerHora(DateFormat("dd-MM-yyyy").parse(horario.data));
+      DateTime dia = removerHora(DateFormat('dd-MM-yyyy').parse(horario.data));
       if (eventos[dia] == null) {
         eventos[dia] = [];
       }
@@ -108,7 +108,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
             child: Row(
               children: [
                 Text(
-                  "Aulas de ${DateFormat('dd/MM/yyyy').format(_diaSelecionado)}",
+                  'Aulas de ${DateFormat('dd/MM/yyyy').format(_diaSelecionado)}',
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -121,7 +121,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
           // Lista de aulas do dia selecionado
           Expanded(
             child: _horariosDoDia.isEmpty
-                ? const Center(child: Text("Nenhuma aula neste dia"))
+                ? const Center(child: Text('Nenhuma aula neste dia'))
                 : ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     itemCount: _horariosDoDia.length,

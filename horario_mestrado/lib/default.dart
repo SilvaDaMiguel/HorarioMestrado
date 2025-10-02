@@ -18,7 +18,7 @@ class PaginaInicial extends StatelessWidget {
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            Text("Texto"),
+            Text('Texto'),
           ],
         ),
       )

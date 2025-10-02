@@ -1,4 +1,3 @@
-// database.dart
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'database_seeder.dart';
@@ -46,7 +45,8 @@ class DatabaseProvider {
         sigla TEXT,
         ano INTEGER,
         semestre INTEGER,
-        informacao TEXT
+        informacao TEXT,
+        professores TEXT
       )
     ''');
 

@@ -5,6 +5,8 @@ import '../models/cadeira.dart';
 import '../models/periodo.dart';
 //DATABASE
 import '../database/database_service.dart';
+//VARIABLES
+import '../variables/colors.dart';
 
 class ClassBox extends StatefulWidget {
   final Horario horario;
@@ -38,13 +40,12 @@ class _ClassBoxState extends State<ClassBox> {
     double altura = tamanho.height;
 
     final Color corEvento = Colors.blue;
-    final Color corTexto = Colors.black;
     final Color corIcone = Colors.blueGrey;
     final double tamanhoTexto = comprimento * 0.045;
     final double tamanhoData = comprimento * 0.035;
 
     String formatarHora(String hora) {
-      return hora; // aqui podes formatar se quiseres "HH:mm"
+      return hora; // aqui podes formatar se quiseres 'HH:mm'
     }
 
     return FutureBuilder(
@@ -61,7 +62,7 @@ class _ClassBoxState extends State<ClassBox> {
           // Caso haja erro ao carregar
           return Container(
             padding: EdgeInsets.all(16),
-            child: Text("Erro ao carregar a aula",
+            child: Text('Erro ao carregar a aula',
                 style: TextStyle(color: Colors.red)),
           );
         } else {
@@ -89,7 +90,7 @@ class _ClassBoxState extends State<ClassBox> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("${cadeira.sigla}",
+                      Text('${cadeira.sigla}',
                           style: TextStyle(
                             fontSize: tamanhoTexto,
                             fontWeight: FontWeight.bold,
@@ -97,14 +98,14 @@ class _ClassBoxState extends State<ClassBox> {
                           )),
                       SizedBox(height: altura * 0.005),
                       Text(
-                        "${formatarHora(periodo.horaInicio)} - ${formatarHora(periodo.horaFim)}",
+                        '${formatarHora(periodo.horaInicio)} - ${formatarHora(periodo.horaFim)}',
                         style: TextStyle(
                           fontSize: tamanhoData,
                           color: corTexto,
                         ),
                       ),
                       Text(
-                        "Sala: ${horario.sala}",
+                        'Sala: ${horario.sala}',
                         style: TextStyle(
                           fontSize: tamanhoData,
                           color: corTexto,
@@ -118,10 +119,10 @@ class _ClassBoxState extends State<ClassBox> {
                   icon: Icon(Icons.info, color: corIcone),
                   onPressed: () {
                     // Aqui podes navegar para detalhes ou abrir uma lista
-                    print("Adicionar ação para detalhes da aula");
+                    print('Adicionar ação para detalhes da aula');
                     Navigator.pushNamed(
                       context,
-                      "/classInfo",
+                      '/classInfo',
                       arguments: horario, // objeto Horario
                     );
                   },
