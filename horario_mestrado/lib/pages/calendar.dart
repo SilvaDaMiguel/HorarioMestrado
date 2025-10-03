@@ -10,6 +10,8 @@ import '../database/database_service.dart';
 import '../components/class_box.dart';
 //FUNCTIONS
 import '../functions.dart';
+//VARIABLES
+import '../variables/colors.dart';
 
 class CalendarioPage extends StatefulWidget {
   const CalendarioPage({super.key});
@@ -20,7 +22,7 @@ class CalendarioPage extends StatefulWidget {
 
 class _CalendarioPageState extends State<CalendarioPage> {
   // Map<DateTime, List<Horario>> para o TableCalendar
-  Map<DateTime, List<Horario>> eventos = {};
+  Map<DateTime, List<Horario>> aulas = {};
   CalendarFormat _calendarFormat =
       CalendarFormat.month; //Formato inicial do calendário
   DateTime _diaSelecionado = DateTime.now(); // Dia atualmente selecionado
@@ -31,38 +33,55 @@ class _CalendarioPageState extends State<CalendarioPage> {
     super.initState();
     // Carrega horários do banco
     DataBaseService().obterHorarios().then((horarios) {
-      carregarEventos(horarios);
-      // Inicialmente exibe os horários do dia atual
+      carregarAulas(horarios);
+      // Inicialmente mostra os horários do dia atual
       selecionarDia(_diaSelecionado);
     });
   }
 
   // Converte lista de Horarios para o Map<DateTime, List<Horario>>
-  void carregarEventos(List<Horario> horarios) {
-    eventos = {}; // limpa antes
+  void carregarAulas(List<Horario> horarios) {
+    aulas = {}; // limpa antes
+
     for (var horario in horarios) {
       DateTime dia = removerHora(DateFormat('dd-MM-yyyy').parse(horario.data));
-      if (eventos[dia] == null) {
-        eventos[dia] = [];
+
+      if (!aulas.containsKey(dia)) {
+        aulas[dia] = [];
       }
-      eventos[dia]!.add(horario);
+      aulas[dia]!.add(horario);
     }
+
+    print("Aulas carregadas:");
+    aulas.forEach((d, lista) {
+      print("Dia $d -> ${lista.length} aulas");
+    });
+
     setState(() {});
   }
 
   // Seleciona um dia e atualiza a lista de aulas
   void selecionarDia(DateTime dia) {
-    _diaSelecionado = dia;
-    _horariosDoDia = eventos[removerHora(dia)] ?? [];
-    setState(() {});
+    final DateTime diaSemHora = removerHora(dia);
+    print("Selecionar dia: $diaSemHora");
+
+    setState(() {
+      _diaSelecionado = diaSemHora;
+      _horariosDoDia = aulas[diaSemHora] ?? [];
+      print("Aulas carregadas: ${_horariosDoDia.length}");
+      for (var h in _horariosDoDia) {
+        print("  -> ${h.data}  ${h.sala}");
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendário de Aulas'),
+        title: Text('Calendário de Aulas', style: TextStyle(color: corTexto)),
         centerTitle: true,
+        backgroundColor: corSecundaria,
       ),
       body: Column(
         children: [
@@ -71,25 +90,34 @@ class _CalendarioPageState extends State<CalendarioPage> {
             lastDay: DateTime(2125, 1, 1),
             focusedDay: _diaSelecionado,
             calendarFormat: _calendarFormat,
-            eventLoader: (dia) => eventos[removerHora(dia)] ?? [],
+            eventLoader: (dia) => aulas[removerHora(dia)] ?? [],
             onFormatChanged: (format) {
               setState(() {
                 _calendarFormat = format;
               });
             },
-            calendarStyle: const CalendarStyle(
+            locale: 'pt_BR', // Defina o idioma como português (Brasil) aqui
+            calendarStyle: CalendarStyle(
               todayDecoration:
-                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+                  BoxDecoration(color: corPrimaria, shape: BoxShape.circle),
               markerDecoration:
-                  BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                  BoxDecoration(color: corTexto, shape: BoxShape.circle),
               selectedDecoration: BoxDecoration(
-                color: Color.fromARGB(255, 0, 184, 224),
+                color: corDestaque,
                 shape: BoxShape.circle,
               ),
               selectedTextStyle: TextStyle(
-                color: Colors.white,
+                color: corTexto,
                 fontWeight: FontWeight.bold,
               ),
+             //weekendTextStyle: TextStyle(color: corDestaque), // Cor dos finais de semana
+
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                  color: corTerciaria),//Cor dos dias úteis (segunda a sexta)
+              weekendStyle: TextStyle(
+                  color: corTerciaria), //Cor dos finais de semana (sábado e domingo)
             ),
             selectedDayPredicate: (day) {
               //Necessário para o TableCalendar reconhecer o dia selecionado
@@ -109,8 +137,10 @@ class _CalendarioPageState extends State<CalendarioPage> {
               children: [
                 Text(
                   'Aulas de ${DateFormat('dd/MM/yyyy').format(_diaSelecionado)}',
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: corTexto),
                 ),
               ],
             ),
@@ -121,7 +151,12 @@ class _CalendarioPageState extends State<CalendarioPage> {
           // Lista de aulas do dia selecionado
           Expanded(
             child: _horariosDoDia.isEmpty
-                ? const Center(child: Text('Nenhuma aula neste dia'))
+                ? Center(
+                    child: Text(
+                      'Nenhuma aula neste dia',
+                      style: TextStyle(color: corTexto),
+                    ),
+                  )
                 : ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     itemCount: _horariosDoDia.length,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//Cores
+// Cores
 import '../variables/colors.dart';
 
 class InfoBox extends StatelessWidget {
@@ -11,20 +11,21 @@ class InfoBox extends StatelessWidget {
   Widget build(BuildContext context) {
     //RESPONSIVIDADE
     var tamanho = MediaQuery.of(context).size;
-    double largura = tamanho.width;
+    double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    final Color corFundo = Colors.grey[200]!;
-    final Color corBorda = Colors.blue;
-    final double tamanhoTexto = largura * 0.035;
+    //TAMANHO TEXTO
+    double tamanhoTexto = comprimento * 0.035;
+    
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: largura * 0.03, vertical: altura * 0.01),
-      padding: EdgeInsets.all(largura * 0.03),
+      width: double.infinity, //Ocupar o máximo possível da largura
+      //margin: EdgeInsets.symmetric(horizontal: comprimento * 0.03, vertical: altura * 0.01), 
+      padding: EdgeInsets.all(comprimento * 0.03), //INTERIOR
       decoration: BoxDecoration(
-        color: corFundo,
+        color: corTexto.withOpacity(0.5),
         border: Border.all(
-          color: corBorda,
+          color: corSecundaria,
           width: 1,
         ),
         borderRadius: BorderRadius.circular(8),

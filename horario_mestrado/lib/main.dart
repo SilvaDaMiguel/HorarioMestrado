@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 //PAGES
 import 'pages/class_info.dart';
 import 'pages/calendar.dart';
@@ -6,6 +8,8 @@ import 'pages/calendar.dart';
 import 'models/horario.dart';
 import 'models/cadeira.dart';
 import 'models/periodo.dart';
+//VARIABLES
+import 'variables/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,14 +23,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Horário Mestrado',
+      theme: ThemeData(
+        scaffoldBackgroundColor:
+            corSecundaria, // muda o fundo padrão de todas as páginas
+      ),
       routes: {
-        '/': (context) => const CalendarioPage( ),
+        '/': (context) => const CalendarioPage(),
         '/calendar': (context) => const CalendarioPage(),
-        '/classInfo': (context) { //usando uma rota nomeada com parâmetros/argumentos
+        '/classInfo': (context) {
+          //usando uma rota nomeada com parâmetros/argumentos
           final args = ModalRoute.of(context)!.settings.arguments as Horario;
-          return AulaInformacao(horario: args); // Passa os argumentos para a página
+          return AulaInformacao(
+              horario: args); // Passa os argumentos para a página
         },
       },
+      locale: Locale('pt', 'BR'), // Define o idioma para o calendário
+      supportedLocales: [Locale('pt', 'BR')], // Suporte para o idioma português
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
     );
   }
 }

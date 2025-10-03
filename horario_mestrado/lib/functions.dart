@@ -24,4 +24,3 @@ String formatarHora(String hora) {
     return 'Formato de hora inválido';
   }
 }
-

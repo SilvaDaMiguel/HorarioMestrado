@@ -33,14 +33,24 @@ class _ClassBoxState extends State<ClassBox> {
     _periodoFuture = _dbService.obterPeriodoPorId(widget.horario.periodoID);
   }
 
+  //Atualiza a Pesquisa => Não atualizava o nome da cadeira
+  @override
+  void didUpdateWidget(covariant ClassBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.horario.cadeiraID != widget.horario.cadeiraID) {
+      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.horario.cadeiraID);
+    }
+    if (oldWidget.horario.periodoID != widget.horario.periodoID) {
+      _periodoFuture = _dbService.obterPeriodoPorId(widget.horario.periodoID);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    final Color corEvento = Colors.blue;
-    final Color corIcone = Colors.blueGrey;
     final double tamanhoTexto = comprimento * 0.045;
     final double tamanhoData = comprimento * 0.035;
 
@@ -76,9 +86,9 @@ class _ClassBoxState extends State<ClassBox> {
             padding: EdgeInsets.symmetric(
                 horizontal: comprimento * 0.03, vertical: altura * 0.01),
             decoration: BoxDecoration(
-              color: corEvento.withOpacity(0.1),
+              color: corPrimaria.withOpacity(0.1),
               border: Border.all(
-                color: corEvento,
+                color: corPrimaria,
                 width: comprimento / 500,
               ),
               borderRadius: BorderRadius.circular(comprimento * 0.05),
@@ -116,10 +126,8 @@ class _ClassBoxState extends State<ClassBox> {
                 ),
                 const Spacer(),
                 IconButton(
-                  icon: Icon(Icons.info, color: corIcone),
+                  icon: Icon(Icons.info, color: corTerciaria),
                   onPressed: () {
-                    // Aqui podes navegar para detalhes ou abrir uma lista
-                    print('Adicionar ação para detalhes da aula');
                     Navigator.pushNamed(
                       context,
                       '/classInfo',
