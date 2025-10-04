@@ -16,17 +16,16 @@ class InfoBox extends StatelessWidget {
 
     //TAMANHO TEXTO
     double tamanhoTexto = comprimento * 0.035;
-    
 
     return Container(
       width: double.infinity, //Ocupar o máximo possível da largura
-      //margin: EdgeInsets.symmetric(horizontal: comprimento * 0.03, vertical: altura * 0.01), 
+      //margin: EdgeInsets.symmetric(horizontal: comprimento * 0.03, vertical: altura * 0.01),
       padding: EdgeInsets.all(comprimento * 0.03), //INTERIOR
       decoration: BoxDecoration(
-        color: corTexto.withOpacity(0.5),
+        color: corTerciaria.withOpacity(0.5),
         border: Border.all(
           color: corSecundaria,
-          width: 1,
+          width: comprimento / 50,
         ),
         borderRadius: BorderRadius.circular(8),
       ),

@@ -72,7 +72,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         ),
       ),
       child: BottomNavigationBar(
-        backgroundColor: corPrimaria,  //Cor do Fundo
+        backgroundColor: corPrimaria, //Cor do Fundo
         key: const Key('bottom_navigation_bar'),
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
@@ -81,8 +81,16 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
             label: 'Calendário',
           ),
           BottomNavigationBarItem(
-            icon: _buildIcon(Icons.class_, selectedIndex == 1),
+            icon: _buildIcon(Icons.laptop, selectedIndex == 1),
             label: 'Cadeiras',
+          ),
+          BottomNavigationBarItem(
+            icon: _buildIcon(Icons.timer, selectedIndex == 2),
+            label: 'Períodos',
+          ),
+          BottomNavigationBarItem(
+            icon: _buildIcon(Icons.school, selectedIndex == 3),
+            label: 'Horários',
           ),
         ],
         currentIndex: selectedIndex,

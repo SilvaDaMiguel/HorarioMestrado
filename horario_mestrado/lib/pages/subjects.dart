@@ -39,7 +39,7 @@ class _CadeirasPageState extends State<CadeirasPage> {
     double tamanhoSubTexto = tamanhoTexto * 0.8;
 
     //PADDING
-    double paddingAltura = altura * 0.075;
+    double paddingAltura = altura * 0.05;
     double paddingComprimento = comprimento * 0.06;
 
     //OUTROS
@@ -47,8 +47,12 @@ class _CadeirasPageState extends State<CadeirasPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Cadeiras'),
+        title: Text(
+          'Lista de Cadeiras',
+          style: TextStyle(color: corTexto),
+        ),
         centerTitle: true,
+        backgroundColor: corPrimaria,
       ),
       body: FutureBuilder<List<Cadeira>>(
         future: _cadeirasFuture,
@@ -63,6 +67,7 @@ class _CadeirasPageState extends State<CadeirasPage> {
 
           final cadeiras = snapshot.data!;
 
+          //TODO: Adicionar Dropdown filtro por Ano e Semestre
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               vertical: paddingAltura,

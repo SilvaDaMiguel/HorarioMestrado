@@ -6,6 +6,7 @@ import '../database/database_service.dart';
 import '../models/cadeira.dart';
 //VARIABLES
 import '../variables/colors.dart';
+import '../variables/icons.dart';
 
 class CadeiraInformacao extends StatelessWidget {
   final Cadeira cadeira;
@@ -50,10 +51,15 @@ class CadeiraInformacao extends StatelessWidget {
                 color: corTexto,
               ),
             ),
+            //TODO: Adicionar Icon Lapis ao lado do título para editar
             SizedBox(height: espacoTemas),
             Text(
               "Professores da Cadeira:",
-              style: TextStyle(fontSize: tamanhoTexto, color: corTexto),
+              style: TextStyle(
+                fontSize: tamanhoTexto,
+                color: corTexto,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(height: espacoTextoTitulo),
             ListView.builder(
@@ -65,11 +71,15 @@ class CadeiraInformacao extends StatelessWidget {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(Icons.person, size: tamanhoIcon),
+                    Icon(
+                      iconProfessor,
+                      size: tamanhoIcon,
+                      color: corTerciaria,
+                    ),
                     Text(
                       cadeira.professores![index],
-                      style: TextStyle(
-                          fontSize: tamanhoSubTexto, color: corTexto),
+                      style:
+                          TextStyle(fontSize: tamanhoSubTexto, color: corTexto),
                     ),
                   ],
                 );
@@ -77,11 +87,62 @@ class CadeiraInformacao extends StatelessWidget {
             ),
             SizedBox(height: espacoTemas),
             Text(
-              "Informação da Cadeira:",
-              style: TextStyle(fontSize: tamanhoTexto, color: corTexto),
+              'Conteúdos da Cadeira:',
+              style: TextStyle(
+                fontSize: tamanhoTexto,
+                color: corTexto,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(height: espacoTextoTitulo),
             InfoBox(informacao: cadeira.informacao),
+            SizedBox(height: espacoTemas),
+            Text(
+              'Outras Informações:',
+              style: TextStyle(
+                fontSize: tamanhoTitulo,
+                color: corTexto,
+              ),
+            ),
+            SizedBox(height: espacoTextoTitulo),
+            Text(
+              '${cadeira.ano}º Ano ${cadeira.semestre}º Semestre',
+              style: TextStyle(
+                color: corTexto,
+                fontSize: tamanhoTexto,
+              ),
+            ),
+            Text(
+              '${cadeira.creditos} ECTS',
+              style: TextStyle(
+                fontSize: tamanhoTexto,
+                color: corTexto,
+              ),
+            ),
+            if (cadeira.concluida)
+              Text(
+                'Cadeira Concluída',
+                style: TextStyle(
+                  color: corTexto,
+                  fontSize: tamanhoTexto,
+                ),
+              ),
+            if (cadeira.concluida)
+              cadeira.nota != null
+                  ? Text(
+                      'Nota: ${cadeira.nota} Valores',
+                      style: TextStyle(
+                        color: corTexto,
+                        fontSize: tamanhoTexto,
+                      ),
+                    )
+                  : Text(
+                      'Nota: A aguardar',
+                      style: TextStyle(
+                        color: corTexto,
+                        fontSize: tamanhoTexto,
+                      ),
+                    ),
           ],
         ),
       ),

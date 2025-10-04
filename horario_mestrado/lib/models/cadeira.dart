@@ -4,6 +4,8 @@ class Cadeira {
   final int cadeiraID;
   final String nome;
   final String sigla;
+  final int ano;
+  final int semestre;
   final String informacao;
   final List<String>? professores;
   final int creditos;
@@ -14,6 +16,8 @@ class Cadeira {
     required this.cadeiraID,
     required this.nome,
     required this.sigla,
+    required this.ano,
+    required this.semestre,
     this.informacao = 'Sem Informação',
     this.professores = const [],
     required this.creditos,
@@ -25,6 +29,8 @@ class Cadeira {
         cadeiraID: map['cadeiraID'],
         nome: map['nome'] ?? 'Nome Não Definido',
         sigla: map['sigla'] ?? 'Sigla Não Definida',
+        ano: map['ano'],
+        semestre: map['semestre'],
         informacao: map['informacao'] ?? 'Sem Informação',
         professores: map['professores'] != null
             ? List<String>.from(jsonDecode(map['professores']))
@@ -40,6 +46,8 @@ class Cadeira {
         'cadeiraID': cadeiraID,
         'nome': nome,
         'sigla': sigla,
+        'ano': ano,
+        'semestre': semestre,
         'informacao': informacao,
         'professores': jsonEncode(professores), //salvar sempre como JSON string
         'creditos': creditos,

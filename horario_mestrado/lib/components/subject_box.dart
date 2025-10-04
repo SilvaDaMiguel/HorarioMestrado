@@ -5,6 +5,7 @@ import '../models/cadeira.dart';
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
+import '../variables/icons.dart';
 
 class SubjectBox extends StatelessWidget {
   final Cadeira cadeira;
@@ -17,8 +18,11 @@ class SubjectBox extends StatelessWidget {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
+    //TEXTO
     final double tamanhoTexto = comprimento * 0.045;
-    final double tamanhoData = comprimento * 0.035;
+
+    //OUTROS
+    double tamanhoIcon = comprimento * 0.05;
 
     return Container(
       margin: EdgeInsets.symmetric(
@@ -33,47 +37,67 @@ class SubjectBox extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(comprimento * 0.05),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('${cadeira.sigla} - ${cadeira.nome}',
+          // Nome da cadeira
+          Text('${cadeira.sigla} - ${cadeira.nome}',
+              style: TextStyle(
+                fontSize: tamanhoTexto,
+                fontWeight: FontWeight.bold,
+                color: corTexto,
+              )),
+          SizedBox(height: altura * 0.005),
+
+          // Linha com o número de professores e créditos
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(iconProfessor, size: tamanhoIcon),
+                      Text(
+                        '${cadeira.professores?.length ?? 0}', // Se for Null => 0
+                        style: TextStyle(
+                          color: corTexto,
+                          fontSize: tamanhoTexto,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    '${cadeira.creditos} ECTS',
                     style: TextStyle(
-                      fontSize: tamanhoTexto,
-                      fontWeight: FontWeight.bold,
                       color: corTexto,
-                    )),
-                SizedBox(height: altura * 0.005),
-                Text(
-                  'Professores: ${cadeira.professores?.length ?? 0}', //Se for Null => 0
-                  style: TextStyle(
-                    color: corTexto,
-                    fontSize: tamanhoTexto,
+                      fontSize: tamanhoTexto,
+                    ),
                   ),
-                ),
-                Text(
-                  '${cadeira.creditos} ECTS',
-                  style: TextStyle(
-                    color: corTexto,
-                    fontSize: tamanhoTexto,
-                  ),
-                )
-              ],
-            ),
+                ],
+              ),
+
+              SizedBox(width: comprimento * 0.05), // Espaço entre as colunas
+              //Icon de informações
+              Spacer(),
+              IconButton(
+                icon: Icon(iconInformacao, color: corTerciaria),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/subjectInfo',
+                    arguments: cadeira, // objeto Cadeira
+                  );
+                },
+              ),
+            ],
           ),
-          const Spacer(),
-          IconButton(
-            icon: Icon(Icons.info, color: corTerciaria),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/subjectInfo',
-                arguments: cadeira, // objeto Cadeira
-              );
-            },
+          Text(
+            '${cadeira.ano}º Ano ${cadeira.semestre}º Semestre',
+            style: TextStyle(
+              fontSize: tamanhoTexto,
+              color: corTexto,
+            ),
           ),
         ],
       ),

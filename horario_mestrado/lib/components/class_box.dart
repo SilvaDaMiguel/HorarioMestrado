@@ -7,6 +7,8 @@ import '../models/periodo.dart';
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
+import '../variables/icons.dart';
+
 class ClassBox extends StatefulWidget {
   final Horario horario;
 
@@ -51,9 +53,7 @@ class _ClassBoxState extends State<ClassBox> {
     double altura = tamanho.height;
 
     final double tamanhoTexto = comprimento * 0.045;
-    final double tamanhoData = comprimento * 0.035;
-
-
+    final double tamanhoHora = comprimento * 0.035;
 
     return FutureBuilder(
       //Espera pelos dois Futures usando Future.wait
@@ -107,14 +107,7 @@ class _ClassBoxState extends State<ClassBox> {
                       Text(
                         '${periodo.horaInicio} - ${periodo.horaFim}',
                         style: TextStyle(
-                          fontSize: tamanhoData,
-                          color: corTexto,
-                        ),
-                      ),
-                      Text(
-                        'Sala: ${horario.sala}',
-                        style: TextStyle(
-                          fontSize: tamanhoData,
+                          fontSize: tamanhoHora,
                           color: corTexto,
                         ),
                       ),
@@ -122,8 +115,9 @@ class _ClassBoxState extends State<ClassBox> {
                   ),
                 ),
                 const Spacer(),
+                /*
                 IconButton(
-                  icon: Icon(Icons.info, color: corTerciaria),
+                  icon: Icon(iconInformacao, color: corTerciaria),
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
@@ -131,6 +125,14 @@ class _ClassBoxState extends State<ClassBox> {
                       arguments: horario, // objeto Horario
                     );
                   },
+                ),
+                */
+                Text(
+                  horario.sala,
+                  style: TextStyle(
+                    fontSize: tamanhoTexto,
+                    color: corTexto,
+                  ),
                 ),
               ],
             ),
