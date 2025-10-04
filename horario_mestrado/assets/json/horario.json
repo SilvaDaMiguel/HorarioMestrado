@@ -3,8 +3,6 @@
     "id": 1,
     "cadeiraId": 1,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "02-10-2025"
   },
@@ -12,8 +10,6 @@
     "id": 2,
     "cadeiraId": 2,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "03-10-2025"
   },
@@ -21,8 +17,6 @@
     "id": 3,
     "cadeiraId": 3,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "03-10-2025"
   },
@@ -30,8 +24,6 @@
     "id": 4,
     "cadeiraId": 2,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "03-10-2025"
   },
@@ -39,8 +31,6 @@
     "id": 5,
     "cadeiraId": 1,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "09-10-2025"
   },
@@ -48,8 +38,6 @@
     "id": 6,
     "cadeiraId": 2,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "10-10-2025"
   },
@@ -57,8 +45,6 @@
     "id": 7,
     "cadeiraId": 3,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "10-10-2025"
   },
@@ -66,8 +52,6 @@
     "id": 8,
     "cadeiraId": 1,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "10-10-2025"
   },
@@ -75,8 +59,6 @@
     "id": 9,
     "cadeiraId": 3,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "11-10-2025"
   },
@@ -84,8 +66,6 @@
     "id": 10,
     "cadeiraId": 2,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "11-10-2025"
   },
@@ -93,8 +73,6 @@
     "id": 11,
     "cadeiraId": 2,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "16-10-2025"
   },
@@ -102,8 +80,6 @@
     "id": 12,
     "cadeiraId": 1,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "17-10-2025"
   },
@@ -111,8 +87,6 @@
     "id": 13,
     "cadeiraId": 1,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "17-10-2025"
   },
@@ -120,8 +94,6 @@
     "id": 14,
     "cadeiraId": 3,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "17-10-2025"
   },
@@ -129,8 +101,6 @@
     "id": 15,
     "cadeiraId": 2,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "18-10-2025"
   },
@@ -138,8 +108,6 @@
     "id": 16,
     "cadeiraId": 1,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "18-10-2025"
   },
@@ -147,8 +115,6 @@
     "id": 17,
     "cadeiraId": 2,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "23-10-2025"
   },
@@ -156,8 +122,6 @@
     "id": 18,
     "cadeiraId": 2,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "24-10-2025"
   },
@@ -165,8 +129,6 @@
     "id": 19,
     "cadeiraId": 1,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "24-10-2025"
   },
@@ -174,8 +136,6 @@
     "id": 20,
     "cadeiraId": 1,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "24-10-2025"
   },
@@ -183,8 +143,6 @@
     "id": 21,
     "cadeiraId": 3,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "25-10-2025"
   },
@@ -192,8 +150,6 @@
     "id": 22,
     "cadeiraId": 3,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "25-10-2025"
   },
@@ -201,8 +157,6 @@
     "id": 23,
     "cadeiraId": 1,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "30-10-2025"
   },
@@ -210,8 +164,6 @@
     "id": 24,
     "cadeiraId": 2,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "31-10-2025"
   },
@@ -219,8 +171,6 @@
     "id": 25,
     "cadeiraId": 3,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "31-10-2025"
   },
@@ -228,8 +178,6 @@
     "id": 26,
     "cadeiraId": 1,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "06-11-2025"
   },
@@ -237,8 +185,6 @@
     "id": 27,
     "cadeiraId": 1,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "07-11-2025"
   },
@@ -246,8 +192,6 @@
     "id": 28,
     "cadeiraId": 2,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "07-11-2025"
   },
@@ -255,8 +199,6 @@
     "id": 29,
     "cadeiraId": 2,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "07-11-2025"
   },
@@ -264,8 +206,6 @@
     "id": 30,
     "cadeiraId": 3,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "08-11-2025"
   },
@@ -273,8 +213,6 @@
     "id": 31,
     "cadeiraId": 3,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "08-11-2025"
   },
@@ -282,8 +220,6 @@
     "id": 32,
     "cadeiraId": 1,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "13-11-2025"
   },
@@ -291,8 +227,6 @@
     "id": 33,
     "cadeiraId": 2,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "14-11-2025"
   },
@@ -300,8 +234,6 @@
     "id": 34,
     "cadeiraId": 1,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "14-11-2025"
   },
@@ -309,8 +241,6 @@
     "id": 35,
     "cadeiraId": 2,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "14-11-2025"
   },
@@ -318,8 +248,6 @@
     "id": 36,
     "cadeiraId": 3,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "15-11-2025"
   },
@@ -327,8 +255,6 @@
     "id": 37,
     "cadeiraId": 3,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "15-11-2025"
   },
@@ -336,8 +262,6 @@
     "id": 38,
     "cadeiraId": 2,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "20-11-2025"
   },
@@ -345,8 +269,6 @@
     "id": 39,
     "cadeiraId": 1,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "21-11-2025"
   },
@@ -354,8 +276,6 @@
     "id": 40,
     "cadeiraId": 1,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "21-11-2025"
   },
@@ -363,8 +283,6 @@
     "id": 41,
     "cadeiraId": 2,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "21-11-2025"
   },
@@ -372,8 +290,6 @@
     "id": 42,
     "cadeiraId": 3,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "22-11-2025"
   },
@@ -381,8 +297,6 @@
     "id": 43,
     "cadeiraId": 3,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "22-11-2025"
   },
@@ -390,8 +304,6 @@
     "id": 44,
     "cadeiraId": 4,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "27-11-2025"
   },
@@ -399,8 +311,6 @@
     "id": 45,
     "cadeiraId": 2,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "28-11-2025"
   },
@@ -408,8 +318,6 @@
     "id": 46,
     "cadeiraId": 1,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "28-11-2025"
   },
@@ -417,8 +325,6 @@
     "id": 47,
     "cadeiraId": 3,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "29-11-2025"
   },
@@ -426,8 +332,6 @@
     "id": 48,
     "cadeiraId": 3,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "29-11-2025"
   },
@@ -435,8 +339,6 @@
     "id": 49,
     "cadeiraId": 4,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "04-12-2025"
   },
@@ -444,8 +346,6 @@
     "id": 50,
     "cadeiraId": 4,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "05-12-2025"
   },
@@ -453,8 +353,6 @@
     "id": 51,
     "cadeiraId": 5,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "05-12-2025"
   },
@@ -462,8 +360,6 @@
     "id": 52,
     "cadeiraId": 5,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "05-12-2025"
   },
@@ -471,8 +367,6 @@
     "id": 53,
     "cadeiraId": 4,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "06-12-2025"
   },
@@ -480,8 +374,6 @@
     "id": 54,
     "cadeiraId": 3,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "06-12-2025"
   },
@@ -489,8 +381,6 @@
     "id": 55,
     "cadeiraId": 4,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "11-12-2025"
   },
@@ -498,8 +388,6 @@
     "id": 56,
     "cadeiraId": 4,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "12-12-2025"
   },
@@ -507,8 +395,6 @@
     "id": 57,
     "cadeiraId": 5,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "12-12-2025"
   },
@@ -516,8 +402,6 @@
     "id": 58,
     "cadeiraId": 5,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "12-12-2025"
   },
@@ -525,8 +409,6 @@
     "id": 59,
     "cadeiraId": 4,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "13-12-2025"
   },
@@ -534,8 +416,6 @@
     "id": 60,
     "cadeiraId": 4,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "13-12-2025"
   },
@@ -543,8 +423,6 @@
     "id": 61,
     "cadeiraId": 4,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "03-01-2026"
   },
@@ -552,8 +430,6 @@
     "id": 62,
     "cadeiraId": 5,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "03-01-2026"
   },
@@ -561,8 +437,6 @@
     "id": 63,
     "cadeiraId": 4,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "08-01-2026"
   },
@@ -570,8 +444,6 @@
     "id": 64,
     "cadeiraId": 4,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "09-01-2026"
   },
@@ -579,8 +451,6 @@
     "id": 65,
     "cadeiraId": 5,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "09-01-2026"
   },
@@ -588,8 +458,6 @@
     "id": 66,
     "cadeiraId": 5,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "09-01-2026"
   },
@@ -597,8 +465,6 @@
     "id": 67,
     "cadeiraId": 4,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "10-01-2026"
   },
@@ -606,8 +472,6 @@
     "id": 68,
     "cadeiraId": 5,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "10-01-2026"
   },
@@ -615,8 +479,6 @@
     "id": 69,
     "cadeiraId": 4,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "15-01-2026"
   },
@@ -624,8 +486,6 @@
     "id": 70,
     "cadeiraId": 4,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "16-01-2026"
   },
@@ -633,8 +493,6 @@
     "id": 71,
     "cadeiraId": 5,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "16-01-2026"
   },
@@ -642,8 +500,6 @@
     "id": 72,
     "cadeiraId": 5,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "16-01-2026"
   },
@@ -651,8 +507,6 @@
     "id": 73,
     "cadeiraId": 5,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "17-01-2026"
   },
@@ -660,8 +514,6 @@
     "id": 74,
     "cadeiraId": 5,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "17-01-2026"
   },
@@ -669,8 +521,6 @@
     "id": 75,
     "cadeiraId": 4,
     "periodoId": 1,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "22-01-2026"
   },
@@ -678,8 +528,6 @@
     "id": 76,
     "cadeiraId": 4,
     "periodoId": 2,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "23-01-2026"
   },
@@ -687,8 +535,6 @@
     "id": 77,
     "cadeiraId": 5,
     "periodoId": 3,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "23-01-2026"
   },
@@ -696,8 +542,6 @@
     "id": 78,
     "cadeiraId": 5,
     "periodoId": 4,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "23-01-2026"
   },
@@ -705,8 +549,6 @@
     "id": 79,
     "cadeiraId": 5,
     "periodoId": 5,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "24-01-2026"
   },
@@ -714,8 +556,6 @@
     "id": 80,
     "cadeiraId": 5,
     "periodoId": 6,
-    "ano": 1,
-    "semestre": 1,
     "sala": "L3",
     "data": "24-01-2026"
   }

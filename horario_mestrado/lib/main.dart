@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 //PAGES
 import 'pages/class_info.dart';
 import 'pages/calendar.dart';
-import 'pages/subject.dart';
+import 'pages/subjects.dart';
 import 'pages/subject_info.dart';
 import 'pages/error.dart';
 //MODELS

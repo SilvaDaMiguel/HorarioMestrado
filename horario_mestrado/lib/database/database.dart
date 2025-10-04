@@ -46,7 +46,10 @@ class DatabaseProvider {
         ano INTEGER,
         semestre INTEGER,
         informacao TEXT,
-        professores TEXT
+        professores TEXT,
+        creditos INTEGER,
+        concluida INTEGER,
+        nota REAL
       )
     ''');
 
@@ -55,8 +58,6 @@ class DatabaseProvider {
         horarioID INTEGER PRIMARY KEY,
         cadeiraID INTEGER,
         periodoID INTEGER,
-        ano INTEGER,
-        semestre INTEGER,
         sala TEXT,
         data TEXT,
         FOREIGN KEY (periodoID) REFERENCES Periodo(periodoID),

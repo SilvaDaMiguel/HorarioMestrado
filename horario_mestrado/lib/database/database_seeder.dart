@@ -28,8 +28,7 @@ class DatabaseSeeder {
       }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima caso exista algum conflito
     }
 
-    //Inserir Cadeiras
-    //Inserir Cadeiras
+//Inserir Cadeiras
 for (var c in cadeiras) {
   await db.insert("Cadeira", {
     "cadeiraID": c["id"],
@@ -38,7 +37,10 @@ for (var c in cadeiras) {
     "ano": c["ano"],
     "semestre": c["semestre"],
     "informacao": c["informacao"] ?? "Sem Informação",
-    "professores": jsonEncode(c["professores"] ?? []), // 🔹 salvar como string JSON
+    "professores": jsonEncode(c["professores"] ?? []), //Salvar como string JSON
+    "creditos":c["creditos"] ?? 0,
+    "concluida":c["concluida"] ?? 0,
+    "nota":c["nota"],
   }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima caso exista algum conflito
 }
 
@@ -48,8 +50,6 @@ for (var c in cadeiras) {
         "horarioID": h["id"],
         "cadeiraID": h["cadeiraId"],
         "periodoID": h["periodoId"],
-        "ano": h["ano"],
-        "semestre": h["semestre"],
         "sala": h["sala"],
         "data": h["data"],
       }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima casoo exista algum conflito

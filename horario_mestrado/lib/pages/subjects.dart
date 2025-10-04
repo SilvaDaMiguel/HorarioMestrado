@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // COMPONENTS
 import '../components/navigation_bar.dart';
+import '../components/subject_box.dart';
 // VARIABLES
 import '../variables/colors.dart';
 // DATABASE
@@ -78,47 +79,7 @@ class _CadeirasPageState extends State<CadeirasPage> {
                   itemBuilder: (context, index) {
                     final cadeira = cadeiras[index];
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          cadeira.nome, // exemplo: nome da cadeira
-                          style: TextStyle(
-                            fontSize: tamanhoTitulo,
-                            fontWeight: FontWeight.bold,
-                            color: corPrimaria,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        if (cadeira.professores != null)
-                          ...cadeira.professores!.map(
-                            (professor) => Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(Icons.person, size: tamanhoIcon),
-                                const SizedBox(width: 4),
-                                Text(
-                                  professor,
-                                  style: TextStyle(
-                                    fontSize: tamanhoSubTexto,
-                                    color: corTexto,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/subjectInfo',
-                                arguments: cadeira, // objeto Horario
-                              );
-                            },
-                            child: Text('Ver mais')),
-                        const Divider(),
-                      ],
-                    );
+                    return SubjectBox(cadeira: cadeira);
                   },
                 ),
               ],
