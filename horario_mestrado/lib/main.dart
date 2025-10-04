@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:path/path.dart';
 //PAGES
 import 'pages/class_info.dart';
 import 'pages/calendar.dart';
+import 'pages/subject.dart';
+import 'pages/subject_info.dart';
+import 'pages/error.dart';
 //MODELS
 import 'models/horario.dart';
 import 'models/cadeira.dart';
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'Horário Mestrado',
       theme: ThemeData(
         scaffoldBackgroundColor:
-            corSecundaria, // muda o fundo padrão de todas as páginas
+            corPrimaria, // muda o fundo padrão de todas as páginas
       ),
       routes: {
         '/': (context) => const CalendarioPage(),
@@ -36,6 +40,13 @@ class MyApp extends StatelessWidget {
           return AulaInformacao(
               horario: args); // Passa os argumentos para a página
         },
+        '/subjects': (context) => const CadeirasPage(),
+        '/subjectInfo': (context) {
+          //Usa argumento
+          final args = ModalRoute.of(context)!.settings.arguments as Cadeira;
+          return CadeiraInformacao(cadeira: args); //Passa a Cadeira como argumento
+        },
+        '/error': (context) => const ErrorPage(),
       },
       locale: Locale('pt', 'BR'), // Define o idioma para o calendário
       supportedLocales: [Locale('pt', 'BR')], // Suporte para o idioma português

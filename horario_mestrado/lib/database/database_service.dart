@@ -11,7 +11,8 @@ class DataBaseService {
   //PERIODOS
   Future<Periodo> obterPeriodoPorId(int id) async {
     final db = await _dbProvider.database;
-    final result = await db.query('Periodo', where: 'periodoID = ?', whereArgs: [id]);
+    final result =
+        await db.query('Periodo', where: 'periodoID = ?', whereArgs: [id]);
     if (result.isNotEmpty) {
       return Periodo.fromMap(result.first);
     } else {
@@ -22,7 +23,8 @@ class DataBaseService {
   //CADEIRAS
   Future<Cadeira> obterCadeiraPorId(int id) async {
     final db = await _dbProvider.database;
-    final result = await db.query('Cadeira', where: 'cadeiraID = ?', whereArgs: [id]);
+    final result =
+        await db.query('Cadeira', where: 'cadeiraID = ?', whereArgs: [id]);
     if (result.isNotEmpty) {
       return Cadeira.fromMap(result.first);
     } else {
@@ -30,10 +32,17 @@ class DataBaseService {
     }
   }
 
-  //HORARIO
-    Future<Horario> obterHorarioPorId(int id) async {
+  Future<List<Cadeira>> obterCadeiras() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Horario', where: 'horarioID = ?', whereArgs: [id]);
+    final result = await db.query('Cadeira');
+    return result.map((e) => Cadeira.fromMap(e)).toList();
+  }
+
+  //HORARIO
+  Future<Horario> obterHorarioPorId(int id) async {
+    final db = await _dbProvider.database;
+    final result =
+        await db.query('Horario', where: 'horarioID = ?', whereArgs: [id]);
     if (result.isNotEmpty) {
       return Horario.fromMap(result.first);
     } else {
@@ -46,7 +55,7 @@ class DataBaseService {
     final result = await db.query('Horario');
     return result.map((e) => Horario.fromMap(e)).toList();
   }
-  
+
   Future<int> inserirHorario(Horario horario) async {
     final db = await _dbProvider.database;
     return await db.insert('Horario', horario.toMap());
@@ -66,7 +75,6 @@ class DataBaseService {
     final db = await _dbProvider.database;
     return await db.delete('Horario', where: 'horarioID = ?', whereArgs: [id]);
   }
-
 
   //RESET => PERIGO
   Future<void> resetBaseDeDados() async {

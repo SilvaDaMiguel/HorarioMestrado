@@ -7,7 +7,6 @@ import '../models/periodo.dart';
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
-
 class ClassBox extends StatefulWidget {
   final Horario horario;
 
@@ -54,12 +53,10 @@ class _ClassBoxState extends State<ClassBox> {
     final double tamanhoTexto = comprimento * 0.045;
     final double tamanhoData = comprimento * 0.035;
 
-    String formatarHora(String hora) {
-      return hora; // aqui podes formatar se quiseres 'HH:mm'
-    }
+
 
     return FutureBuilder(
-      // Espera pelos dois Futures usando Future.wait
+      //Espera pelos dois Futures usando Future.wait
       future: Future.wait([_cadeiraFuture, _periodoFuture]),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -86,10 +83,10 @@ class _ClassBoxState extends State<ClassBox> {
             padding: EdgeInsets.symmetric(
                 horizontal: comprimento * 0.03, vertical: altura * 0.01),
             decoration: BoxDecoration(
-              color: corPrimaria.withOpacity(0.1),
+              color: corTerciaria.withOpacity(0.5),
               border: Border.all(
-                color: corPrimaria,
-                width: comprimento / 500,
+                color: corSecundaria,
+                width: comprimento / 50,
               ),
               borderRadius: BorderRadius.circular(comprimento * 0.05),
             ),
@@ -100,7 +97,7 @@ class _ClassBoxState extends State<ClassBox> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('${cadeira.sigla}',
+                      Text(cadeira.sigla,
                           style: TextStyle(
                             fontSize: tamanhoTexto,
                             fontWeight: FontWeight.bold,
@@ -108,7 +105,7 @@ class _ClassBoxState extends State<ClassBox> {
                           )),
                       SizedBox(height: altura * 0.005),
                       Text(
-                        '${formatarHora(periodo.horaInicio)} - ${formatarHora(periodo.horaFim)}',
+                        '${periodo.horaInicio} - ${periodo.horaFim}',
                         style: TextStyle(
                           fontSize: tamanhoData,
                           color: corTexto,

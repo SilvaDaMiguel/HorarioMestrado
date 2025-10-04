@@ -8,6 +8,7 @@ import '../models/horario.dart';
 import '../database/database_service.dart';
 //COMPONENTS
 import '../components/class_box.dart';
+import '../components/navigation_bar.dart';
 //FUNCTIONS
 import '../functions.dart';
 //VARIABLES
@@ -77,47 +78,63 @@ class _CalendarioPageState extends State<CalendarioPage> {
 
   @override
   Widget build(BuildContext context) {
+    //RESPONSIVIDADE
+    var tamanho = MediaQuery.of(context).size;
+    double comprimento = tamanho.width;
+    double altura = tamanho.height;
+
+    //TEXTO
+    double tamanhoTexto = comprimento * 0.04;
+    double tamanhoTitulo = comprimento * 0.05;
+    double tamanhoSubTexto = tamanhoTexto * 0.8;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Calendário de Aulas', style: TextStyle(color: corTexto)),
         centerTitle: true,
-        backgroundColor: corSecundaria,
+        backgroundColor: corPrimaria,
       ),
       body: Column(
         children: [
           TableCalendar(
+            headerStyle: HeaderStyle(
+              //HEADER DO CALENDÁRIO
+              titleTextStyle: TextStyle(
+                color: corTexto,
+                fontSize: tamanhoTitulo,
+                fontWeight: FontWeight.bold,
+              ),
+              formatButtonVisible: false, //Esconde o botão do formato
+              leftChevronIcon: Icon(Icons.chevron_left, color: corTexto), //Seta Esquerda
+              rightChevronIcon: Icon(Icons.chevron_right, color: corTexto), //Seta DIreita
+            ),
             firstDay: DateTime(2025, 1, 1),
             lastDay: DateTime(2125, 1, 1),
             focusedDay: _diaSelecionado,
             calendarFormat: _calendarFormat,
             eventLoader: (dia) => aulas[removerHora(dia)] ?? [],
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
             locale: 'pt_BR', // Defina o idioma como português (Brasil) aqui
             calendarStyle: CalendarStyle(
               todayDecoration:
-                  BoxDecoration(color: corPrimaria, shape: BoxShape.circle),
+                  BoxDecoration(color: corSecundaria, shape: BoxShape.circle),
               markerDecoration:
                   BoxDecoration(color: corTexto, shape: BoxShape.circle),
               selectedDecoration: BoxDecoration(
-                color: corDestaque,
+                color: corTerciaria,
                 shape: BoxShape.circle,
               ),
               selectedTextStyle: TextStyle(
                 color: corTexto,
                 fontWeight: FontWeight.bold,
               ),
-             //weekendTextStyle: TextStyle(color: corDestaque), // Cor dos finais de semana
-
+              //weekendTextStyle: TextStyle(color: corDestaque), // Cor dos finais de semana
             ),
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                  color: corTerciaria),//Cor dos dias úteis (segunda a sexta)
+                  color: corTerciaria), //Cor dos dias úteis (segunda a sexta)
               weekendStyle: TextStyle(
-                  color: corTerciaria), //Cor dos finais de semana (sábado e domingo)
+                  color:
+                      corTerciaria), //Cor dos finais de semana (sábado e domingo)
             ),
             selectedDayPredicate: (day) {
               //Necessário para o TableCalendar reconhecer o dia selecionado
@@ -171,6 +188,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
           ),
         ],
       ),
+      bottomNavigationBar: MyNavigationBar(IconSelecionado: 0),
     );
   }
 }
