@@ -7,10 +7,25 @@ import '../models/cadeira.dart';
 //VARIABLES
 import '../variables/colors.dart';
 import '../variables/icons.dart';
+//COMPONENTS
+import '../components/navigation_bar.dart';
 
-class CadeiraInformacao extends StatelessWidget {
+class CadeiraInformacao extends StatefulWidget {
   final Cadeira cadeira;
   const CadeiraInformacao({super.key, required this.cadeira});
+
+  @override
+  _CadeiraInformacaoState createState() => _CadeiraInformacaoState();
+}
+
+class _CadeiraInformacaoState extends State<CadeiraInformacao> {
+  late Cadeira cadeira;
+
+  @override
+  void initState() {
+    super.initState();
+    cadeira = widget.cadeira;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,9 +158,29 @@ class CadeiraInformacao extends StatelessWidget {
                         fontSize: tamanhoTexto,
                       ),
                     ),
+
+            ElevatedButton(
+              onPressed: () async {
+                // Navega para a tela de edição e aguarda o retorno
+                final result = await Navigator.pushNamed(
+                  context,
+                  '/subjectEdit',
+                  arguments: cadeira,
+                );
+                if (result != null) {
+                  // Se um valor for retornado (cadeira atualizada), atualize o estado
+                  setState(() {
+                    cadeira = result as Cadeira;
+                  });
+                }
+              },
+              child: Text("Editar"),
+            ),
           ],
         ),
       ),
+      bottomNavigationBar: MyNavigationBar(mostrarSelecionado: false),
     );
+    
   }
 }

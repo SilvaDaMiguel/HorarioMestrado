@@ -7,6 +7,7 @@ import 'pages/class_info.dart';
 import 'pages/calendar.dart';
 import 'pages/subjects.dart';
 import 'pages/subject_info.dart';
+import 'pages/subject_edit.dart';
 import 'pages/error.dart';
 //MODELS
 import 'models/horario.dart';
@@ -44,7 +45,13 @@ class MyApp extends StatelessWidget {
         '/subjectInfo': (context) {
           //Usa argumento
           final args = ModalRoute.of(context)!.settings.arguments as Cadeira;
-          return CadeiraInformacao(cadeira: args); //Passa a Cadeira como argumento
+          return CadeiraInformacao(
+              cadeira: args); //Passa a Cadeira como argumento
+        },
+        '/subjectEdit': (context) {
+          //Usa argumento
+          final args = ModalRoute.of(context)!.settings.arguments as Cadeira;
+          return CadeiraEditar(cadeira: args); //Passa a Cadeira como argumento
         },
         '/error': (context) => const ErrorPage(),
       },

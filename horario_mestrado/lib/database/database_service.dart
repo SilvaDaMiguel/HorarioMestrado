@@ -21,6 +21,7 @@ class DataBaseService {
   }
 
   //CADEIRAS
+  //TODO: Fazer pesquisa por ID em vez de enviar objeto => Melhor para atualizar os dados
   Future<Cadeira> obterCadeiraPorId(int id) async {
     final db = await _dbProvider.database;
     final result =
@@ -36,6 +37,16 @@ class DataBaseService {
     final db = await _dbProvider.database;
     final result = await db.query('Cadeira');
     return result.map((e) => Cadeira.fromMap(e)).toList();
+  }
+
+  Future<int> atualizarCadeira(Cadeira cadeira) async{
+    final db = await _dbProvider.database;
+    return await db.update(
+      'Cadeira',
+      cadeira.toMap(),
+      where: 'cadeiraID = ?',
+      whereArgs: [cadeira.cadeiraID],
+    );
   }
 
   //HORARIO
