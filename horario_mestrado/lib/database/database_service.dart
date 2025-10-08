@@ -2,7 +2,7 @@
 
 import '../models/periodo.dart';
 import '../models/cadeira.dart';
-import '../models/horario.dart';
+import '../models/aula.dart';
 import 'database.dart';
 
 class DataBaseService {
@@ -50,41 +50,41 @@ class DataBaseService {
   }
 
   //HORARIO
-  Future<Horario> obterHorarioPorId(int id) async {
+  Future<Aula> obterAulaPorId(int id) async {
     final db = await _dbProvider.database;
     final result =
-        await db.query('Horario', where: 'horarioID = ?', whereArgs: [id]);
+        await db.query('Aula', where: 'aulaID = ?', whereArgs: [id]);
     if (result.isNotEmpty) {
-      return Horario.fromMap(result.first);
+      return Aula.fromMap(result.first);
     } else {
       throw Exception('Horário com ID $id não encontrado');
     }
   }
 
-  Future<List<Horario>> obterHorarios() async {
+  Future<List<Aula>> obterAulas() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Horario');
-    return result.map((e) => Horario.fromMap(e)).toList();
+    final result = await db.query('Aula');
+    return result.map((e) => Aula.fromMap(e)).toList();
   }
 
-  Future<int> inserirHorario(Horario horario) async {
+  Future<int> inserirAula(Aula aula) async {
     final db = await _dbProvider.database;
-    return await db.insert('Horario', horario.toMap());
+    return await db.insert('Aula', aula.toMap());
   }
 
-  Future<int> atualizarHorario(Horario horario) async {
+  Future<int> atualizarAula(Aula aula) async {
     final db = await _dbProvider.database;
     return await db.update(
-      'Horario',
-      horario.toMap(),
+      'Aula',
+      aula.toMap(),
       where: 'id = ?',
-      whereArgs: [horario.horarioID],
+      whereArgs: [aula.aulaID],
     );
   }
 
-  Future<int> apagarHorario(int id) async {
+  Future<int> apagarAula(int id) async {
     final db = await _dbProvider.database;
-    return await db.delete('Horario', where: 'horarioID = ?', whereArgs: [id]);
+    return await db.delete('Aula', where: 'aulaID = ?', whereArgs: [id]);
   }
 
   //RESET => PERIGO

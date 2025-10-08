@@ -1,7 +1,5 @@
 v1
 Página das Cadeiras - Com Filtro por Ano e Semestre
-Adicionar Informação ás Cadeiras
-Layout simples e bonito
 
 v2
 Talvez depois adicionar CRUD para adicionar mais cadeiras, periodos e horarios
@@ -12,9 +10,3 @@ Talvez notas de aulas? (Coisas necessárias)
 Talvez exames/frequências
 Talvez trabalhos/projetos a entregar
 
-
-ERROS
--> Verificar IDs no calendário, alguns mostra bem, mas ao clicar no icon para ir para a página mostra um valor errado
-Ex: Dia 2
-Aula DI 19h30 -> mostra informações ISI das 19h
-Tá sempre a aparecer a primeira aula do JSON!!!

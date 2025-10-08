@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //MODELS
-import '../models/horario.dart';
+import '../models/aula.dart';
 import '../models/cadeira.dart';
 import '../models/periodo.dart';
 //DATABASE
@@ -10,16 +10,16 @@ import '../variables/colors.dart';
 import '../variables/icons.dart';
 
 class ClassBox extends StatefulWidget {
-  final Horario horario;
+  final Aula aula;
 
-  const ClassBox({Key? key, required this.horario}) : super(key: key);
+  const ClassBox({Key? key, required this.aula}) : super(key: key);
 
   @override
   State<ClassBox> createState() => _ClassBoxState();
 }
 
 class _ClassBoxState extends State<ClassBox> {
-  Horario get horario => widget.horario;
+  Aula get aula => widget.aula;
 
   final DataBaseService _dbService = DataBaseService();
   late Future<Cadeira> _cadeiraFuture;
@@ -29,20 +29,20 @@ class _ClassBoxState extends State<ClassBox> {
   void initState() {
     super.initState();
     // Carrega a cadeira relacionada ao horário
-    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.horario.cadeiraID);
+    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
     // Carrega o período relacionado ao horário
-    _periodoFuture = _dbService.obterPeriodoPorId(widget.horario.periodoID);
+    _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
   }
 
   //Atualiza a Pesquisa => Não atualizava o nome da cadeira
   @override
   void didUpdateWidget(covariant ClassBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.horario.cadeiraID != widget.horario.cadeiraID) {
-      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.horario.cadeiraID);
+    if (oldWidget.aula.cadeiraID != widget.aula.cadeiraID) {
+      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
     }
-    if (oldWidget.horario.periodoID != widget.horario.periodoID) {
-      _periodoFuture = _dbService.obterPeriodoPorId(widget.horario.periodoID);
+    if (oldWidget.aula.periodoID != widget.aula.periodoID) {
+      _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
     }
   }
 
@@ -122,13 +122,13 @@ class _ClassBoxState extends State<ClassBox> {
                     Navigator.pushNamed(
                       context,
                       '/classInfo',
-                      arguments: horario, // objeto Horario
+                      arguments: aula, // objeto Aula
                     );
                   },
                 ),
                 */
                 Text(
-                  horario.sala,
+                  aula.sala,
                   style: TextStyle(
                     fontSize: tamanhoTexto,
                     color: corTexto,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 //MODELS
-import '../models/horario.dart';
+import '../models/aula.dart';
 //DATABASE
 import '../database/database_service.dart';
 //COMPONENTS
@@ -22,56 +22,56 @@ class CalendarioPage extends StatefulWidget {
 }
 
 class _CalendarioPageState extends State<CalendarioPage> {
-  // Map<DateTime, List<Horario>> para o TableCalendar
-  Map<DateTime, List<Horario>> aulas = {};
+  // Map<DateTime, List<Aula>> para o TableCalendar
+  Map<DateTime, List<Aula>> listaAulas = {};
   CalendarFormat _calendarFormat =
       CalendarFormat.month; //Formato inicial do calendário
   DateTime _diaSelecionado = DateTime.now(); // Dia atualmente selecionado
-  List<Horario> _horariosDoDia = []; // Lista de aulas do dia selecionado
+  List<Aula> _aulasDoDia = []; // Lista de listaAulas do dia selecionado
 
   @override
   void initState() {
     super.initState();
     // Carrega horários do banco
-    DataBaseService().obterHorarios().then((horarios) {
-      carregarAulas(horarios);
+    DataBaseService().obterAulas().then((aulas) {
+      carregarAulas(aulas);
       // Inicialmente mostra os horários do dia atual
       selecionarDia(_diaSelecionado);
     });
   }
 
-  // Converte lista de Horarios para o Map<DateTime, List<Horario>>
-  void carregarAulas(List<Horario> horarios) {
-    aulas = {}; // limpa antes
+  // Converte lista de Aulas para o Map<DateTime, List<Aula>>
+  void carregarAulas(List<Aula> aulas) {
+    listaAulas = {}; // limpa antes
 
-    for (var horario in horarios) {
-      DateTime dia = removerHora(DateFormat('dd-MM-yyyy').parse(horario.data));
+    for (var aula in aulas) {
+      DateTime dia = removerHora(DateFormat('dd-MM-yyyy').parse(aula.data));
 
-      if (!aulas.containsKey(dia)) {
-        aulas[dia] = [];
+      if (!listaAulas.containsKey(dia)) {
+        listaAulas[dia] = [];
       }
-      aulas[dia]!.add(horario);
+      listaAulas[dia]!.add(aula);
     }
 
     print("Aulas carregadas:");
-    aulas.forEach((d, lista) {
-      print("Dia $d -> ${lista.length} aulas");
+    listaAulas.forEach((d, lista) {
+      print("Dia $d -> ${lista.length} listaAulas");
     });
 
     setState(() {});
   }
 
-  // Seleciona um dia e atualiza a lista de aulas
+  // Seleciona um dia e atualiza a lista de listaAulas
   void selecionarDia(DateTime dia) {
     final DateTime diaSemHora = removerHora(dia);
     print("Selecionar dia: $diaSemHora");
 
     setState(() {
       _diaSelecionado = diaSemHora;
-      _horariosDoDia = aulas[diaSemHora] ?? [];
-      print("Aulas carregadas: ${_horariosDoDia.length}");
-      for (var h in _horariosDoDia) {
-        print("  -> ${h.data}  ${h.sala}");
+      _aulasDoDia = listaAulas[diaSemHora] ?? [];
+      print("Aulas carregadas: ${_aulasDoDia.length}");
+      for (var a in _aulasDoDia) {
+        print("  -> ${a.data}  ${a.sala}");
       }
     });
   }
@@ -112,7 +112,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
             lastDay: DateTime(2125, 1, 1),
             focusedDay: _diaSelecionado,
             calendarFormat: _calendarFormat,
-            eventLoader: (dia) => aulas[removerHora(dia)] ?? [],
+            eventLoader: (dia) => listaAulas[removerHora(dia)] ?? [],
             locale: 'pt_BR', // Defina o idioma como português (Brasil) aqui
             calendarStyle: CalendarStyle(
               todayDecoration:
@@ -165,9 +165,9 @@ class _CalendarioPageState extends State<CalendarioPage> {
 
           const SizedBox(height: 8),
 
-          // Lista de aulas do dia selecionado
+          // Lista de listaAulas do dia selecionado
           Expanded(
-            child: _horariosDoDia.isEmpty
+            child: _aulasDoDia.isEmpty
                 ? Center(
                     child: Text(
                       'Nenhuma aula neste dia',
@@ -176,12 +176,12 @@ class _CalendarioPageState extends State<CalendarioPage> {
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: _horariosDoDia.length,
+                    itemCount: _aulasDoDia.length,
                     itemBuilder: (context, index) {
-                      Horario h = _horariosDoDia[index];
+                      Aula a = _aulasDoDia[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: ClassBox(horario: h),
+                        child: ClassBox(aula: a),
                       );
                     },
                   ),

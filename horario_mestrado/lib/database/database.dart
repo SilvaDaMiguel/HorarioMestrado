@@ -54,8 +54,8 @@ class DatabaseProvider {
     ''');
 
     await db.execute('''
-      CREATE TABLE Horario (
-        horarioID INTEGER PRIMARY KEY,
+      CREATE TABLE Aula (
+        aulaID INTEGER PRIMARY KEY,
         cadeiraID INTEGER,
         periodoID INTEGER,
         sala TEXT,

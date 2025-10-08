@@ -12,11 +12,11 @@ class DatabaseSeeder {
     //Carregar JSONs da pasta assets/json
     final periodosJson = await rootBundle.loadString('assets/json/periodos.json');
     final cadeirasJson = await rootBundle.loadString('assets/json/cadeiras.json');
-    final horarioJson = await rootBundle.loadString('assets/json/horario.json');
+    final aulasJson = await rootBundle.loadString('assets/json/aulas.json');
 
     final periodos = jsonDecode(periodosJson) as List;
     final cadeiras = jsonDecode(cadeirasJson) as List;
-    final horarios = jsonDecode(horarioJson) as List;
+    final aulas = jsonDecode(aulasJson) as List;
 
     //Inserir Periodos
     for (var p in periodos) {
@@ -45,13 +45,13 @@ for (var c in cadeiras) {
 }
 
     //Inserir Horário
-    for (var h in horarios) {
-      await db.insert("Horario", {
-        "horarioID": h["id"],
-        "cadeiraID": h["cadeiraId"],
-        "periodoID": h["periodoId"],
-        "sala": h["sala"],
-        "data": h["data"],
+    for (var a in aulas) {
+      await db.insert("Aula", {
+        "aulaID": a["id"],
+        "cadeiraID": a["cadeiraId"],
+        "periodoID": a["periodoId"],
+        "sala": a["sala"],
+        "data": a["data"],
       }, conflictAlgorithm: ConflictAlgorithm.replace); //Grava por cima casoo exista algum conflito
     }
   }

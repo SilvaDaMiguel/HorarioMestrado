@@ -10,7 +10,7 @@ import 'pages/subject_info.dart';
 import 'pages/subject_edit.dart';
 import 'pages/error.dart';
 //MODELS
-import 'models/horario.dart';
+import 'models/aula.dart';
 import 'models/cadeira.dart';
 import 'models/periodo.dart';
 //VARIABLES
@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
         '/calendar': (context) => const CalendarioPage(),
         '/classInfo': (context) {
           //usando uma rota nomeada com parâmetros/argumentos
-          final args = ModalRoute.of(context)!.settings.arguments as Horario;
+          final args = ModalRoute.of(context)!.settings.arguments as Aula;
           return AulaInformacao(
-              horario: args); // Passa os argumentos para a página
+              aula: args); // Passa os argumentos para a página
         },
         '/subjects': (context) => const CadeirasPage(),
         '/subjectInfo': (context) {

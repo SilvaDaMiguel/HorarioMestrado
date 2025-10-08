@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:horario_mestrado/components/info_box.dart';
 //DATABASE
 import '../database/database_service.dart';
 //MODELS
-import '../models/horario.dart';
+import '../models/aula.dart';
 import '../models/cadeira.dart';
 import '../models/periodo.dart';
 //VARIABLES
 import '../variables/colors.dart';
+//Components
+import '../components/info_box.dart';
 
 class AulaInformacao extends StatefulWidget {
-  final Horario horario;
-  const AulaInformacao({super.key, required this.horario});
+  final Aula aula;
+  const AulaInformacao({super.key, required this.aula});
 
   @override
   State<AulaInformacao> createState() => _AulaInformacaoState();
@@ -25,8 +26,8 @@ class _AulaInformacaoState extends State<AulaInformacao> {
   void initState() {
     super.initState();
     _dadosFuture = Future.wait([
-      _dbService.obterCadeiraPorId(widget.horario.cadeiraID),
-      _dbService.obterPeriodoPorId(widget.horario.periodoID),
+      _dbService.obterCadeiraPorId(widget.aula.cadeiraID),
+      _dbService.obterPeriodoPorId(widget.aula.periodoID),
     ]);
   }
 
@@ -85,7 +86,7 @@ class _AulaInformacaoState extends State<AulaInformacao> {
                 ),
                 SizedBox(height: espacoTemas),
                 Text(
-                  'Aula do dia ${widget.horario.data}',
+                  'Aula do dia ${widget.aula.data}',
                   style: TextStyle(
                     fontSize: tamanhoTitulo,
                     fontWeight: FontWeight.bold,
@@ -111,7 +112,7 @@ class _AulaInformacaoState extends State<AulaInformacao> {
                   children: [
                     Icon(Icons.room, size: tamanhoIcon),
                     Text(
-                      widget.horario.sala,
+                      widget.aula.sala,
                       style: TextStyle(fontSize: tamanhoTexto, color: corTexto),
                     ),
                   ],

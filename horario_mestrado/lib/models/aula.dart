@@ -1,20 +1,20 @@
-class Horario {
-  final int horarioID;
+class Aula {
+  final int aulaID;
   final int cadeiraID;
   final int periodoID;
   final String data;
   final String sala;
 
-  Horario({
-    required this.horarioID,
+  Aula({
+    required this.aulaID,
     required this.cadeiraID,
     required this.periodoID,
     required this.data,
     required this.sala,
   });
 
-  factory Horario.fromMap(Map<String, dynamic> map) => Horario(
-    horarioID: map['horarioID'],
+  factory Aula.fromMap(Map<String, dynamic> map) => Aula(
+    aulaID: map['aulaID'],
     cadeiraID: map['cadeiraID'],
     periodoID: map['periodoID'],
     data: map['data'],
@@ -22,7 +22,7 @@ class Horario {
   );
 
   Map<String, dynamic> toMap() => {
-    'horarioID': horarioID,
+    'aulaID': aulaID,
     'cadeiraID': cadeiraID,
     'periodoID': periodoID,
     'data': data,
