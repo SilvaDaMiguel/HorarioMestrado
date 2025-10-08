@@ -8,6 +8,7 @@ import 'pages/calendar.dart';
 import 'pages/subjects.dart';
 import 'pages/subject_info.dart';
 import 'pages/subject_edit.dart';
+import 'pages/classes.dart';
 import 'pages/error.dart';
 //MODELS
 import 'models/aula.dart';
@@ -44,15 +45,16 @@ class MyApp extends StatelessWidget {
         '/subjects': (context) => const CadeirasPage(),
         '/subjectInfo': (context) {
           //Usa argumento
-          final args = ModalRoute.of(context)!.settings.arguments as Cadeira;
+          final args = ModalRoute.of(context)!.settings.arguments as int;
           return CadeiraInformacao(
-              cadeira: args); //Passa a Cadeira como argumento
+              cadeiraID: args); //Passa a Cadeira como argumento
         },
         '/subjectEdit': (context) {
           //Usa argumento
           final args = ModalRoute.of(context)!.settings.arguments as Cadeira;
           return CadeiraEditar(cadeira: args); //Passa a Cadeira como argumento
         },
+        '/classes': (context) => const AulasPage(),
         '/error': (context) => const ErrorPage(),
       },
       locale: Locale('pt', 'BR'), // Define o idioma para o calendário

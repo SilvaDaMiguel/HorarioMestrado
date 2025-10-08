@@ -12,7 +12,7 @@ class InfoBox extends StatelessWidget {
     //RESPONSIVIDADE
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
-    double altura = tamanho.height;
+    //double altura = tamanho.height;
 
     //TAMANHO TEXTO
     double tamanhoTexto = comprimento * 0.035;

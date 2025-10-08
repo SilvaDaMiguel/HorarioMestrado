@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // COMPONENTS
 import '../components/navigation_bar.dart';
 import '../components/subject_box.dart';
+import '../components/add_appbar.dart';
 // VARIABLES
 import '../variables/colors.dart';
 // DATABASE
@@ -35,25 +36,13 @@ class _CadeirasPageState extends State<CadeirasPage> {
 
     //TEXTO
     double tamanhoTexto = comprimento * 0.04;
-    double tamanhoTitulo = comprimento * 0.05;
-    double tamanhoSubTexto = tamanhoTexto * 0.8;
 
     //PADDING
     double paddingAltura = altura * 0.05;
     double paddingComprimento = comprimento * 0.06;
 
-    //OUTROS
-    double tamanhoIcon = comprimento * 0.05;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Lista de Cadeiras',
-          style: TextStyle(color: corTexto),
-        ),
-        centerTitle: true,
-        backgroundColor: corPrimaria,
-      ),
+      appBar: AppBarAdd(nome: 'Lista de Cadeiras'),
       body: FutureBuilder<List<Cadeira>>(
         future: _cadeirasFuture,
         builder: (context, snapshot) {

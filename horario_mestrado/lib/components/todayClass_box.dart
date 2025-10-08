@@ -7,18 +7,17 @@ import '../models/periodo.dart';
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
-import '../variables/icons.dart';
 
-class ClassBox extends StatefulWidget {
+class TodayClassBox extends StatefulWidget {
   final Aula aula;
 
-  const ClassBox({Key? key, required this.aula}) : super(key: key);
+  const TodayClassBox({Key? key, required this.aula}) : super(key: key);
 
   @override
-  State<ClassBox> createState() => _ClassBoxState();
+  State<TodayClassBox> createState() => _TodayClassBoxState();
 }
 
-class _ClassBoxState extends State<ClassBox> {
+class _TodayClassBoxState extends State<TodayClassBox> {
   Aula get aula => widget.aula;
 
   final DataBaseService _dbService = DataBaseService();
@@ -36,7 +35,7 @@ class _ClassBoxState extends State<ClassBox> {
 
   //Atualiza a Pesquisa => Não atualizava o nome da cadeira
   @override
-  void didUpdateWidget(covariant ClassBox oldWidget) {
+  void didUpdateWidget(covariant TodayClassBox oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.aula.cadeiraID != widget.aula.cadeiraID) {
       _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
@@ -115,18 +114,6 @@ class _ClassBoxState extends State<ClassBox> {
                   ),
                 ),
                 const Spacer(),
-                /*
-                IconButton(
-                  icon: Icon(iconInformacao, color: corTerciaria),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/classInfo',
-                      arguments: aula, // objeto Aula
-                    );
-                  },
-                ),
-                */
                 Text(
                   aula.sala,
                   style: TextStyle(

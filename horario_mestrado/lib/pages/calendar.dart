@@ -7,7 +7,7 @@ import '../models/aula.dart';
 //DATABASE
 import '../database/database_service.dart';
 //COMPONENTS
-import '../components/class_box.dart';
+import '../components/todayClass_box.dart';
 import '../components/navigation_bar.dart';
 //FUNCTIONS
 import '../functions.dart';
@@ -181,7 +181,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
                       Aula a = _aulasDoDia[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: ClassBox(aula: a),
+                        child: TodayClassBox(aula: a),
                       );
                     },
                   ),

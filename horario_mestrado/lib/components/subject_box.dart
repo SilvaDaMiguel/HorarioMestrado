@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 //MODELS
 import '../models/cadeira.dart';
-//DATABASE
-import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
 import '../variables/icons.dart';

@@ -36,5 +36,5 @@ flutter:
   assets:
     - assets/json/periodos.json
     - assets/json/cadeiras.json
-    - assets/json/horario.json
+    - assets/json/aulas.json
 

@@ -11,26 +11,36 @@ class DataBaseService {
   //PERIODOS
   Future<Periodo> obterPeriodoPorId(int id) async {
     final db = await _dbProvider.database;
-    final result =
-        await db.query('Periodo', where: 'periodoID = ?', whereArgs: [id]);
-    if (result.isNotEmpty) {
-      return Periodo.fromMap(result.first);
-    } else {
-      throw Exception('Período com ID $id não encontrado');
-    }
+    return await db.transaction((txn) async {
+      final result = await txn.query(
+        'Periodo',
+        where: 'periodoID = ?',
+        whereArgs: [id],
+      );
+      if (result.isNotEmpty) {
+        return Periodo.fromMap(result.first);
+      } else {
+        throw Exception('Período com ID $id não encontrado');
+      }
+    });
   }
 
   //CADEIRAS
   //TODO: Fazer pesquisa por ID em vez de enviar objeto => Melhor para atualizar os dados
   Future<Cadeira> obterCadeiraPorId(int id) async {
     final db = await _dbProvider.database;
-    final result =
-        await db.query('Cadeira', where: 'cadeiraID = ?', whereArgs: [id]);
-    if (result.isNotEmpty) {
-      return Cadeira.fromMap(result.first);
-    } else {
-      throw Exception('Cadeira com ID $id não encontrada');
-    }
+    return await db.transaction((txn) async {
+      final result = await txn.query(
+        'Cadeira',
+        where: 'cadeiraID = ?',
+        whereArgs: [id],
+      );
+      if (result.isNotEmpty) {
+        return Cadeira.fromMap(result.first);
+      } else {
+        throw Exception('Cadeira com ID $id não encontrada');
+      }
+    });
   }
 
   Future<List<Cadeira>> obterCadeiras() async {
@@ -39,7 +49,7 @@ class DataBaseService {
     return result.map((e) => Cadeira.fromMap(e)).toList();
   }
 
-  Future<int> atualizarCadeira(Cadeira cadeira) async{
+  Future<int> atualizarCadeira(Cadeira cadeira) async {
     final db = await _dbProvider.database;
     return await db.update(
       'Cadeira',
@@ -52,8 +62,7 @@ class DataBaseService {
   //HORARIO
   Future<Aula> obterAulaPorId(int id) async {
     final db = await _dbProvider.database;
-    final result =
-        await db.query('Aula', where: 'aulaID = ?', whereArgs: [id]);
+    final result = await db.query('Aula', where: 'aulaID = ?', whereArgs: [id]);
     if (result.isNotEmpty) {
       return Aula.fromMap(result.first);
     } else {
@@ -77,7 +86,7 @@ class DataBaseService {
     return await db.update(
       'Aula',
       aula.toMap(),
-      where: 'id = ?',
+      where: 'aulaID = ?',
       whereArgs: [aula.aulaID],
     );
   }

@@ -35,6 +35,12 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         case 1:
           Navigator.pushReplacementNamed(context, '/subjects');
           break;
+        case 2:
+          Navigator.pushReplacementNamed(context, '/error');
+          break;
+        case 3:
+          Navigator.pushReplacementNamed(context, '/classes');
+          break;
         default:
           Navigator.pushReplacementNamed(context, '/error');
           break;
@@ -90,11 +96,11 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           ),
           BottomNavigationBarItem(
             icon: _buildIcon(Icons.school, selectedIndex == 3),
-            label: 'Horários',
+            label: 'Aulas',
           ),
         ],
         currentIndex: selectedIndex,
-        selectedItemColor: corTexto, //Texto selecionado
+        selectedItemColor: widget.mostrarSelecionado ? corTexto : corTerciaria, //Texto Selecionado
         unselectedItemColor: corTerciaria, //Restante Textos
         onTap: _onItemTapped,
       ),
