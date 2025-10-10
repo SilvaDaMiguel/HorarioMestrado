@@ -53,10 +53,11 @@ class _CalendarioPageState extends State<CalendarioPage> {
       listaAulas[dia]!.add(aula);
     }
 
+    /*
     print("Aulas carregadas:");
     listaAulas.forEach((d, lista) {
       print("Dia $d -> ${lista.length} listaAulas");
-    });
+    });*/
 
     setState(() {});
   }
@@ -64,15 +65,16 @@ class _CalendarioPageState extends State<CalendarioPage> {
   // Seleciona um dia e atualiza a lista de listaAulas
   void selecionarDia(DateTime dia) {
     final DateTime diaSemHora = removerHora(dia);
-    print("Selecionar dia: $diaSemHora");
+    //print("Selecionar dia: $diaSemHora");
 
     setState(() {
       _diaSelecionado = diaSemHora;
       _aulasDoDia = listaAulas[diaSemHora] ?? [];
+      /*
       print("Aulas carregadas: ${_aulasDoDia.length}");
       for (var a in _aulasDoDia) {
         print("  -> ${a.data}  ${a.sala}");
-      }
+      }*/
     });
   }
 
@@ -81,7 +83,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
     //RESPONSIVIDADE
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
-    double altura = tamanho.height;
+    //double altura = tamanho.height;
 
     //TEXTO
     double tamanhoTexto = comprimento * 0.04;
@@ -181,7 +183,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
                       Aula a = _aulasDoDia[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: TodayClassBox(aula: a),
+                        child: AulaCalendarioBox(aula: a),
                       );
                     },
                   ),

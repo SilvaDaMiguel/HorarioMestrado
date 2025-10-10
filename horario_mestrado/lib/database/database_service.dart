@@ -25,6 +25,12 @@ class DataBaseService {
     });
   }
 
+  Future<List<Periodo>> obterPeriodos() async {
+    final db = await _dbProvider.database;
+    final result = await db.query('Periodo');
+    return result.map((e) => Periodo.fromMap(e)).toList();
+  }
+
   //CADEIRAS
   //TODO: Fazer pesquisa por ID em vez de enviar objeto => Melhor para atualizar os dados
   Future<Cadeira> obterCadeiraPorId(int id) async {

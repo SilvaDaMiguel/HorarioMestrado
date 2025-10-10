@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 //DATABASE
-import '../database/database_service.dart';
+import '../../database/database_service.dart';
 //MODELS
-import '../models/cadeira.dart';
+import '../../models/cadeira.dart';
 //VARIABLES
-import '../variables/colors.dart';
+import '../../variables/colors.dart';
 //COMPONENTS
-import '../components/navigation_bar.dart';
+import '../../components/navigation_bar.dart';
 
 class CadeiraEditar extends StatefulWidget {
   final Cadeira cadeira;

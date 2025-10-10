@@ -3,12 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart';
 //PAGES
-import 'pages/class_info.dart';
+import 'pages/class/class_info.dart';
 import 'pages/calendar.dart';
-import 'pages/subjects.dart';
-import 'pages/subject_info.dart';
-import 'pages/subject_edit.dart';
-import 'pages/classes.dart';
+import 'pages/subject/subjects.dart';
+import 'pages/subject/subject_info.dart';
+import 'pages/subject/subject_edit.dart';
+import 'pages/class/classes.dart';
+import 'pages/periods.dart';
 import 'pages/error.dart';
 //MODELS
 import 'models/aula.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
           //Usa argumento
           final args = ModalRoute.of(context)!.settings.arguments as int;
           return CadeiraInformacao(
-              cadeiraID: args); //Passa a Cadeira como argumento
+              cadeiraID: args); //Passa o ID da Cadeira como argumento
         },
         '/subjectEdit': (context) {
           //Usa argumento
@@ -55,10 +56,11 @@ class MyApp extends StatelessWidget {
           return CadeiraEditar(cadeira: args); //Passa a Cadeira como argumento
         },
         '/classes': (context) => const AulasPage(),
+        '/periods': (context) => const PeriodosPage(),
         '/error': (context) => const ErrorPage(),
       },
-      locale: Locale('pt', 'BR'), // Define o idioma para o calendário
-      supportedLocales: [Locale('pt', 'BR')], // Suporte para o idioma português
+      locale: Locale('pt', 'BR'), //Define o idioma para o calendário
+      supportedLocales: [Locale('pt', 'BR')], //Suporte para o idioma português
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

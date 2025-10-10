@@ -8,16 +8,16 @@ import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
 
-class AulaCalendarioBox extends StatefulWidget {
+class AulaBox extends StatefulWidget {
   final Aula aula;
 
-  const AulaCalendarioBox({Key? key, required this.aula}) : super(key: key);
+  const AulaBox({Key? key, required this.aula}) : super(key: key);
 
   @override
-  State<AulaCalendarioBox> createState() => _AulaCalendarioBoxState();
+  State<AulaBox> createState() => _AulaBoxState();
 }
 
-class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
+class _AulaBoxState extends State<AulaBox> {
   Aula get aula => widget.aula;
 
   final DataBaseService _dbService = DataBaseService();
@@ -27,22 +27,10 @@ class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
   @override
   void initState() {
     super.initState();
-    // Carrega a cadeira relacionada ao horário
+    //Carrega a cadeira relacionada à aula
     _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
-    // Carrega o período relacionado ao horário
+    // Carrega o período relacionado à aula
     _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
-  }
-
-  //Atualiza a Pesquisa => Não atualizava o nome da cadeira
-  @override
-  void didUpdateWidget(covariant AulaCalendarioBox oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.aula.cadeiraID != widget.aula.cadeiraID) {
-      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
-    }
-    if (oldWidget.aula.periodoID != widget.aula.periodoID) {
-      _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
-    }
   }
 
   @override

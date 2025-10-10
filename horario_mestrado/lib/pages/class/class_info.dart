@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 //DATABASE
-import '../database/database_service.dart';
+import '../../database/database_service.dart';
 //MODELS
-import '../models/aula.dart';
-import '../models/cadeira.dart';
-import '../models/periodo.dart';
+import '../../models/aula.dart';
+import '../../models/cadeira.dart';
+import '../../models/periodo.dart';
 //VARIABLES
-import '../variables/colors.dart';
+import '../../variables/colors.dart';
 //Components
-import '../components/info_box.dart';
+import '../../components/info_box.dart';
 
 class AulaInformacao extends StatefulWidget {
   final Aula aula;

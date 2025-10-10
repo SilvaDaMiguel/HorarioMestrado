@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 //DATABASE
-import '../database/database_service.dart';
+import '../../database/database_service.dart';
 //MODELS
-import '../models/cadeira.dart';
+import '../../models/cadeira.dart';
 //VARIABLES
-import '../variables/colors.dart';
-import '../variables/icons.dart';
+import '../../variables/colors.dart';
+import '../../variables/icons.dart';
 //COMPONENTS
-import '../components/navigation_bar.dart';
-import '../components/info_box.dart';
+import '../../components/navigation_bar.dart';
+import '../../components/info_box.dart';
 
 class CadeiraInformacao extends StatefulWidget {
   final int cadeiraID;

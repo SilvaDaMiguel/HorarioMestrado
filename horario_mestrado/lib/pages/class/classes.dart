@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 // COMPONENTS
-import '../components/navigation_bar.dart';
-//import '../components/class_box.dart';
-import '../components/add_appbar.dart';
+import '../../components/navigation_bar.dart';
+import '../../components/class_box.dart';
+import '../../components/add_appbar.dart';
 // VARIABLES
-import '../variables/colors.dart';
+import '../../variables/colors.dart';
 // DATABASE
-import '../database/database_service.dart';
+import '../../database/database_service.dart';
 // MODELS
-import '../models/aula.dart';
+import '../../models/aula.dart';
 
 class AulasPage extends StatefulWidget {
   const AulasPage({super.key});
@@ -43,7 +43,7 @@ class _AulasPageState extends State<AulasPage> {
 
     //TODO: Filtrar para esconder ou mostrar as aulas passadas
     return Scaffold(
-      appBar: AppBarAdd(nome: 'Lista de Aulas'),
+      appBar: AdicionarAppBar(nome: 'Lista de Aulas'),
       body: FutureBuilder<List<Aula>>(
         future: _aulasFuture,
         builder: (context, snapshot) {
@@ -74,8 +74,8 @@ class _AulasPageState extends State<AulasPage> {
                   itemBuilder: (context, index) {
                     final aula = aulas[index];
 
-                    //return ClassBox(aula: aula);
-                    //TODO: ClassBox
+                    return AulaBox(aula: aula);
+                    //TODO: VERIFICAR se funciona
                   },
                 ),
               ],

@@ -36,7 +36,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           Navigator.pushReplacementNamed(context, '/subjects');
           break;
         case 2:
-          Navigator.pushReplacementNamed(context, '/error');
+          Navigator.pushReplacementNamed(context, '/periods');
           break;
         case 3:
           Navigator.pushReplacementNamed(context, '/classes');

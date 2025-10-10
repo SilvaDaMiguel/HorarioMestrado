@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../variables/colors.dart';
 import '../variables/icons.dart';
 
-class AppBarAdd extends StatelessWidget implements PreferredSizeWidget {
+class AdicionarAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String nome;
   final String rota;
 
-  const AppBarAdd({Key? key, required this.nome, this.rota = '/error'})
+  const AdicionarAppBar({Key? key, required this.nome, this.rota = '/error'})
       : super(key: key);
 
   @override

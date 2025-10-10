@@ -5,10 +5,10 @@ import '../models/cadeira.dart';
 import '../variables/colors.dart';
 import '../variables/icons.dart';
 
-class SubjectBox extends StatelessWidget {
+class CadeiraBox extends StatelessWidget {
   final Cadeira cadeira;
 
-  const SubjectBox({Key? key, required this.cadeira}) : super(key: key);
+  const CadeiraBox({Key? key, required this.cadeira}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class SubjectBox extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     '/subjectInfo',
-                    arguments: cadeira, // objeto Cadeira
+                    arguments: cadeira.cadeiraID, //ID da Cadeira
                   );
                 },
               ),
