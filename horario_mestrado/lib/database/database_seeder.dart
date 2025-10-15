@@ -14,13 +14,13 @@ class DatabaseSeeder {
 
   Future<void> seedDatabase() async {
     //Carregar JSONs da pasta local
-    final filePeriodos = await JsonStorage.getLocalJsonFile('${ficheiros.periodos}.json');
+    final filePeriodos = await JsonStorage.getLocalJsonFile('${Ficheiros.periodos.nomeFicheiro}.json');
     final periodosJson = await filePeriodos.readAsString();
 
-    final fileCadeiras = await JsonStorage.getLocalJsonFile('${ficheiros.cadeiras}.json');
+    final fileCadeiras = await JsonStorage.getLocalJsonFile('${Ficheiros.cadeiras.nomeFicheiro}.json');
     final cadeirasJson = await fileCadeiras.readAsString();
 
-    final fileAulas = await JsonStorage.getLocalJsonFile('${ficheiros.aulas}.json');
+    final fileAulas = await JsonStorage.getLocalJsonFile('${Ficheiros.aulas.nomeFicheiro}.json');
     final aulasJson = await fileAulas.readAsString();
 
     final periodos = jsonDecode(periodosJson) as List;

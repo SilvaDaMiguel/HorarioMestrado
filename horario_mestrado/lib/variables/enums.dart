@@ -30,8 +30,22 @@ extension DiaSemanaExtension on DiaSemana {
   }
 }
 
-enum ficheiros{
+enum Ficheiros{
   cadeiras,
   periodos,
   aulas
+}
+
+//Converter o Enum em String e Corretamente!
+extension FicheirosExtension on Ficheiros {
+  String get nomeFicheiro {
+    switch (this) {
+      case Ficheiros.cadeiras:
+        return 'cadeiras';
+      case Ficheiros.periodos:
+        return 'periodos';
+      case Ficheiros.aulas:
+        return 'aulas';
+    }
+  }
 }

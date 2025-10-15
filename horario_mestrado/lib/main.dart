@@ -19,15 +19,16 @@ import 'models/cadeira.dart';
 import 'models/periodo.dart';
 //VARIABLES
 import 'variables/colors.dart';
+import 'variables/enums.dart';
 //DATABASE
 import 'database/storage_json.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //Inicializa os ficheiros JSON necessários
-  await JsonStorage.initJsonFile('cadeiras.json');
-  await JsonStorage.initJsonFile('periodos.json');
-    await JsonStorage.initJsonFile('aulas.json');
+  await JsonStorage.initJsonFile('${Ficheiros.cadeiras.nomeFicheiro}.json');
+  await JsonStorage.initJsonFile('${Ficheiros.periodos.nomeFicheiro}.json');
+  await JsonStorage.initJsonFile('${Ficheiros.aulas.nomeFicheiro}.json');
   runApp(const MyApp());
 }
 

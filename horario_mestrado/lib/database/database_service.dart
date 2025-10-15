@@ -86,7 +86,7 @@ class DataBaseService {
 
     //Adiciona o novo item ao JSON LOCAL
     await JsonCrud.adicionarDadoJSON(
-        '${ficheiros.cadeiras}.json', cadeira.toMap());
+        '${Ficheiros.cadeiras.nomeFicheiro}.json', cadeira.toMap());
 
     return id;
   }
@@ -106,7 +106,7 @@ class DataBaseService {
     //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
     if (linhasAfetadas > 0) {
       await JsonCrud.atualizarDadoJSON(
-          '${ficheiros.cadeiras}.json', cadeira.cadeiraID, cadeira.toMap());
+          '${Ficheiros.cadeiras.nomeFicheiro}.json', cadeira.cadeiraID, cadeira.toMap());
     }
 
     return linhasAfetadas;
