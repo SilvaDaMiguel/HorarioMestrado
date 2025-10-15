@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+
+//NOTA: Tamanhos a ser multiplicados pelo "tamanho.width" (Comprimento do Ecrã)
+const double tamanhoTitulo = 0.05;
+const double tamanhoTexto = 0.04;
+const double tamanhoSubTexto = 0.035;
+
+const double tamanhoIconGrande = 0.07;
+const double tamanhoIcon = 0.05;
+const double tamanhoIconPequeno = 0.025;
+
+const double paddingComprimento = 0.05;
+
+
+//NOTA: Tamanhos a ser multiplicados pelo "tamanho.height" (Altura do Ecrã)
+const double paddingAltura = 0.015;
+const double marginAlura = 0.01;

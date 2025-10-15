@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 //COMPONENTS
-import '../components/navigation_bar.dart';
+import '../components/structure/navigation_bar.dart';
 //VARIABLES
 import '../variables/colors.dart';
+import '../variables/size.dart';
 
 class ErrorPage extends StatelessWidget {
 
@@ -29,7 +30,7 @@ class ErrorPage extends StatelessWidget {
                 'ERRO',
                 style: TextStyle(
                   color: corTexto,
-                  fontSize: comprimento * 0.1,
+                  fontSize: comprimento * tamanhoTitulo,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -38,7 +39,7 @@ class ErrorPage extends StatelessWidget {
                   'Alguma coisa correu mal na aplicação.',
                   style: TextStyle(
                     color: corTexto,
-                    fontSize: comprimento * 0.04, // Ajuste relativo ao tamanho da tela
+                    fontSize: comprimento * tamanhoTexto, // Ajuste relativo ao tamanho da tela
                   ),
                 ),
               ],

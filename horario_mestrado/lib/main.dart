@@ -9,7 +9,9 @@ import 'pages/subject/subjects.dart';
 import 'pages/subject/subject_info.dart';
 import 'pages/subject/subject_edit.dart';
 import 'pages/class/classes.dart';
-import 'pages/periods.dart';
+import 'pages/period/periods.dart';
+import 'pages/period/period_info.dart';
+import 'pages/period/period_edit.dart';
 import 'pages/error.dart';
 //MODELS
 import 'models/aula.dart';
@@ -17,15 +19,21 @@ import 'models/cadeira.dart';
 import 'models/periodo.dart';
 //VARIABLES
 import 'variables/colors.dart';
+//DATABASE
+import 'database/storage_json.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  //Inicializa os ficheiros JSON necessários
+  await JsonStorage.initJsonFile('cadeiras.json');
+  await JsonStorage.initJsonFile('periodos.json');
+    await JsonStorage.initJsonFile('aulas.json');
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,6 +65,17 @@ class MyApp extends StatelessWidget {
         },
         '/classes': (context) => const AulasPage(),
         '/periods': (context) => const PeriodosPage(),
+        '/periodInfo': (context) {
+          //Usa argumento
+          final args = ModalRoute.of(context)!.settings.arguments as int;
+          return PeriodoInformacao(
+              periodoID: args); //Passa o ID do Periodo como argumento
+        },
+        '/periodEdit': (context) {
+          //Usa argumento
+          final args = ModalRoute.of(context)!.settings.arguments as Periodo;
+          return PeriodoEditar(periodo: args); //Passa o Periodo como argumento
+        },
         '/error': (context) => const ErrorPage(),
       },
       locale: Locale('pt', 'BR'), //Define o idioma para o calendário

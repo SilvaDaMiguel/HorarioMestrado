@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:horario_mestrado/variables/icons.dart';
 // COMPONENTS
-import '../../components/navigation_bar.dart';
+import '../../components/structure/navigation_bar.dart';
 import '../../components/subject_box.dart';
-import '../../components/add_appbar.dart';
-// VARIABLES
-import '../../variables/colors.dart';
+import '../../components/structure/app_bar.dart';
 // DATABASE
 import '../../database/database_service.dart';
 // MODELS
 import '../../models/cadeira.dart';
+//VARIABLES
+import '../../variables/size.dart';
 
 class CadeirasPage extends StatefulWidget {
   const CadeirasPage({super.key});
@@ -34,15 +35,8 @@ class _CadeirasPageState extends State<CadeirasPage> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //TEXTO
-    double tamanhoTexto = comprimento * 0.04;
-
-    //PADDING
-    double paddingAltura = altura * 0.05;
-    double paddingComprimento = comprimento * 0.06;
-
     return Scaffold(
-      appBar: AdicionarAppBar(nome: 'Lista de Cadeiras'),
+      appBar: MinhaAppBar(nome: 'Lista de Cadeiras', icon: iconAdicionar,),
       body: FutureBuilder<List<Cadeira>>(
         future: _cadeirasFuture,
         builder: (context, snapshot) {
@@ -59,8 +53,8 @@ class _CadeirasPageState extends State<CadeirasPage> {
           //TODO: Adicionar Dropdown filtro por Ano e Semestre
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              vertical: paddingAltura,
-              horizontal: paddingComprimento,
+              vertical: altura * paddingAltura,
+              horizontal: comprimento * paddingComprimento,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -29,3 +29,9 @@ extension DiaSemanaExtension on DiaSemana {
     }
   }
 }
+
+enum ficheiros{
+  cadeiras,
+  periodos,
+  aulas
+}

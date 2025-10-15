@@ -4,6 +4,7 @@ import '../models/cadeira.dart';
 //VARIABLES
 import '../variables/colors.dart';
 import '../variables/icons.dart';
+import '../variables/size.dart';
 
 class CadeiraBox extends StatelessWidget {
   final Cadeira cadeira;
@@ -16,19 +17,14 @@ class CadeiraBox extends StatelessWidget {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //TEXTO
-    final double tamanhoTexto = comprimento * 0.045;
-
     //OUTROS
     double tamanhoIcon = comprimento * 0.05;
 
     return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: comprimento * 0.03, vertical: altura * 0.01),
-      padding: EdgeInsets.symmetric(
-          horizontal: comprimento * 0.03, vertical: altura * 0.01),
+      margin: EdgeInsets.symmetric(vertical: altura * marginAlura),
+      padding: EdgeInsets.symmetric(horizontal: comprimento * paddingComprimento, vertical: altura * paddingAltura),
       decoration: BoxDecoration(
-        color: corTerciaria.withOpacity(0.5),
+        color: corTerciaria.withValues(alpha: 0.5), //withOpacity descontinuado
         border: Border.all(
           color: corSecundaria,
           width: comprimento / 50,
@@ -41,13 +37,13 @@ class CadeiraBox extends StatelessWidget {
           // Nome da cadeira
           Text('${cadeira.sigla} - ${cadeira.nome}',
               style: TextStyle(
-                fontSize: tamanhoTexto,
+                fontSize: comprimento * tamanhoTexto,
                 fontWeight: FontWeight.bold,
                 color: corTexto,
               )),
           SizedBox(height: altura * 0.005),
 
-          // Linha com o número de professores e créditos
+          //Linha com o número de professores e créditos
           Row(
             children: [
               Column(
@@ -60,7 +56,7 @@ class CadeiraBox extends StatelessWidget {
                         '${cadeira.professores?.length ?? 0}', // Se for Null => 0
                         style: TextStyle(
                           color: corTexto,
-                          fontSize: tamanhoTexto,
+                          fontSize: comprimento * tamanhoTexto,
                         ),
                       ),
                     ],
@@ -69,7 +65,7 @@ class CadeiraBox extends StatelessWidget {
                     '${cadeira.creditos} ECTS',
                     style: TextStyle(
                       color: corTexto,
-                      fontSize: tamanhoTexto,
+                      fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
                 ],
@@ -93,7 +89,7 @@ class CadeiraBox extends StatelessWidget {
           Text(
             '${cadeira.ano}º Ano ${cadeira.semestre}º Semestre',
             style: TextStyle(
-              fontSize: tamanhoTexto,
+              fontSize: comprimento * tamanhoTexto,
               color: corTexto,
             ),
           ),

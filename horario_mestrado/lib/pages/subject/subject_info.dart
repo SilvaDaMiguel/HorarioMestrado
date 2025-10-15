@@ -6,9 +6,11 @@ import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/colors.dart';
 import '../../variables/icons.dart';
+import '../../variables/size.dart';
 //COMPONENTS
-import '../../components/navigation_bar.dart';
+import '../../components/structure/navigation_bar.dart';
 import '../../components/info_box.dart';
+import '../../components/structure/app_bar.dart';
 
 class CadeiraInformacao extends StatefulWidget {
   final int cadeiraID;
@@ -34,85 +36,61 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //TEXTO
-    double tamanhoTexto = comprimento * 0.04;
-    double tamanhoTitulo = comprimento * 0.05;
-    double tamanhoSubTexto = tamanhoTexto * 0.8;
-
-    //ESPAÇAMENTO
     double espacoTextoTitulo = altura * 0.01;
     double espacoTemas = altura * 0.035;
 
-    //PADDING
-    double paddingAltura = altura * 0.075;
-    double paddingComprimento = comprimento * 0.06;
+    return FutureBuilder<Cadeira>(
+      future: _cadeiraFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return const Scaffold(
+            body: Center(child: Text('Erro ao carregar dados da cadeira.')),
+          );
+        } else if (!snapshot.hasData) {
+          return const Scaffold(
+            body: Center(child: Text('Cadeira não encontrada.')),
+          );
+        }
 
-    //OUTROS
-    double tamanhoIcon = comprimento * 0.05;
+        // DADOS CARREGADOS
+        final cadeira = snapshot.data!;
 
-    return Scaffold(
-      body: FutureBuilder<Cadeira>(
-        future: _cadeiraFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Erro ao carregar dados da cadeira.'),
-            );
-          } else if (!snapshot.hasData) {
-            return Center(
-              child: Text('Cadeira não encontrada.'),
-            );
-          }
-
-          Cadeira cadeira = snapshot.data!;
-
-          return SingleChildScrollView(
+        return Scaffold(
+          appBar: MinhaAppBar(
+            nome: 'Informação da Cadeira',
+            icon: iconEditar,
+            rota: '/subjectEdit',
+            argumento: cadeira, //Passa o objeto completo
+          ),
+          //TODO: atualizar a pagina depois de editar
+          body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              vertical: paddingAltura,
-              horizontal: paddingComprimento,
+              vertical: altura * paddingAltura,
+              horizontal: comprimento * paddingComprimento,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // TÍTULO
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${cadeira.sigla} - ${cadeira.nome}',
-                        style: TextStyle(
-                          fontSize: tamanhoTitulo,
-                          fontWeight: FontWeight.bold,
-                          color: corTexto,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.edit, color: corTerciaria, size: tamanhoIcon),
-                      onPressed: () async {
-                        final result = await Navigator.pushNamed(
-                          context,
-                          '/subjectEdit',
-                          arguments: cadeira,
-                        );
-                        if (result != null) {
-                          setState(() {
-                            _cadeiraFuture = Future.value(result as Cadeira);
-                          });
-                        }
-                      },
-                    )
-                  ],
+                Text(
+                  '${cadeira.sigla} - ${cadeira.nome}',
+                  style: TextStyle(
+                    fontSize: comprimento * tamanhoTitulo,
+                    fontWeight: FontWeight.bold,
+                    color: corTexto,
+                  ),
                 ),
                 SizedBox(height: espacoTemas),
 
-                // PROFESSORES
+                //PROFESSORES
                 Text(
                   "Professores da Cadeira:",
                   style: TextStyle(
-                    fontSize: tamanhoTexto,
+                    fontSize: comprimento * tamanhoTexto,
                     color: corTexto,
                     fontWeight: FontWeight.bold,
                   ),
@@ -125,18 +103,15 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                   itemCount: cadeira.professores?.length ?? 0,
                   itemBuilder: (context, index) {
                     return Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(
-                          iconProfessor,
-                          size: tamanhoIcon,
-                          color: corTerciaria,
-                        ),
-                        SizedBox(width: 8),
+                        Icon(iconProfessor,
+                            size: comprimento * tamanhoIcon,
+                            color: corTerciaria),
+                        const SizedBox(width: 8),
                         Text(
                           cadeira.professores![index],
                           style: TextStyle(
-                            fontSize: tamanhoSubTexto,
+                            fontSize: comprimento * tamanhoSubTexto,
                             color: corTexto,
                           ),
                         ),
@@ -147,11 +122,11 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
 
                 SizedBox(height: espacoTemas),
 
-                // CONTEÚDOS
+                //CONTEÚDOS
                 Text(
                   'Conteúdos da Cadeira:',
                   style: TextStyle(
-                    fontSize: tamanhoTexto,
+                    fontSize: comprimento * tamanhoTexto,
                     color: corTexto,
                     fontWeight: FontWeight.bold,
                   ),
@@ -161,11 +136,11 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
 
                 SizedBox(height: espacoTemas),
 
-                // OUTRAS INFORMAÇÕES
+                //OUTRAS INFORMAÇÕES
                 Text(
                   'Outras Informações:',
                   style: TextStyle(
-                    fontSize: tamanhoTitulo,
+                    fontSize: comprimento * tamanhoTitulo,
                     color: corTexto,
                   ),
                 ),
@@ -174,13 +149,13 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                   '${cadeira.ano}º Ano ${cadeira.semestre}º Semestre',
                   style: TextStyle(
                     color: corTexto,
-                    fontSize: tamanhoTexto,
+                    fontSize: comprimento * tamanhoTexto,
                   ),
                 ),
                 Text(
                   '${cadeira.creditos} ECTS',
                   style: TextStyle(
-                    fontSize: tamanhoTexto,
+                    fontSize: comprimento * tamanhoTexto,
                     color: corTexto,
                   ),
                 ),
@@ -189,31 +164,26 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                     'Cadeira Concluída',
                     style: TextStyle(
                       color: corTexto,
-                      fontSize: tamanhoTexto,
+                      fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
                 if (cadeira.concluida)
-                  cadeira.nota != null
-                      ? Text(
-                          'Nota: ${cadeira.nota} Valores',
-                          style: TextStyle(
-                            color: corTexto,
-                            fontSize: tamanhoTexto,
-                          ),
-                        )
-                      : Text(
-                          'Nota: A aguardar',
-                          style: TextStyle(
-                            color: corTexto,
-                            fontSize: tamanhoTexto,
-                          ),
-                        ),
+                  Text(
+                    cadeira.nota != null
+                        ? 'Nota: ${cadeira.nota} Valores'
+                        : 'Nota: A aguardar',
+                    style: TextStyle(
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
+                  ),
               ],
             ),
-          );
-        },
-      ),
-      bottomNavigationBar: MyNavigationBar(mostrarSelecionado: false, IconSelecionado: 1),
+          ),
+          bottomNavigationBar:
+              MyNavigationBar(mostrarSelecionado: false, IconSelecionado: 1),
+        );
+      },
     );
   }
 }

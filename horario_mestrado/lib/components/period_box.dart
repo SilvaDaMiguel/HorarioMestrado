@@ -25,7 +25,7 @@ class PeriodoBox extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           horizontal: comprimento * 0.03, vertical: altura * 0.01),
       decoration: BoxDecoration(
-        color: corTerciaria.withOpacity(0.5),
+        color: corTerciaria.withValues(alpha: 0.5), //TODO: withOpacity descontinuado
         border: Border.all(
           color: corSecundaria,
           width: comprimento / 50,
@@ -62,7 +62,7 @@ class PeriodoBox extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(
                 context,
-                '/error',
+                '/periodInfo',
                 arguments: periodo.periodoID, //ID do Objeto
               );
             },

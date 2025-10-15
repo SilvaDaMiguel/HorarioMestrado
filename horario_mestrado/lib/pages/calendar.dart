@@ -7,12 +7,13 @@ import '../models/aula.dart';
 //DATABASE
 import '../database/database_service.dart';
 //COMPONENTS
-import '../components/todayClass_box.dart';
-import '../components/navigation_bar.dart';
+import '../components/today_class_box.dart';
+import '../components/structure/navigation_bar.dart';
 //FUNCTIONS
 import '../functions.dart';
 //VARIABLES
 import '../variables/colors.dart';
+import '../variables/size.dart';
 
 class CalendarioPage extends StatefulWidget {
   const CalendarioPage({super.key});
@@ -86,9 +87,9 @@ class _CalendarioPageState extends State<CalendarioPage> {
     //double altura = tamanho.height;
 
     //TEXTO
-    double tamanhoTexto = comprimento * 0.04;
-    double tamanhoTitulo = comprimento * 0.05;
-    double tamanhoSubTexto = tamanhoTexto * 0.8;
+    //double tamanhoTexto = comprimento * 0.04;
+    //double tamanhoTitulo = comprimento * 0.05;
+    //double tamanhoSubTexto = tamanhoTexto * 0.8;
 
     return Scaffold(
       appBar: AppBar(
@@ -103,7 +104,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
               //HEADER DO CALENDÁRIO
               titleTextStyle: TextStyle(
                 color: corTexto,
-                fontSize: tamanhoTitulo,
+                fontSize: comprimento * tamanhoTitulo,
                 fontWeight: FontWeight.bold,
               ),
               formatButtonVisible: false, //Esconde o botão do formato

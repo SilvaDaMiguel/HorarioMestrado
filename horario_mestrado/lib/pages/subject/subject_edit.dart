@@ -6,7 +6,9 @@ import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/colors.dart';
 //COMPONENTS
-import '../../components/navigation_bar.dart';
+import '../../components/structure/navigation_bar.dart';
+import '../../components/form/text_input_form.dart';
+import '../../components/form/checkbox_form.dart';
 
 class CadeiraEditar extends StatefulWidget {
   final Cadeira cadeira;
@@ -153,15 +155,17 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
               Row(
                 children: [
                   const Text(
-                    'Cadeira concluída:',
+                    'Cadeira concluída?',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Checkbox(
-                    value: _concluida,
-                    onChanged: (value) {
-                      setState(() => _concluida = value!);
+                  CheckboxForm(
+                    valor: _concluida,
+                    aoMudar: (value) {
+                      setState(() {
+                        _concluida = value ?? false;
+                      });
                     },
-                  ),
+                  )
                 ],
               ),
               if (_concluida)

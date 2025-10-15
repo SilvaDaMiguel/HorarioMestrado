@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // Cores
 import '../variables/colors.dart';
+import '../variables/size.dart';
 
 class InfoBox extends StatelessWidget {
   final String informacao;
@@ -13,9 +14,6 @@ class InfoBox extends StatelessWidget {
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
     //double altura = tamanho.height;
-
-    //TAMANHO TEXTO
-    double tamanhoTexto = comprimento * 0.035;
 
     return Container(
       width: double.infinity, //Ocupar o máximo possível da largura
@@ -32,7 +30,7 @@ class InfoBox extends StatelessWidget {
       child: Text(
         informacao,
         style: TextStyle(
-          fontSize: tamanhoTexto,
+          fontSize: comprimento * tamanhoTexto,
           color: corTexto,
           fontWeight: FontWeight.w500,
         ),

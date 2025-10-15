@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 //COMPONENTS
-import '../components/navigation_bar.dart';
-import '../components/period_box.dart';
-import '../components/add_appbar.dart';
-//VARIABLES
-import '../variables/colors.dart';
-// DATABASE
-import '../database/database_service.dart';
+import '../../components/structure/navigation_bar.dart';
+import '../../components/period_box.dart';
+import '../../components/structure/app_bar.dart';
+//DATABASE
+import '../../database/database_service.dart';
 //MODELS
-import '../models/periodo.dart';
+import '../../models/periodo.dart';
 
 class PeriodosPage extends StatefulWidget {
   const PeriodosPage({super.key});
@@ -34,15 +32,12 @@ class _PeriodosPageState extends State<PeriodosPage> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //TEXTO
-    double tamanhoTexto = comprimento * 0.04;
-
     //PADDING
     double paddingAltura = altura * 0.05;
     double paddingComprimento = comprimento * 0.06;
 
     return Scaffold(
-      appBar: AdicionarAppBar(nome: 'Lista de Periodos'),
+      appBar: MinhaAppBar(nome: 'Lista de Periodos'),
       body: FutureBuilder<List<Periodo>>(
         future: _periodosFuture,
         builder: (context, snapshot) {

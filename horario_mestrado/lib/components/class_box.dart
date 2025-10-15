@@ -7,6 +7,7 @@ import '../models/periodo.dart';
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
+import '../variables/size.dart';
 
 class AulaBox extends StatefulWidget {
   final Aula aula;
@@ -38,9 +39,6 @@ class _AulaBoxState extends State<AulaBox> {
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
     double altura = tamanho.height;
-
-    final double tamanhoTexto = comprimento * 0.045;
-    final double tamanhoHora = comprimento * 0.035;
 
     return FutureBuilder(
       //Espera pelos dois Futures usando Future.wait
@@ -86,7 +84,7 @@ class _AulaBoxState extends State<AulaBox> {
                     children: [
                       Text(cadeira.sigla,
                           style: TextStyle(
-                            fontSize: tamanhoTexto,
+                            fontSize: comprimento * tamanhoTexto,
                             fontWeight: FontWeight.bold,
                             color: corTexto,
                           )),
@@ -94,7 +92,7 @@ class _AulaBoxState extends State<AulaBox> {
                       Text(
                         '${periodo.horaInicio} - ${periodo.horaFim}',
                         style: TextStyle(
-                          fontSize: tamanhoHora,
+                          fontSize: comprimento * tamanhoSubTexto,
                           color: corTexto,
                         ),
                       ),

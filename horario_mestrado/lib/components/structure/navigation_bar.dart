@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //VARIABLES
-import '../variables/colors.dart';
+import '../../variables/colors.dart';
 
 class MyNavigationBar extends StatefulWidget {
   final bool mostrarSelecionado;
@@ -72,7 +72,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
       decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: Colors.black, // Cor da borda
+            color: corSecundaria, //Cor da borda
             width: 2.5, // Largura da borda
           ),
         ),

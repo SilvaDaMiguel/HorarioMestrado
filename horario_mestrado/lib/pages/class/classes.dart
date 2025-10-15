@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // COMPONENTS
-import '../../components/navigation_bar.dart';
+import '../../components/structure/navigation_bar.dart';
 import '../../components/class_box.dart';
-import '../../components/add_appbar.dart';
+import '../../components/structure/app_bar.dart';
 // VARIABLES
 import '../../variables/colors.dart';
 // DATABASE
@@ -43,7 +43,7 @@ class _AulasPageState extends State<AulasPage> {
 
     //TODO: Filtrar para esconder ou mostrar as aulas passadas
     return Scaffold(
-      appBar: AdicionarAppBar(nome: 'Lista de Aulas'),
+      appBar: MinhaAppBar(nome: 'Lista de Aulas'),
       body: FutureBuilder<List<Aula>>(
         future: _aulasFuture,
         builder: (context, snapshot) {
