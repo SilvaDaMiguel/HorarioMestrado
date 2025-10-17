@@ -1,3 +1,4 @@
+//period_edit.dart
 import 'package:flutter/material.dart';
 import 'package:horario_mestrado/variables/size.dart';
 //DATABASE
@@ -26,46 +27,51 @@ class PeriodoEditar extends StatefulWidget {
 
 class _PeriodoEditarState extends State<PeriodoEditar> {
   final DataBaseService _dbService = DataBaseService();
-
   final _formKey = GlobalKey<FormState>();
 
-  late String _diaSemana;
-  late TimeOfDay _horaInicio;
-  late String _horaFim;
+
+  // Valores para dropdown e timepicker
+  late DiaSemana _diaSemanaSelecionado;
+  late TimeOfDay _horaInicioSelecionada;
+  late TimeOfDay _horaFimSelecionada;
 
   @override
   void initState() {
     super.initState();
-    //Preenche os campos com os valores iniciais
     final periodoInicial = widget.periodo;
-    _diaSemana = periodoInicial.diaSemana;
-    _horaInicio =
+
+    // Inicializa valores selecionados
+    _diaSemanaSelecionado = DiaSemana.values.firstWhere(
+      (d) => d.nomeComAcento == periodoInicial.diaSemana,
+      orElse: () => DiaSemana.segunda,
+    );
+
+    _horaInicioSelecionada =
         stringParaTimeOfDay(periodoInicial.horaInicio) ?? TimeOfDay.now();
-    _horaFim = periodoInicial.horaFim;
+    _horaFimSelecionada =
+        stringParaTimeOfDay(periodoInicial.horaFim) ?? TimeOfDay.now();
   }
+
 
   Future<void> _guardarAlteracoes() async {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
 
       final periodoAtualizado = Periodo(
         periodoID: widget.periodo.periodoID,
-        diaSemana: _diaSemana,
-        horaInicio: timeOfDayParaString(
-          _horaInicio,
-        ), //Converte o TImeOfDay para String (HH:mm)
-        horaFim: _horaFim,
+        diaSemana: _diaSemanaSelecionado.nomeComAcento,
+        horaInicio: timeOfDayParaString(_horaInicioSelecionada),
+        horaFim: timeOfDayParaString(_horaFimSelecionada),
       );
 
       try {
         await _dbService.atualizarPeriodo(periodoAtualizado);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Periodo atualizado com sucesso!')),
+          const SnackBar(content: Text('Período atualizado com sucesso!')),
         );
         Navigator.pop(context, periodoAtualizado);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao atualizar periodo: $e')),
+          SnackBar(content: Text('Erro ao atualizar período: $e')),
         );
       }
     }
@@ -73,14 +79,13 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
 
   @override
   Widget build(BuildContext context) {
-    var tamanho = MediaQuery.of(context).size;
-    double comprimento = tamanho.width;
-    double altura = tamanho.height;
-    //TODO: Criar os componentes personalizados
+    final tamanho = MediaQuery.of(context).size;
+    final comprimento = tamanho.width;
+    final altura = tamanho.height;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Cadeira'),
+        title: const Text('Editar Período'),
         backgroundColor: corPrimaria,
       ),
       body: Padding(
@@ -90,21 +95,18 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
           child: ListView(
             children: [
               DiaSemanaDropdown(
-                valorSelecionado: DiaSemana.values.firstWhere(
-                  (d) => d.nomeComAcento == _diaSemana,
-                  orElse: () =>
-                      DiaSemana.segunda, //valor default se não encontrar
-                ),
+                valorSelecionado: _diaSemanaSelecionado,
                 label: 'Dia da Semana',
-                obrigatorio: true, //É obrigatório
+                obrigatorio: true,
                 onValueChanged: (novoValor) {
                   if (novoValor != null) {
                     setState(() {
-                      _diaSemana = novoValor.nomeComAcento;
+                      _diaSemanaSelecionado = novoValor;
                     });
                   }
                 },
               ),
+              const SizedBox(height: 15),
               Row(
                 children: [
                   Text(
@@ -115,17 +117,16 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  //TODO: Teste TimePicker
                   TimePicker(
                     onHoraSelecionada: (novaHora) {
                       setState(() {
-                        _horaInicio = novaHora;
+                        _horaInicioSelecionada = novaHora;
                       });
                     },
-                    horaInicial: _horaInicio,
+                    horaInicial: _horaInicioSelecionada,
                   ),
                   Text(
-                    timeOfDayParaString(_horaInicio),
+                    timeOfDayParaString(_horaInicioSelecionada),
                     style: TextStyle(
                       color: corTexto,
                       fontSize: comprimento * tamanhoTexto,
@@ -133,13 +134,50 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                   ),
                   IconButton(
                     onPressed: () {
-                      //TODO: Escolher Hora
-                      print('Selecionar hora');
+                      // Exemplo: ação extra se quiseres abrir modal manual
+                      debugPrint('Selecionar hora');
                     },
                     icon: Icon(iconHora, color: corTexto),
                   ),
                 ],
               ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  Text(
+                    'Hora Final: ',
+                    style: TextStyle(
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TimePicker(
+                    onHoraSelecionada: (novaHora) {
+                      setState(() {
+                        _horaFimSelecionada = novaHora;
+                      });
+                    },
+                    horaInicial: _horaFimSelecionada,
+                  ),
+                  Text(
+                    timeOfDayParaString(_horaFimSelecionada),
+                    style: TextStyle(
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // Exemplo: ação extra se quiseres abrir modal manual
+                      debugPrint('Selecionar hora');
+                    },
+                    icon: Icon(iconHora, color: corTexto),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              
               SizedBox(height: altura * 0.05),
               ElevatedButton(
                 onPressed: _guardarAlteracoes,

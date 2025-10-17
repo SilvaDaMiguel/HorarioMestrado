@@ -1,3 +1,4 @@
+//subject_edit.dart
 import 'package:flutter/material.dart';
 //DATABASE
 import '../../database/database_service.dart';
@@ -21,53 +22,85 @@ class CadeiraEditar extends StatefulWidget {
   State<CadeiraEditar> createState() => _CadeiraEditarState();
 }
 
-//TODO: Arranjar lentidão, utilizar Controllers => Evita criar controlers temporários desnecessários
 class _CadeiraEditarState extends State<CadeiraEditar> {
   final DataBaseService _dbService = DataBaseService();
-
   final _formKey = GlobalKey<FormState>();
 
-  late String _nome;
-  late String _sigla;
+  // Controladores para cada campo
+  late TextEditingController _nomeController;
+  late TextEditingController _siglaController;
+  late TextEditingController _creditosController;
+  late TextEditingController _informacaoController;
+  late TextEditingController _professoresController;
+  late TextEditingController _notaController;
+
   late int _ano;
   late int _semestre;
-  late String _informacao;
-  late List<String> _professores;
-  late int _creditos;
   late bool _concluida;
-  double? _nota;
 
   @override
   void initState() {
     super.initState();
-    //Preenche os campos com os valores iniciais
     final cadeiraInicial = widget.cadeira;
-    _nome = cadeiraInicial.nome;
-    _sigla = cadeiraInicial.sigla;
+
+    _nomeController = TextEditingController(text: cadeiraInicial.nome);
+    _siglaController = TextEditingController(text: cadeiraInicial.sigla);
+    _creditosController = TextEditingController(
+      text: cadeiraInicial.creditos.toString(),
+    );
+    _informacaoController = TextEditingController(
+      text: cadeiraInicial.informacao,
+    );
+    _professoresController = TextEditingController(
+      text: (cadeiraInicial.professores ?? []).join(', '),
+    );
+    _notaController = TextEditingController(
+      text: cadeiraInicial.nota?.toString() ?? '',
+    );
+
     _ano = cadeiraInicial.ano;
     _semestre = cadeiraInicial.semestre;
-    _informacao = cadeiraInicial.informacao;
-    _professores = List<String>.from(cadeiraInicial.professores ?? []);
-    _creditos = cadeiraInicial.creditos;
     _concluida = cadeiraInicial.concluida;
-    _nota = cadeiraInicial.nota;
+    
+  }
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _siglaController.dispose();
+    _creditosController.dispose();
+    _informacaoController.dispose();
+    _professoresController.dispose();
+    _notaController.dispose();
+    super.dispose();
   }
 
   Future<void> _guardarAlteracoes() async {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+      final nome = _nomeController.text.trim();
+      final sigla = _siglaController.text.trim();
+      final creditos = int.tryParse(_creditosController.text.trim()) ?? 0;
+      final informacao = _informacaoController.text.trim();
+      final professores = _professoresController.text
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
+      final nota = _concluida
+          ? double.tryParse(_notaController.text.trim())
+          : null;
 
       final cadeiraAtualizada = Cadeira(
         cadeiraID: widget.cadeira.cadeiraID,
-        nome: _nome,
-        sigla: _sigla,
+        nome: nome,
+        sigla: sigla,
         ano: _ano,
         semestre: _semestre,
-        informacao: _informacao,
-        professores: _professores,
-        creditos: _creditos,
+        informacao: informacao,
+        professores: professores,
+        creditos: creditos,
         concluida: _concluida,
-        nota: _nota,
+        nota: nota,
       );
 
       try {
@@ -89,33 +122,31 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
     double altura = tamanho.height;
-    //TODO: Criar os componentes personalizados
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar Cadeira'),
         backgroundColor: corPrimaria,
       ),
+      //resizeToAvoidBottomInset: false, //evita rebuild completo
       body: Padding(
         padding: EdgeInsets.all(comprimento * 0.05),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                initialValue: _nome,
-                decoration: const InputDecoration(labelText: 'Nome'),
-                onSaved: (value) => _nome = value ?? '',
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
+              TextInputForm(
+                controller: _nomeController,
+                label: 'Nome',
+                obrigatorio: true,
               ),
-              TextFormField(
-                initialValue: _sigla,
-                decoration: const InputDecoration(labelText: 'Sigla'),
-                onSaved: (value) => _sigla = value ?? '',
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
+              const SizedBox(height: 10),
+              TextInputForm(
+                controller: _siglaController,
+                label: 'Sigla',
+                obrigatorio: true,
               ),
+              const SizedBox(height: 10),
               FiltroCadeiraDropdown(
                 valorSelecionado: FiltroCadeiras.values.firstWhere(
                   (filtro) =>
@@ -134,31 +165,22 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                 },
                 obrigatorio: true,
               ),
-              TextFormField(
-                initialValue: _creditos.toString(),
-                decoration: const InputDecoration(labelText: 'Créditos (ECTS)'),
+              const SizedBox(height: 10),
+              TextInputForm(
+                controller: _creditosController,
+                label: 'Créditos (ECTS)',
                 keyboardType: TextInputType.number,
-                onSaved: (value) => _creditos = int.tryParse(value ?? '0') ?? 0,
               ),
-              TextFormField(
-                initialValue: _informacao,
-                decoration: const InputDecoration(labelText: 'Informação'),
-                maxLines: 3,
-                onSaved: (value) => _informacao = value ?? '',
+              const SizedBox(height: 10),
+              TextInputForm(
+                controller: _informacaoController,
+                label: 'Informação',
+                maxLinhas: 3,
               ),
-              TextFormField(
-                initialValue: _professores.join(', '),
-                decoration: const InputDecoration(
-                  labelText: 'Professores (separados por vírgula)',
-                ),
-                onSaved: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    _professores =
-                        value.split(',').map((e) => e.trim()).toList();
-                  } else {
-                    _professores = [];
-                  }
-                },
+              const SizedBox(height: 10),
+              TextInputForm(
+                controller: _professoresController,
+                label: 'Professores (separados por vírgula)',
               ),
               const SizedBox(height: 20),
               Row(
@@ -172,18 +194,19 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                     aoMudar: (value) {
                       setState(() {
                         _concluida = value ?? false;
+                        if (!_concluida) _notaController.clear();
                       });
                     },
-                  )
+                  ),
                 ],
               ),
               if (_concluida)
-                TextFormField(
-                  initialValue: _nota?.toString() ?? '',
-                  decoration: const InputDecoration(labelText: 'Nota final'),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  onSaved: (value) => _nota = double.tryParse(value ?? ''),
+                TextInputForm(
+                  controller: _notaController,
+                  label: 'Nota final',
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                 ),
               SizedBox(height: altura * 0.05),
               ElevatedButton(
