@@ -17,52 +17,37 @@ class CadeiraBox extends StatelessWidget {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //OUTROS
-    double tamanhoIcon = comprimento * 0.05;
-
     return Container(
       margin: EdgeInsets.symmetric(vertical: altura * marginAlura),
-      padding: EdgeInsets.symmetric(horizontal: comprimento * paddingComprimento, vertical: altura * paddingAltura),
+      padding: EdgeInsets.symmetric(
+        horizontal: comprimento * paddingComprimento,
+        vertical: altura * paddingAltura,
+      ),
       decoration: BoxDecoration(
         color: corTerciaria.withValues(alpha: 0.5), //withOpacity descontinuado
-        border: Border.all(
-          color: corSecundaria,
-          width: comprimento / 50,
-        ),
+        border: Border.all(color: corSecundaria, width: comprimento / 50),
         borderRadius: BorderRadius.circular(comprimento * 0.05),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Nome da cadeira
-          Text('${cadeira.sigla} - ${cadeira.nome}',
-              style: TextStyle(
-                fontSize: comprimento * tamanhoTexto,
-                fontWeight: FontWeight.bold,
-                color: corTexto,
-              )),
-          SizedBox(height: altura * 0.005),
-
+          Text(
+            '${cadeira.sigla} - ${cadeira.nome}',
+            style: TextStyle(
+              fontSize: comprimento * tamanhoTexto,
+              fontWeight: FontWeight.bold,
+              color: corTexto,
+            ),
+          ),
           //Linha com o número de professores e créditos
           Row(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Icon(iconProfessor, size: tamanhoIcon),
-                      Text(
-                        '${cadeira.professores?.length ?? 0}', // Se for Null => 0
-                        style: TextStyle(
-                          color: corTexto,
-                          fontSize: comprimento * tamanhoTexto,
-                        ),
-                      ),
-                    ],
-                  ),
+                  Icon(iconProfessor, size: comprimento * tamanhoIcon),
                   Text(
-                    '${cadeira.creditos} ECTS',
+                    '${cadeira.professores?.length ?? 0}', // Se for Null => 0
                     style: TextStyle(
                       color: corTexto,
                       fontSize: comprimento * tamanhoTexto,

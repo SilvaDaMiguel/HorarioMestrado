@@ -1,12 +1,4 @@
-enum DiaSemana {
-  segunda,
-  terca,
-  quarta,
-  quinta,
-  sexta,
-  sabado,
-  domingo,
-}
+enum DiaSemana { segunda, terca, quarta, quinta, sexta, sabado, domingo }
 
 //Converter o Enum em String e Corretamente!
 extension DiaSemanaExtension on DiaSemana {
@@ -30,11 +22,7 @@ extension DiaSemanaExtension on DiaSemana {
   }
 }
 
-enum Ficheiros{
-  cadeiras,
-  periodos,
-  aulas
-}
+enum Ficheiros { cadeiras, periodos, aulas }
 
 //Converter o Enum em String e Corretamente!
 extension FicheirosExtension on Ficheiros {
@@ -46,6 +34,47 @@ extension FicheirosExtension on Ficheiros {
         return 'periodos';
       case Ficheiros.aulas:
         return 'aulas';
+    }
+  }
+}
+
+//Para filtro do tipo: Aulas (Todas, Passadas, Futuras)
+enum Tempo { todos, passado, futuro }
+
+//Para filtro das cadeiras por ano e semestre
+enum FiltroCadeiras {
+  ano1semestre1,
+  ano1semestre2,
+  ano2semestre1,
+  ano2semestre2,
+}
+
+extension FiltroCadeirasStringExtension on FiltroCadeiras {
+  String get nomeFiltro {
+    switch (this) {
+      case FiltroCadeiras.ano1semestre1:
+        return '1º Ano - 1º Semestre';
+      case FiltroCadeiras.ano1semestre2:
+        return '1º Ano - 2º Semestre';
+      case FiltroCadeiras.ano2semestre1:
+        return '2º Ano - 1º Semestre';
+      case FiltroCadeiras.ano2semestre2:
+        return '2º Ano - 2º Semestre';
+    }
+  }
+}
+
+extension FiltroCadeirasIntExtension on FiltroCadeiras {
+  List<int> get valorFiltro {
+    switch (this) {
+      case FiltroCadeiras.ano1semestre1:
+        return [1, 1];
+      case FiltroCadeiras.ano1semestre2:
+        return [1, 2];
+      case FiltroCadeiras.ano2semestre1:
+        return [2, 1];
+      case FiltroCadeiras.ano2semestre2:
+        return [2, 2];
     }
   }
 }

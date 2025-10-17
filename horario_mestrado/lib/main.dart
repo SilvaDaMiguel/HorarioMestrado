@@ -79,8 +79,8 @@ class MyApp extends StatelessWidget {
         },
         '/error': (context) => const ErrorPage(),
       },
-      locale: Locale('pt', 'BR'), //Define o idioma para o calendário
-      supportedLocales: [Locale('pt', 'BR')], //Suporte para o idioma português
+      locale: Locale('pt', 'PT'), //Define o idioma para o calendário
+      supportedLocales: [Locale('pt', 'PT')], //Suporte para o idioma português
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

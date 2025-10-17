@@ -36,19 +36,33 @@ class DataBaseService {
 
   Future<int> atualizarPeriodo(Periodo periodo) async {
     final db = await _dbProvider.database;
-    return await db.update(
+    final linhasAfetadas = await db.update(
       'Periodo',
       periodo.toMap(),
       where: 'periodoID = ?',
       whereArgs: [periodo.periodoID],
     );
+
+    //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
+    if (linhasAfetadas > 0) {
+      await JsonCrud.atualizarDadoJSON(
+        '${Ficheiros.periodos.nomeFicheiro}.json',
+        periodo.periodoID,
+        periodo.toMap(),
+      );
+    }
+
+    return linhasAfetadas;
   }
 
   //Verifica se o Período está associado a alguma Aula
   Future<bool> verificarPeriodoUtilizadoPorID(int id) async {
     final db = await _dbProvider.database;
-    final result =
-        await db.query('Aula', where: 'periodoID = ?', whereArgs: [id]);
+    final result = await db.query(
+      'Aula',
+      where: 'periodoID = ?',
+      whereArgs: [id],
+    );
     if (result.isNotEmpty) {
       return true;
     } else {
@@ -79,6 +93,21 @@ class DataBaseService {
     return result.map((e) => Cadeira.fromMap(e)).toList();
   }
 
+  //Obter Cadeiras com filtro (ano, semestre)
+  Future<List<Cadeira>> obterCadeirasFiltradas(List<int> filtro) async {
+    final db = await _dbProvider.database;
+
+    final result = await db.query(
+      'Cadeira',
+      where:
+          'ano = ? AND semestre = ?', //Condição WHERE (ex: "ano = 1 AND semestre = 2")
+      whereArgs: filtro,
+      orderBy: 'semestre, ano', //Ordenar por semestre e ano
+    );
+
+    return result.map((e) => Cadeira.fromMap(e)).toList();
+  }
+
   //TODO: Criar ID automático => Talvez verificar o ultimo ID e somar 1
   Future<int> inserirCadeira(Cadeira cadeira) async {
     final db = await _dbProvider.database;
@@ -86,7 +115,9 @@ class DataBaseService {
 
     //Adiciona o novo item ao JSON LOCAL
     await JsonCrud.adicionarDadoJSON(
-        '${Ficheiros.cadeiras.nomeFicheiro}.json', cadeira.toMap());
+      '${Ficheiros.cadeiras.nomeFicheiro}.json',
+      cadeira.toMap(),
+    );
 
     return id;
   }
@@ -106,7 +137,10 @@ class DataBaseService {
     //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
     if (linhasAfetadas > 0) {
       await JsonCrud.atualizarDadoJSON(
-          '${Ficheiros.cadeiras.nomeFicheiro}.json', cadeira.cadeiraID, cadeira.toMap());
+        '${Ficheiros.cadeiras.nomeFicheiro}.json',
+        cadeira.cadeiraID,
+        cadeira.toMap(),
+      );
     }
 
     return linhasAfetadas;
@@ -115,8 +149,11 @@ class DataBaseService {
   //Verifica se a Cadeira está associada a alguma Aula
   Future<bool> verificarCadeiraUtilizadoPorID(int id) async {
     final db = await _dbProvider.database;
-    final result =
-        await db.query('Aula', where: 'cadeiraID = ?', whereArgs: [id]);
+    final result = await db.query(
+      'Aula',
+      where: 'cadeiraID = ?',
+      whereArgs: [id],
+    );
     if (result.isNotEmpty) {
       return true;
     } else {

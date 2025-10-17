@@ -5,10 +5,12 @@ import '../../database/database_service.dart';
 import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/colors.dart';
+import '../../variables/enums.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/form/text_input_form.dart';
 import '../../components/form/checkbox_form.dart';
+import '../../components/form/dropdown_filtroCadeira.dart';
 
 class CadeiraEditar extends StatefulWidget {
   final Cadeira cadeira;
@@ -19,6 +21,7 @@ class CadeiraEditar extends StatefulWidget {
   State<CadeiraEditar> createState() => _CadeiraEditarState();
 }
 
+//TODO: Arranjar lentidão, utilizar Controllers => Evita criar controlers temporários desnecessários
 class _CadeiraEditarState extends State<CadeiraEditar> {
   final DataBaseService _dbService = DataBaseService();
 
@@ -113,17 +116,23 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Campo obrigatório' : null,
               ),
-              TextFormField(
-                initialValue: _ano.toString(),
-                decoration: const InputDecoration(labelText: 'Ano'),
-                keyboardType: TextInputType.number,
-                onSaved: (value) => _ano = int.tryParse(value ?? '0') ?? 0,
-              ),
-              TextFormField(
-                initialValue: _semestre.toString(),
-                decoration: const InputDecoration(labelText: 'Semestre'),
-                keyboardType: TextInputType.number,
-                onSaved: (value) => _semestre = int.tryParse(value ?? '0') ?? 0,
+              FiltroCadeiraDropdown(
+                valorSelecionado: FiltroCadeiras.values.firstWhere(
+                  (filtro) =>
+                      filtro.valorFiltro[0] == _ano &&
+                      filtro.valorFiltro[1] == _semestre,
+                  orElse: () => FiltroCadeiras.ano1semestre1,
+                ),
+                label: 'Selecionar Ano e Semestre',
+                onValueChanged: (novoFiltro) {
+                  if (novoFiltro != null) {
+                    setState(() {
+                      _ano = novoFiltro.valorFiltro[0];
+                      _semestre = novoFiltro.valorFiltro[1];
+                    });
+                  }
+                },
+                obrigatorio: true,
               ),
               TextFormField(
                 initialValue: _creditos.toString(),

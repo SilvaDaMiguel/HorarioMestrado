@@ -10,6 +10,10 @@ import '../../variables/enums.dart';
 import '../../variables/icons.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
+import '../../components/form/time_picker.dart';
+import '../../components/form/dropdown_diaSemana.dart';
+//FUNCTIONS
+import '../../functions.dart';
 
 class PeriodoEditar extends StatefulWidget {
   final Periodo periodo;
@@ -26,7 +30,7 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
   final _formKey = GlobalKey<FormState>();
 
   late String _diaSemana;
-  late String _horaInicio;
+  late TimeOfDay _horaInicio;
   late String _horaFim;
 
   @override
@@ -35,7 +39,8 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
     //Preenche os campos com os valores iniciais
     final periodoInicial = widget.periodo;
     _diaSemana = periodoInicial.diaSemana;
-    _horaInicio = periodoInicial.horaInicio;
+    _horaInicio =
+        stringParaTimeOfDay(periodoInicial.horaInicio) ?? TimeOfDay.now();
     _horaFim = periodoInicial.horaFim;
   }
 
@@ -44,10 +49,13 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
       _formKey.currentState!.save();
 
       final periodoAtualizado = Periodo(
-          periodoID: widget.periodo.periodoID,
-          diaSemana: _diaSemana,
-          horaInicio: _horaInicio,
-          horaFim: _horaFim);
+        periodoID: widget.periodo.periodoID,
+        diaSemana: _diaSemana,
+        horaInicio: timeOfDayParaString(
+          _horaInicio,
+        ), //Converte o TImeOfDay para String (HH:mm)
+        horaFim: _horaFim,
+      );
 
       try {
         await _dbService.atualizarPeriodo(periodoAtualizado);
@@ -81,40 +89,21 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                initialValue: _diaSemana,
-                decoration: const InputDecoration(labelText: 'Dia Semana'),
-                onSaved: (value) => _diaSemana = value ?? '',
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
-              ),
-              DropdownButtonFormField<DiaSemana>(
-                initialValue: DiaSemana.values.firstWhere(
+              DiaSemanaDropdown(
+                valorSelecionado: DiaSemana.values.firstWhere(
                   (d) => d.nomeComAcento == _diaSemana,
                   orElse: () =>
                       DiaSemana.segunda, //valor default se não encontrar
                 ),
-                decoration: const InputDecoration(labelText: 'Dia da Semana'),
-                items: DiaSemana.values.map((dia) {
-                  return DropdownMenuItem<DiaSemana>(
-                    value: dia,
-                    child: Text(dia.nomeComAcento),
-                  );
-                }).toList(),
-                onChanged: (novoValor) {
+                label: 'Dia da Semana',
+                obrigatorio: true, //É obrigatório
+                onValueChanged: (novoValor) {
                   if (novoValor != null) {
                     setState(() {
                       _diaSemana = novoValor.nomeComAcento;
                     });
                   }
                 },
-                onSaved: (novoValor) {
-                  if (novoValor != null) {
-                    _diaSemana = novoValor.nomeComAcento;
-                  }
-                },
-                validator: (value) =>
-                    value == null ? 'Campo obrigatório' : null,
               ),
               Row(
                 children: [
@@ -126,22 +115,29 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  //TODO: Teste TimePicker
+                  TimePicker(
+                    onHoraSelecionada: (novaHora) {
+                      setState(() {
+                        _horaInicio = novaHora;
+                      });
+                    },
+                    horaInicial: _horaInicio,
+                  ),
                   Text(
-                    _horaInicio,
+                    timeOfDayParaString(_horaInicio),
                     style: TextStyle(
                       color: corTexto,
                       fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
                   IconButton(
-                      onPressed: () {
-                        //TODO: Escolher Hora
-                        print('Selecionar hora');
-                      },
-                      icon: Icon(
-                        iconHora,
-                        color: corTexto,
-                      )),
+                    onPressed: () {
+                      //TODO: Escolher Hora
+                      print('Selecionar hora');
+                    },
+                    icon: Icon(iconHora, color: corTexto),
+                  ),
                 ],
               ),
               SizedBox(height: altura * 0.05),

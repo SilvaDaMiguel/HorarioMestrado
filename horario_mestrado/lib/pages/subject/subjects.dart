@@ -10,6 +10,7 @@ import '../../database/database_service.dart';
 import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/size.dart';
+import '../../variables/enums.dart';
 
 class CadeirasPage extends StatefulWidget {
   const CadeirasPage({super.key});
@@ -26,6 +27,8 @@ class _CadeirasPageState extends State<CadeirasPage> {
   void initState() {
     super.initState();
     _cadeirasFuture = _dbService.obterCadeiras();
+    
+    //_cadeirasFuture = _dbService.obterCadeirasFiltradas(FiltroCadeiras.ano1semestre1.valorFiltro); //Exemplor filtrar por ano 1 e semestre 1
   }
 
   @override

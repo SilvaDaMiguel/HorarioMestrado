@@ -43,30 +43,38 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
     double paddingAltura = altura * 0.075;
     double paddingComprimento = comprimento * 0.06;
 
-    return Scaffold(
-      appBar: MinhaAppBar(
-        nome: 'Informação do Período',
-        icon: iconEditar,
-        rota: '/error'
-      ), //TODO: Ver como passo o Objeto OU se passo o ID e faço a pesquisa
-      body: FutureBuilder<Periodo>(
-        future: _periodoFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Erro ao carregar dados do periodo.'),
-            );
-          } else if (!snapshot.hasData) {
-            return Center(
-              child: Text('Periodo não encontrado.'),
-            );
-          }
+    return FutureBuilder<Periodo>(
+      future: _periodoFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Erro ao carregar dados do período.'),
+            ),
+          );
+        } else if (!snapshot.hasData) {
+          return Scaffold(
+            body: Center(
+              child: Text('Período não encontrado.'),
+            ),
+          );
+        }
 
-          Periodo periodo = snapshot.data!;
+        // Dados carregados ✅
+        Periodo periodo = snapshot.data!;
 
-          return SingleChildScrollView(
+        return Scaffold(
+          appBar: MinhaAppBar(
+            nome: 'Informação do Período',
+            icon: iconEditar,
+            rota: '/periodEdit',
+            argumento: periodo, //Passa o objeto completo
+          ),
+          body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               vertical: paddingAltura,
               horizontal: paddingComprimento,
@@ -74,7 +82,7 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //DIA
+                // DIA
                 Row(
                   children: [
                     Expanded(
@@ -87,32 +95,26 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
                         ),
                       ),
                     ),
-                    /*
-                    IconButton(
-                      icon: Icon(Icons.edit,
-                          color: corTerciaria, size: tamanhoIcon),
-                      onPressed: () async {
-                        final result = await Navigator.pushNamed(
-                          context,
-                          '/subjectEdit',
-                          arguments: cadeira,
-                        );
-                        if (result != null) {
-                          setState(() {
-                            _cadeiraFuture = Future.value(result as Cadeira);
-                          });
-                        }
-                      },
-                    )*/
                   ],
                 ),
+                SizedBox(height: espacoTextoTitulo),
+                Text(
+                  'Início: ${periodo.horaInicio}',
+                  style: TextStyle(fontSize: comprimento * tamanhoTexto),
+                ),
+                SizedBox(height: espacoTextoTitulo),
+                Text(
+                  'Fim: ${periodo.horaFim}',
+                  style: TextStyle(fontSize: comprimento * tamanhoTexto),
+                ),
+                SizedBox(height: espacoTemas),
               ],
             ),
-          );
-        },
-      ),
-      bottomNavigationBar:
-          MyNavigationBar(mostrarSelecionado: false, IconSelecionado: 1),
+          ),
+          bottomNavigationBar:
+              MyNavigationBar(mostrarSelecionado: false, IconSelecionado: 1),
+        );
+      },
     );
   }
 }

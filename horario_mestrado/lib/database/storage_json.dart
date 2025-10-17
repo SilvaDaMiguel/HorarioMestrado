@@ -61,4 +61,16 @@ class JsonCrud {
     data.removeWhere((item) => item['id'] == id);
     await guardarJSON(fileName, data);
   }
+
+  //Obter novo ID para um Item => Incrementa o maior ID existente
+  //TODO: Testar método busca de Novo ID
+  static Future<int> obterNovoID(String fileName) async {
+    final data = await lerJSON(fileName); //Obtém os dados do ficheiro
+    if (data.isEmpty) {
+      return 1; //Se estiver vazio, devolve 1
+    } else {
+      final ids = data.map<int>((item) => item['id'] as int).toList(); //Cria uma lista dos IDs - Caso não esteja ordenado
+      return ids.reduce((a, b) => a > b ? a : b) + 1; //Obtém o ID maior e incrementa
+    }
+  }
 }
