@@ -41,6 +41,7 @@ class JsonCrud {
   //Atualiza os dados JSON LOCAL de um Item específico => Utiliza o ID
   static Future<void> atualizarDadoJSON(String fileName, int id, Map<String, dynamic> novosDados) async {
     final data = await lerJSON(fileName);
+    print('Ficheiro JSON: $fileName');
     final index = data.indexWhere((item) => item['id'] == id);
     if (index != -1) {
       data[index] = {...data[index], ...novosDados};
@@ -51,6 +52,7 @@ class JsonCrud {
   //Adiciona um novo Item ao JSON LOCAL
   static Future<void> adicionarDadoJSON(String fileName, Map<String, dynamic> novo) async {
     final data = await lerJSON(fileName);
+    print('Ficheiro JSON: $fileName');
     data.add(novo);
     await guardarJSON(fileName, data);
   }
@@ -58,19 +60,9 @@ class JsonCrud {
   //Apaga um Item específico do JSON LOCAL => Utiliza o ID
   static Future<void> apagarDadoJSON(String fileName, int id) async {
     final data = await lerJSON(fileName);
+    print('Ficheiro JSON: $fileName');
     data.removeWhere((item) => item['id'] == id);
     await guardarJSON(fileName, data);
   }
 
-  //Obter novo ID para um Item => Incrementa o maior ID existente
-  //TODO: Testar método busca de Novo ID
-  static Future<int> obterNovoID(String fileName) async {
-    final data = await lerJSON(fileName); //Obtém os dados do ficheiro
-    if (data.isEmpty) {
-      return 1; //Se estiver vazio, devolve 1
-    } else {
-      final ids = data.map<int>((item) => item['id'] as int).toList(); //Cria uma lista dos IDs - Caso não esteja ordenado
-      return ids.reduce((a, b) => a > b ? a : b) + 1; //Obtém o ID maior e incrementa
-    }
-  }
 }

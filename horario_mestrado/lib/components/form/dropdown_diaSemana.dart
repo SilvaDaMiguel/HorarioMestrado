@@ -19,10 +19,9 @@ class DiaSemanaDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<DiaSemana>(
-      initialValue:
-          valorSelecionado ??
-          DiaSemana.segunda, // Valor default caso venha null
+      initialValue: valorSelecionado, //Se for null, nenhum é selecionado
       decoration: InputDecoration(labelText: label ?? 'Dia da Semana'),
+      hint: const Text('Selecionar'), //Texto mostrado quando null
       items: DiaSemana.values.map((dia) {
         return DropdownMenuItem<DiaSemana>(
           value: dia,

@@ -11,7 +11,9 @@ const double tamanhoIconPequeno = 0.025;
 
 const double paddingComprimento = 0.05;
 
-
 //NOTA: Tamanhos a ser multiplicados pelo "tamanho.height" (Altura do Ecrã)
 const double paddingAltura = 0.015;
 const double marginAlura = 0.01;
+
+const double distanciaItens = 0.01;
+const double distanciaTemas = 0.035;

@@ -8,6 +8,7 @@ import 'pages/calendar.dart';
 import 'pages/subject/subjects.dart';
 import 'pages/subject/subject_info.dart';
 import 'pages/subject/subject_edit.dart';
+import 'pages/subject/subject_add.dart';
 import 'pages/class/classes.dart';
 import 'pages/period/periods.dart';
 import 'pages/period/period_info.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
           final args = ModalRoute.of(context)!.settings.arguments as Cadeira;
           return CadeiraEditar(cadeira: args); //Passa a Cadeira como argumento
         },
+        '/subjectAdd': (context) => const CadeiraAdicionar(),
         '/classes': (context) => const AulasPage(),
         '/periods': (context) => const PeriodosPage(),
         '/periodInfo': (context) {

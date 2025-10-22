@@ -34,6 +34,22 @@ class DataBaseService {
     return result.map((e) => Periodo.fromMap(e)).toList();
   }
 
+  Future<List<Periodo>> obterPeriodosFiltradosDiaSemana(
+    List<String> filtro,
+  ) async {
+    final db = await _dbProvider.database;
+
+    final result = await db.query(
+      'Periodo',
+      where: 'diaSemana = ?', //Condição WHERE
+      whereArgs: filtro,
+      orderBy:
+          'diaSemana, horaInicio', //Ordenar por dia da semana e hora de início
+    );
+
+    return result.map((e) => Periodo.fromMap(e)).toList();
+  }
+
   Future<int> atualizarPeriodo(Periodo periodo) async {
     final db = await _dbProvider.database;
     final linhasAfetadas = await db.update(
@@ -108,8 +124,16 @@ class DataBaseService {
     return result.map((e) => Cadeira.fromMap(e)).toList();
   }
 
-  //TODO: Criar ID automático => Talvez verificar o ultimo ID e somar 1
-  Future<int> inserirCadeira(Cadeira cadeira) async {
+  Future<int> obterNovoIDCadeira() async {
+    final db = await _dbProvider.database;
+    final result = await db.rawQuery(
+      'SELECT MAX(cadeiraID) as maxId FROM Cadeira',
+    );
+    final maxId = result.first['maxId'] as int?;
+    return (maxId ?? 0) + 1;
+  }
+
+  Future<int> adicionarCadeira(Cadeira cadeira) async {
     final db = await _dbProvider.database;
     final id = await db.insert('Cadeira', cadeira.toMap());
 
@@ -140,6 +164,24 @@ class DataBaseService {
         '${Ficheiros.cadeiras.nomeFicheiro}.json',
         cadeira.cadeiraID,
         cadeira.toMap(),
+      );
+    }
+
+    return linhasAfetadas;
+  }
+
+  Future<int> apagarCadeira(int id) async {
+    final db = await _dbProvider.database;
+
+    //Apaga da BD
+    final linhasAfetadas =
+        await db.delete('Cadeira', where: 'cadeiraID = ?', whereArgs: [id]);
+
+    //Se a remoção na BD for bem sucedida, remove do JSON LOCAL
+    if (linhasAfetadas > 0) {
+      await JsonCrud.apagarDadoJSON(
+        '${Ficheiros.cadeiras.nomeFicheiro}.json',
+        id,
       );
     }
 

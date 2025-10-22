@@ -11,6 +11,7 @@ import '../../variables/size.dart';
 import '../../components/structure/navigation_bar.dart';
 import '../../components/info_box.dart';
 import '../../components/structure/app_bar.dart';
+import '../../components/icon_button.dart';
 
 class CadeiraInformacao extends StatefulWidget {
   final int cadeiraID;
@@ -35,9 +36,6 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
     double altura = tamanho.height;
-
-    double espacoTextoTitulo = altura * 0.01;
-    double espacoTemas = altura * 0.035;
 
     return FutureBuilder<Cadeira>(
       future: _cadeiraFuture,
@@ -84,7 +82,7 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                     color: corTexto,
                   ),
                 ),
-                SizedBox(height: espacoTemas),
+                SizedBox(height: altura * distanciaTemas),
 
                 //PROFESSORES
                 Text(
@@ -95,7 +93,7 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: espacoTextoTitulo),
+                SizedBox(height: altura * distanciaItens),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -120,7 +118,7 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                   },
                 ),
 
-                SizedBox(height: espacoTemas),
+                SizedBox(height: altura * distanciaTemas),
 
                 //CONTEÚDOS
                 Text(
@@ -131,10 +129,10 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: espacoTextoTitulo),
+                SizedBox(height: altura * distanciaItens),
                 InfoBox(informacao: cadeira.informacao),
 
-                SizedBox(height: espacoTemas),
+                SizedBox(height: altura * distanciaTemas),
 
                 //OUTRAS INFORMAÇÕES
                 Text(
@@ -144,7 +142,7 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                     color: corTexto,
                   ),
                 ),
-                SizedBox(height: espacoTextoTitulo),
+                SizedBox(height: altura * distanciaItens),
                 Text(
                   '${cadeira.ano}º Ano ${cadeira.semestre}º Semestre',
                   style: TextStyle(
@@ -175,6 +173,23 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                     style: TextStyle(
                       color: corTexto,
                       fontSize: comprimento * tamanhoTexto,
+                    ),
+                  ),
+                  SizedBox(height: altura * distanciaTemas),
+
+                  //BOTÃO APAGAR
+                  //TODO: Adicionar Pop-Up confirmação
+                  Center(
+                    child: IconBotao(
+                      aoSelecionar: () async {
+                        //Apagar a cadeira
+                        await _dbService.apagarCadeira(cadeira.cadeiraID);
+                        //Volt à página das cadeiras
+                        if (context.mounted) {
+                          //TODO: VErificar se não dá para remover até rota especifica
+                          Navigator.pushNamedAndRemoveUntil(context, '/subjects', (route) => false);
+                        }
+                      },
                     ),
                   ),
               ],

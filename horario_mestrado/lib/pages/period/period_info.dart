@@ -35,10 +35,6 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //ESPAÇAMENTO
-    double espacoTextoTitulo = altura * 0.01;
-    double espacoTemas = altura * 0.035;
-
     //PADDING
     double paddingAltura = altura * 0.075;
     double paddingComprimento = comprimento * 0.06;
@@ -52,16 +48,10 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
           );
         } else if (snapshot.hasError) {
           return Scaffold(
-            body: Center(
-              child: Text('Erro ao carregar dados do período.'),
-            ),
+            body: Center(child: Text('Erro ao carregar dados do período.')),
           );
         } else if (!snapshot.hasData) {
-          return Scaffold(
-            body: Center(
-              child: Text('Período não encontrado.'),
-            ),
-          );
+          return Scaffold(body: Center(child: Text('Período não encontrado.')));
         }
 
         // Dados carregados ✅
@@ -97,22 +87,24 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
                     ),
                   ],
                 ),
-                SizedBox(height: espacoTextoTitulo),
+                SizedBox(height: altura * distanciaItens),
                 Text(
                   'Início: ${periodo.horaInicio}',
                   style: TextStyle(fontSize: comprimento * tamanhoTexto),
                 ),
-                SizedBox(height: espacoTextoTitulo),
+                SizedBox(height: altura * distanciaItens),
                 Text(
                   'Fim: ${periodo.horaFim}',
                   style: TextStyle(fontSize: comprimento * tamanhoTexto),
                 ),
-                SizedBox(height: espacoTemas),
+                SizedBox(height: altura * distanciaTemas),
               ],
             ),
           ),
-          bottomNavigationBar:
-              MyNavigationBar(mostrarSelecionado: false, IconSelecionado: 1),
+          bottomNavigationBar: MyNavigationBar(
+            mostrarSelecionado: false,
+            IconSelecionado: 1,
+          ),
         );
       },
     );
