@@ -13,6 +13,7 @@ import 'pages/class/classes.dart';
 import 'pages/period/periods.dart';
 import 'pages/period/period_info.dart';
 import 'pages/period/period_edit.dart';
+import 'pages/period/period_add.dart';
 import 'pages/error.dart';
 //MODELS
 import 'models/aula.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
           final args = ModalRoute.of(context)!.settings.arguments as Periodo;
           return PeriodoEditar(periodo: args); //Passa o Periodo como argumento
         },
+        '/periodAdd': (context) => const PeriodoAdicionar(),
         '/error': (context) => const ErrorPage(),
       },
       locale: Locale('pt', 'PT'), //Define o idioma para o calendário

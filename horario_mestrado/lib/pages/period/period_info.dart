@@ -10,6 +10,7 @@ import '../../variables/size.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/structure/app_bar.dart';
+import '../../components/icon_button.dart';
 
 class PeriodoInformacao extends StatefulWidget {
   final int periodoID;
@@ -54,7 +55,7 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
           return Scaffold(body: Center(child: Text('Período não encontrado.')));
         }
 
-        // Dados carregados ✅
+        //Dados carregados
         Periodo periodo = snapshot.data!;
 
         return Scaffold(
@@ -98,6 +99,26 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
                   style: TextStyle(fontSize: comprimento * tamanhoTexto),
                 ),
                 SizedBox(height: altura * distanciaTemas),
+
+                //BOTÃO APAGAR
+                //TODO: Adicionar Pop-Up confirmação
+                Center(
+                  child: IconBotao(
+                    aoSelecionar: () async {
+                      //Apagar o período
+                      await _dbService.apagarPeriodo(periodo.periodoID);
+                      //Voltar à página dos periodos
+                      if (context.mounted) {
+                        //TODO: VErificar se não dá para remover até rota especifica
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/periods',
+                          (route) => false,
+                        );
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           ),

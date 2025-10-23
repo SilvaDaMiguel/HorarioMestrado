@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 //MODELS
 import '../models/aula.dart';
 import '../models/cadeira.dart';
@@ -69,7 +68,7 @@ class _AulaBoxState extends State<AulaBox> {
             padding: EdgeInsets.symmetric(
                 horizontal: comprimento * 0.03, vertical: altura * 0.01),
             decoration: BoxDecoration(
-              color: corTerciaria.withOpacity(0.5),
+              color: corTerciaria.withValues(alpha: 0.5),
               border: Border.all(
                 color: corSecundaria,
                 width: comprimento / 50,

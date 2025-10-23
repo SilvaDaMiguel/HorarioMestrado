@@ -16,16 +16,14 @@ import '../../components/form/dropdown_diaSemana.dart';
 //FUNCTIONS
 import '../../functions.dart';
 
-class PeriodoEditar extends StatefulWidget {
-  final Periodo periodo;
-
-  const PeriodoEditar({super.key, required this.periodo});
+class PeriodoAdicionar extends StatefulWidget {
+  const PeriodoAdicionar({super.key});
 
   @override
-  State<PeriodoEditar> createState() => _PeriodoEditarState();
+  State<PeriodoAdicionar> createState() => _PeriodoAdicionarState();
 }
 
-class _PeriodoEditarState extends State<PeriodoEditar> {
+class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
   final DataBaseService _dbService = DataBaseService();
   final _formKey = GlobalKey<FormState>();
 
@@ -35,43 +33,26 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
   late TimeOfDay _horaInicioSelecionada;
   late TimeOfDay _horaFimSelecionada;
 
-  @override
-  void initState() {
-    super.initState();
-    final periodoInicial = widget.periodo;
-
-    // Inicializa valores selecionados
-    _diaSemanaSelecionado = DiaSemana.values.firstWhere(
-      (d) => d.nomeComAcento == periodoInicial.diaSemana,
-      orElse: () => DiaSemana.segunda,
-    );
-
-    _horaInicioSelecionada =
-        stringParaTimeOfDay(periodoInicial.horaInicio) ?? TimeOfDay.now();
-    _horaFimSelecionada =
-        stringParaTimeOfDay(periodoInicial.horaFim) ?? TimeOfDay.now();
-  }
-
 
   Future<void> _guardarAlteracoes() async {
     if (_formKey.currentState!.validate()) {
 
-      final periodoAtualizado = Periodo(
-        periodoID: widget.periodo.periodoID,
+      final periodoAdicionado = Periodo(
+        periodoID: await _dbService.obterNovoIDPeriodo(),
         diaSemana: _diaSemanaSelecionado.nomeComAcento,
         horaInicio: timeOfDayParaString(_horaInicioSelecionada),
         horaFim: timeOfDayParaString(_horaFimSelecionada),
       );
 
       try {
-        await _dbService.atualizarPeriodo(periodoAtualizado);
+        await _dbService.adicionarPeriodo(periodoAdicionado);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Período atualizado com sucesso!')),
+          const SnackBar(content: Text('Período adicionado com sucesso!')),
         );
-        Navigator.pop(context, periodoAtualizado);
+        Navigator.pop(context, periodoAdicionado);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao atualizar período: $e')),
+          SnackBar(content: Text('Erro ao adicionar período: $e')),
         );
       }
     }
@@ -85,7 +66,7 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Período'),
+        title: const Text('Adicionar Período'),
         backgroundColor: corPrimaria,
       ),
       body: Padding(
@@ -132,12 +113,13 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      // Exemplo: ação extra se quiseres abrir modal manual
-                      debugPrint('Selecionar hora');
+                  TimePicker(
+                    onHoraSelecionada: (novaHora) {
+                      setState(() {
+                        _horaFimSelecionada = novaHora;
+                      });
                     },
-                    icon: Icon(iconHora, color: corTexto),
+                    horaInicial: _horaFimSelecionada,
                   ),
                 ],
               ),
@@ -167,13 +149,12 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
-                  TimePicker(
-                    onHoraSelecionada: (novaHora) {
-                      setState(() {
-                        _horaFimSelecionada = novaHora;
-                      });
+                  IconButton(
+                    onPressed: () {
+                      // Exemplo: ação extra se quiseres abrir modal manual
+                      debugPrint('Selecionar hora');
                     },
-                    horaInicial: _horaFimSelecionada,
+                    icon: Icon(iconHora, color: corTexto),
                   ),
                 ],
               ),

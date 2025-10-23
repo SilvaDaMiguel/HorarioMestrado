@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 //NOTA: Tamanhos a ser multiplicados pelo "tamanho.width" (Comprimento do Ecrã)
 const double tamanhoTitulo = 0.05;
 const double tamanhoTexto = 0.04;

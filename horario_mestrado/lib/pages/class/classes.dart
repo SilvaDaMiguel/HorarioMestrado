@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../components/structure/navigation_bar.dart';
 import '../../components/class_box.dart';
 import '../../components/structure/app_bar.dart';
-// VARIABLES
-import '../../variables/colors.dart';
 // DATABASE
 import '../../database/database_service.dart';
 // MODELS
@@ -34,14 +32,11 @@ class _AulasPageState extends State<AulasPage> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //TEXTO
-    double tamanhoTexto = comprimento * 0.04;
-
     //PADDING
     double paddingAltura = altura * 0.05;
     double paddingComprimento = comprimento * 0.06;
 
-    //TODO: Filtrar para esconder ou mostrar as aulas passadas
+    //TODO: Filtrar para esconder ou mostrar as aulas passadas (Por semana)
     return Scaffold(
       appBar: MinhaAppBar(nome: 'Lista de Aulas'),
       body: FutureBuilder<List<Aula>>(
@@ -57,7 +52,6 @@ class _AulasPageState extends State<AulasPage> {
 
           final aulas = snapshot.data!;
 
-          //TODO: Adicionar Dropdown filtro por Ano e Semestre
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               vertical: paddingAltura,

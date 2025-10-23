@@ -50,6 +50,28 @@ class DataBaseService {
     return result.map((e) => Periodo.fromMap(e)).toList();
   }
 
+  Future<int> obterNovoIDPeriodo() async {
+    final db = await _dbProvider.database;
+    final result = await db.rawQuery(
+      'SELECT MAX(periodoID) as maxId FROM Periodo',
+    );
+    final maxId = result.first['maxId'] as int?;
+    return (maxId ?? 0) + 1;
+  }
+
+  Future<int> adicionarPeriodo(Periodo periodo) async {
+    final db = await _dbProvider.database;
+    final id = await db.insert('Periodo', periodo.toMap());
+
+    //Adiciona o novo item ao JSON LOCAL
+    await JsonCrud.adicionarDadoJSON(
+      '${Ficheiros.periodos.nomeFicheiro}.json',
+      periodo.toMap(),
+    );
+
+    return id;
+  }
+
   Future<int> atualizarPeriodo(Periodo periodo) async {
     final db = await _dbProvider.database;
     final linhasAfetadas = await db.update(
@@ -65,6 +87,39 @@ class DataBaseService {
         '${Ficheiros.periodos.nomeFicheiro}.json',
         periodo.periodoID,
         periodo.toMap(),
+      );
+    }
+
+    return linhasAfetadas;
+  }
+
+  Future<int> apagarPeriodo(int id) async {
+    //TODO: TESTAR Método
+    try {
+      //Verifica se o Periodo está associada a alguma Aula
+      final periodoEmUso = await verificarPeriodoUtilizadoPorID(id);
+      if (periodoEmUso) {
+        throw Exception(
+          'Não é possível apagar o período porque está associado a uma ou mais aulas.',
+        );
+      }
+    } catch (e) {
+      rethrow;
+    }
+    final db = await _dbProvider.database;
+
+    //Apaga da BD
+    final linhasAfetadas = await db.delete(
+      'Periodo',
+      where: 'periodoID = ?',
+      whereArgs: [id],
+    );
+
+    //Se a remoção na BD for bem sucedida, remove do JSON LOCAL
+    if (linhasAfetadas > 0) {
+      await JsonCrud.apagarDadoJSON(
+        '${Ficheiros.periodos.nomeFicheiro}.json',
+        id,
       );
     }
 
@@ -171,11 +226,26 @@ class DataBaseService {
   }
 
   Future<int> apagarCadeira(int id) async {
+    //TODO: TESTAR Método
+    try {
+      //Verifica se a Cadeira está associada a alguma Aula
+      final cadeiraEmUso = await verificarCadeiraUtilizadoPorID(id);
+      if (cadeiraEmUso) {
+        throw Exception(
+          'Não é possível apagar a cadeira porque está associada a uma ou mais aulas.',
+        );
+      }
+    } catch (e) {
+      rethrow;
+    }
     final db = await _dbProvider.database;
 
     //Apaga da BD
-    final linhasAfetadas =
-        await db.delete('Cadeira', where: 'cadeiraID = ?', whereArgs: [id]);
+    final linhasAfetadas = await db.delete(
+      'Cadeira',
+      where: 'cadeiraID = ?',
+      whereArgs: [id],
+    );
 
     //Se a remoção na BD for bem sucedida, remove do JSON LOCAL
     if (linhasAfetadas > 0) {
@@ -203,7 +273,7 @@ class DataBaseService {
     }
   }
 
-  //HORARIO
+  //AULA
   Future<Aula> obterAulaPorId(int id) async {
     final db = await _dbProvider.database;
     final result = await db.query('Aula', where: 'aulaID = ?', whereArgs: [id]);
@@ -218,6 +288,15 @@ class DataBaseService {
     final db = await _dbProvider.database;
     final result = await db.query('Aula');
     return result.map((e) => Aula.fromMap(e)).toList();
+  }
+
+  Future<int> obterNovoIDAula() async {
+    final db = await _dbProvider.database;
+    final result = await db.rawQuery(
+      'SELECT MAX(aulaID) as maxId FROM Aula',
+    );
+    final maxId = result.first['maxId'] as int?;
+    return (maxId ?? 0) + 1;
   }
 
   Future<int> inserirAula(Aula aula) async {

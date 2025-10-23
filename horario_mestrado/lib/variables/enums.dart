@@ -39,7 +39,62 @@ extension FicheirosExtension on Ficheiros {
 }
 
 //Para filtro do tipo: Aulas (Todas, Passadas, Futuras)
-enum Tempo { todos, passado, futuro }
+enum Momento { sempre, passado, futuro }
+
+extension MomentoExtension on Momento {
+  String get momentoAulas {
+    switch (this) {
+      case Momento.sempre:
+        return 'Todas';
+      case Momento.passado:
+        return 'Passadas';
+      case Momento.futuro:
+        return 'Em Breve';
+    }
+  }
+}
+
+extension ValorMomentoExtension on Momento {
+  String get valorMomentoAulas {
+    switch (this) {
+      case Momento.sempre:
+        return '';
+      case Momento.passado:
+        return '<';
+      case Momento.futuro:
+        return '>';
+    }
+  }
+}
+
+enum Tempo { dia, semana, mes }
+
+extension TempoExtension on Tempo {
+  String get nomeTempo {
+    switch (this) {
+      case Tempo.dia:
+        return 'Dia';
+      case Tempo.semana:
+        return 'Semana';
+      case Tempo.mes:
+        return 'Mês';
+    }
+  }
+}
+
+//Para Base de Dados
+extension ValorTempoExtension on Tempo {
+  String get valorTempo {
+    switch (this) {
+      case Tempo.dia:
+        return 'day';
+      case Tempo.semana:
+        return 'week';
+      case Tempo.mes:
+        return 'month';
+    }
+  }
+}
 
 //Para filtro das cadeiras por ano e semestre
 enum FiltroCadeiras {

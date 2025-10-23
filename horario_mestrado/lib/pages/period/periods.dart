@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:horario_mestrado/variables/enums.dart';
+import 'package:horario_mestrado/variables/icons.dart';
 import 'package:horario_mestrado/variables/size.dart';
 // COMPONENTS
 import '../../components/structure/navigation_bar.dart';
@@ -48,7 +49,9 @@ class _PeriodosPageState extends State<PeriodosPage> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: const MinhaAppBar(nome: 'Lista de Períodos'),
+      appBar: const MinhaAppBar(nome: 'Lista de Períodos',
+      icon: iconAdicionar,
+      rota: '/periodAdd'),
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: altura * paddingAltura,

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 //DATABASE
 import '../../database/database_service.dart';
-import '../../database/storage_json.dart';
 //MODELS
 import '../../models/cadeira.dart';
 //VARIABLES
@@ -100,7 +99,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Cadeira'),
+        title: const Text('Adicionar Cadeira'),
         backgroundColor: corPrimaria,
       ),
       //resizeToAvoidBottomInset: false, //evita rebuild completo
