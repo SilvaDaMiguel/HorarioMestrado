@@ -11,8 +11,10 @@ import '../../variables/enums.dart';
 import '../../variables/icons.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
+import '../../components/structure/app_bar.dart';
+import '../../components/structure/snack_bar.dart';
 import '../../components/form/time_picker.dart';
-import '../../components/form/dropdown_diaSemana.dart';
+import '../../components/dropdown/dropdown_diaSemana.dart';
 //FUNCTIONS
 import '../../functions.dart';
 
@@ -28,7 +30,6 @@ class PeriodoEditar extends StatefulWidget {
 class _PeriodoEditarState extends State<PeriodoEditar> {
   final DataBaseService _dbService = DataBaseService();
   final _formKey = GlobalKey<FormState>();
-
 
   // Valores para dropdown e timepicker
   late DiaSemana _diaSemanaSelecionado;
@@ -52,10 +53,8 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
         stringParaTimeOfDay(periodoInicial.horaFim) ?? TimeOfDay.now();
   }
 
-
   Future<void> _guardarAlteracoes() async {
     if (_formKey.currentState!.validate()) {
-
       final periodoAtualizado = Periodo(
         periodoID: widget.periodo.periodoID,
         diaSemana: _diaSemanaSelecionado.nomeComAcento,
@@ -65,14 +64,13 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
 
       try {
         await _dbService.atualizarPeriodo(periodoAtualizado);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Período atualizado com sucesso!')),
+        MinhaSnackBar.mostrar(
+          context,
+          texto: 'Período atualizado com sucesso!',
         );
         Navigator.pop(context, periodoAtualizado);
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao atualizar período: $e')),
-        );
+        MinhaSnackBar.mostrar(context, texto: 'Erro ao editar período: $e');
       }
     }
   }
@@ -84,10 +82,7 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
     final altura = tamanho.height;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar Período'),
-        backgroundColor: corPrimaria,
-      ),
+      appBar: MinhaAppBar(nome: 'Editar Informações do Período'),
       body: Padding(
         padding: EdgeInsets.all(comprimento * 0.05),
         child: Form(
@@ -132,13 +127,6 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      // Exemplo: ação extra se quiseres abrir modal manual
-                      debugPrint('Selecionar hora');
-                    },
-                    icon: Icon(iconHora, color: corTexto),
-                  ),
                 ],
               ),
               const SizedBox(height: 15),
@@ -167,18 +155,10 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
-                  TimePicker(
-                    onHoraSelecionada: (novaHora) {
-                      setState(() {
-                        _horaFimSelecionada = novaHora;
-                      });
-                    },
-                    horaInicial: _horaFimSelecionada,
-                  ),
                 ],
               ),
               const SizedBox(height: 15),
-              
+
               SizedBox(height: altura * 0.05),
               ElevatedButton(
                 onPressed: _guardarAlteracoes,

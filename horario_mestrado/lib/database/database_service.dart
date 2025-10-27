@@ -7,6 +7,8 @@ import '../models/cadeira.dart';
 import '../models/aula.dart';
 //VARIABLES
 import '../variables/enums.dart';
+//FUNCTIONS
+import '../functions.dart';
 
 class DataBaseService {
   final DatabaseProvider _dbProvider = DatabaseProvider();
@@ -94,7 +96,6 @@ class DataBaseService {
   }
 
   Future<int> apagarPeriodo(int id) async {
-    //TODO: TESTAR Método
     try {
       //Verifica se o Periodo está associada a alguma Aula
       final periodoEmUso = await verificarPeriodoUtilizadoPorID(id);
@@ -137,7 +138,7 @@ class DataBaseService {
     if (result.isNotEmpty) {
       return true;
     } else {
-      throw false;
+      return false;
     }
   }
 
@@ -226,7 +227,6 @@ class DataBaseService {
   }
 
   Future<int> apagarCadeira(int id) async {
-    //TODO: TESTAR Método
     try {
       //Verifica se a Cadeira está associada a alguma Aula
       final cadeiraEmUso = await verificarCadeiraUtilizadoPorID(id);
@@ -269,7 +269,7 @@ class DataBaseService {
     if (result.isNotEmpty) {
       return true;
     } else {
-      throw false;
+      return false;
     }
   }
 
@@ -290,11 +290,72 @@ class DataBaseService {
     return result.map((e) => Aula.fromMap(e)).toList();
   }
 
+  Future<List<Aula>> obterAulasFiltradasPorMomentoTempo(
+    String? momento,
+    Tempo tempo,
+  ) async {
+    final db = await _dbProvider.database;
+
+    // Obter intervalo (inicio e fim)
+    final intervalo = obterIntervaloTempo(tempo);
+    final inicio = intervalo['inicio']!;
+    final fim = intervalo['fim']!;
+
+    // Converter para yyyy-MM-dd (formato comparável)
+    final dataInicio =
+        '${inicio.year.toString().padLeft(4, '0')}-'
+        '${inicio.month.toString().padLeft(2, '0')}-'
+        '${inicio.day.toString().padLeft(2, '0')}';
+
+    final dataFim =
+        '${fim.year.toString().padLeft(4, '0')}-'
+        '${fim.month.toString().padLeft(2, '0')}-'
+        '${fim.day.toString().padLeft(2, '0')}';
+
+    // Construir WHERE
+    final whereClauses = <String>[];
+    final whereArgs = <dynamic>[];
+
+    // Converter campo data (dd-MM-yyyy) → yyyy-MM-dd para comparar
+    const dataConvertida =
+        "(substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2))";
+
+    // Filtro base: dentro do intervalo de tempo
+    whereClauses.add("$dataConvertida >= ? AND $dataConvertida < ?");
+    whereArgs.addAll([dataInicio, dataFim]);
+
+    // Data atual (para comparar aulas passadas ou futuras)
+    final agora = DateTime.now();
+    final hoje =
+        '${agora.year.toString().padLeft(4, '0')}-'
+        '${agora.month.toString().padLeft(2, '0')}-'
+        '${agora.day.toString().padLeft(2, '0')}';
+
+    // Filtro de momento temporal
+    if (momento != null && momento.isNotEmpty) {
+      if (momento == '<') {
+        whereClauses.add('$dataConvertida < ?');
+        whereArgs.add(hoje);
+      } else if (momento == '>') {
+        whereClauses.add('$dataConvertida > ?');
+        whereArgs.add(hoje);
+      }
+      // Se for "", não adiciona nada (mostra todas)
+    }
+
+    final result = await db.query(
+      'Aula',
+      where: whereClauses.join(' AND '),
+      whereArgs: whereArgs,
+      orderBy: '$dataConvertida ASC',
+    );
+
+    return result.map((e) => Aula.fromMap(e)).toList();
+  }
+
   Future<int> obterNovoIDAula() async {
     final db = await _dbProvider.database;
-    final result = await db.rawQuery(
-      'SELECT MAX(aulaID) as maxId FROM Aula',
-    );
+    final result = await db.rawQuery('SELECT MAX(aulaID) as maxId FROM Aula');
     final maxId = result.first['maxId'] as int?;
     return (maxId ?? 0) + 1;
   }

@@ -10,7 +10,8 @@ import '../../variables/size.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/structure/app_bar.dart';
-import '../../components/icon_button.dart';
+import '../../components/structure/snack_bar.dart';
+import '../../components/round_icon_button.dart';
 
 class PeriodoInformacao extends StatefulWidget {
   final int periodoID;
@@ -91,30 +92,54 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
                 SizedBox(height: altura * distanciaItens),
                 Text(
                   'Início: ${periodo.horaInicio}',
-                  style: TextStyle(fontSize: comprimento * tamanhoTexto),
+                  style: TextStyle(
+                    fontSize: comprimento * tamanhoTexto,
+                    color: corTexto,
+                  ),
                 ),
                 SizedBox(height: altura * distanciaItens),
                 Text(
                   'Fim: ${periodo.horaFim}',
-                  style: TextStyle(fontSize: comprimento * tamanhoTexto),
+                  style: TextStyle(
+                    fontSize: comprimento * tamanhoTexto,
+                    color: corTexto,
+                  ),
                 ),
                 SizedBox(height: altura * distanciaTemas),
 
                 //BOTÃO APAGAR
-                //TODO: Adicionar Pop-Up confirmação
                 Center(
-                  child: IconBotao(
+                  child: IconBotaoRedondo(
+                    corIcon: Colors.red,
                     aoSelecionar: () async {
-                      //Apagar o período
-                      await _dbService.apagarPeriodo(periodo.periodoID);
-                      //Voltar à página dos periodos
-                      if (context.mounted) {
-                        //TODO: VErificar se não dá para remover até rota especifica
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/periods',
-                          (route) => false,
-                        );
+                      try {
+                        //Tenta apagar o período
+                        await _dbService.apagarPeriodo(periodo.periodoID);
+
+                        // Se for bem-sucedido, volta à página dos períodos
+                        if (context.mounted) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/periods',
+                            (route) => false,
+                          );
+                          Future.microtask(() {
+                            MinhaSnackBar.mostrar(
+                              Navigator.of(context).context,
+                              texto: 'Período apagado com sucesso!',
+                            );
+                          });
+                        }
+                      } catch (e) {
+                        //Mostra o snack-bar de erro se algo falhar
+                        if (context.mounted) {
+                          MinhaSnackBar.mostrar(
+                            context,
+                            texto: e.toString().contains('período')
+                                ? 'Não é possível apagar o período porque está associado a uma ou mais aulas.' //Para não aparecer o "Exception:"
+                                : 'Ocorreu um erro ao apagar o período.',
+                          );
+                        }
                       }
                     },
                   ),

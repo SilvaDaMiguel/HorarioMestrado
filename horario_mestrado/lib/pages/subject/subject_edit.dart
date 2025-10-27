@@ -7,11 +7,14 @@ import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/colors.dart';
 import '../../variables/enums.dart';
+import '../../variables/size.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
+import '../../components/structure/app_bar.dart';
+import '../../components/structure/snack_bar.dart';
 import '../../components/form/text_input_form.dart';
 import '../../components/form/checkbox_form.dart';
-import '../../components/form/dropdown_filtroCadeira.dart';
+import '../../components/dropdown/dropdown_filtroCadeira.dart';
 
 class CadeiraEditar extends StatefulWidget {
   final Cadeira cadeira;
@@ -61,7 +64,6 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
     _ano = cadeiraInicial.ano;
     _semestre = cadeiraInicial.semestre;
     _concluida = cadeiraInicial.concluida;
-    
   }
 
   @override
@@ -105,14 +107,10 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
 
       try {
         await _dbService.atualizarCadeira(cadeiraAtualizada);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cadeira atualizada com sucesso!')),
-        );
+        MinhaSnackBar.mostrar(context, texto: 'Cadeira atualizada com sucesso!');
         Navigator.pop(context, cadeiraAtualizada);
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao atualizar cadeira: $e')),
-        );
+        MinhaSnackBar.mostrar(context, texto: 'Erro ao editar cadeira: $e');
       }
     }
   }
@@ -124,29 +122,26 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar Cadeira'),
-        backgroundColor: corPrimaria,
-      ),
-      //resizeToAvoidBottomInset: false, //evita rebuild completo
+      appBar: MinhaAppBar(nome: 'Editar Informação da Cadeira'),
       body: Padding(
-        padding: EdgeInsets.all(comprimento * 0.05),
+        padding: EdgeInsets.symmetric(horizontal: comprimento * paddingComprimento, vertical: altura * paddingAltura),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
+              SizedBox(height: altura * distanciaItens),
               TextInputForm(
                 controller: _nomeController,
                 label: 'Nome',
                 obrigatorio: true,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaTemas),
               TextInputForm(
                 controller: _siglaController,
                 label: 'Sigla',
                 obrigatorio: true,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaTemas),
               FiltroCadeiraDropdown(
                 valorSelecionado: FiltroCadeiras.values.firstWhere(
                   (filtro) =>
@@ -165,29 +160,33 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                 },
                 obrigatorio: true,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaTemas),
               TextInputForm(
                 controller: _creditosController,
                 label: 'Créditos (ECTS)',
                 keyboardType: TextInputType.number,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaTemas),
               TextInputForm(
                 controller: _informacaoController,
                 label: 'Informação',
                 maxLinhas: 3,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaTemas),
               TextInputForm(
                 controller: _professoresController,
                 label: 'Professores (separados por vírgula)',
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: altura * distanciaTemas),
               Row(
                 children: [
-                  const Text(
+                  Text(
                     'Cadeira concluída?',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
                   ),
                   CheckboxForm(
                     valor: _concluida,
@@ -200,6 +199,7 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                   ),
                 ],
               ),
+              SizedBox(height: altura * distanciaItens),
               if (_concluida)
                 TextInputForm(
                   controller: _notaController,
@@ -208,7 +208,7 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                     decimal: true,
                   ),
                 ),
-              SizedBox(height: altura * 0.05),
+              SizedBox(height: altura * distanciaTemas),
               ElevatedButton(
                 onPressed: _guardarAlteracoes,
                 style: ElevatedButton.styleFrom(
@@ -218,6 +218,7 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                     horizontal: comprimento * 0.2,
                   ),
                 ),
+                //TODO: Botão Customizado
                 child: const Text(
                   'Guardar Alterações',
                   style: TextStyle(color: Colors.white, fontSize: 16),

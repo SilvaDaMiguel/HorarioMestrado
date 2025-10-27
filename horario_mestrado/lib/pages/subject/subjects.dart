@@ -4,7 +4,7 @@ import 'package:horario_mestrado/variables/icons.dart';
 import '../../components/structure/navigation_bar.dart';
 import '../../components/subject_box.dart';
 import '../../components/structure/app_bar.dart';
-import '../../components/form/dropdown_filtroCadeira.dart';
+import '../../components/dropdown/dropdown_filtroCadeira.dart';
 // DATABASE
 import '../../database/database_service.dart';
 // MODELS

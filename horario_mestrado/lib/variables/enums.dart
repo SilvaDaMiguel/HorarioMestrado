@@ -39,7 +39,7 @@ extension FicheirosExtension on Ficheiros {
 }
 
 //Para filtro do tipo: Aulas (Todas, Passadas, Futuras)
-enum Momento { sempre, passado, futuro }
+enum Momento { passado, sempre, futuro }
 
 extension MomentoExtension on Momento {
   String get momentoAulas {
@@ -49,7 +49,7 @@ extension MomentoExtension on Momento {
       case Momento.passado:
         return 'Passadas';
       case Momento.futuro:
-        return 'Em Breve';
+        return 'Próximas';
     }
   }
 }

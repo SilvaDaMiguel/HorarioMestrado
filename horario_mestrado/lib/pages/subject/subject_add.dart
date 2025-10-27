@@ -9,12 +9,13 @@ import '../../variables/colors.dart';
 import '../../variables/enums.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
+import '../../components/structure/app_bar.dart';
+import '../../components/structure/snack_bar.dart';
 import '../../components/form/text_input_form.dart';
 import '../../components/form/checkbox_form.dart';
-import '../../components/form/dropdown_filtroCadeira.dart';
+import '../../components/dropdown/dropdown_filtroCadeira.dart';
 
 class CadeiraAdicionar extends StatefulWidget {
-  
   const CadeiraAdicionar({super.key});
 
   @override
@@ -75,18 +76,30 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
         concluida: _concluida,
         nota: nota,
       );
-      print('Cadeira: ${cadeiraAdicionada.cadeiraID}, ${cadeiraAdicionada.nome}');
+      //print('Cadeira: ${cadeiraAdicionada.cadeiraID}, ${cadeiraAdicionada.nome}');
       try {
         await _dbService.adicionarCadeira(cadeiraAdicionada);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cadeira adicionada com sucesso!')),
-        );
-        Navigator.pop(context, cadeiraAdicionada);
+        
+        if (context.mounted) {
+          //Volta para a página das cadeiras
+          Navigator.pop(context, cadeiraAdicionada);
+          
+          // Show snackbar in the previous screen's context
+          Future.microtask(() {
+            MinhaSnackBar.mostrar(
+              Navigator.of(context).context,
+              texto: 'Cadeira adicionada com sucesso!',
+              botao: 'Ver',
+              rota: '/subjectInfo',
+              argumento: cadeiraAdicionada.cadeiraID,
+            );
+          });
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao adicionar cadeira: $e')),
-        );
-        print(e);
+        if (context.mounted) {
+          MinhaSnackBar.mostrar(context, texto: 'Erro ao adicionar cadeira: $e');
+        }
+        //print(e);
       }
     }
   }
@@ -98,11 +111,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Adicionar Cadeira'),
-        backgroundColor: corPrimaria,
-      ),
-      //resizeToAvoidBottomInset: false, //evita rebuild completo
+      appBar: MinhaAppBar(nome: 'Adicionar Cadeira'),
       body: Padding(
         padding: EdgeInsets.all(comprimento * 0.05),
         child: Form(
@@ -144,6 +153,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
                 controller: _creditosController,
                 label: 'Créditos (ECTS)',
                 keyboardType: TextInputType.number,
+                obrigatorio: true,
               ),
               const SizedBox(height: 10),
               TextInputForm(

@@ -40,9 +40,9 @@ class CadeiraBox extends StatelessWidget {
               color: corTexto,
             ),
           ),
-          //Linha com o número de professores e créditos
           Row(
             children: [
+              //Linha com o número de professores e créditos
               Row(
                 children: [
                   Icon(iconProfessor, size: comprimento * tamanhoIcon),
@@ -55,8 +55,6 @@ class CadeiraBox extends StatelessWidget {
                   ),
                 ],
               ),
-
-              SizedBox(width: comprimento * 0.05), // Espaço entre as colunas
               //Icon de informações
               Spacer(),
               IconButton(

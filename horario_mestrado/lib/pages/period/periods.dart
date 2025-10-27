@@ -6,7 +6,7 @@ import 'package:horario_mestrado/variables/size.dart';
 import '../../components/structure/navigation_bar.dart';
 import '../../components/period_box.dart';
 import '../../components/structure/app_bar.dart';
-import '../../components/form/dropdown_diaSemana.dart';
+import '../../components/dropdown/dropdown_diaSemana.dart';
 // DATABASE
 import '../../database/database_service.dart';
 // MODELS

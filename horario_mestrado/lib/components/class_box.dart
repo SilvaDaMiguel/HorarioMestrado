@@ -7,6 +7,7 @@ import '../models/periodo.dart';
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
+import '../variables/icons.dart';
 import '../variables/size.dart';
 
 class AulaBox extends StatefulWidget {
@@ -45,7 +46,7 @@ class _AulaBoxState extends State<AulaBox> {
       future: Future.wait([_cadeiraFuture, _periodoFuture]),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Mostra algo enquanto os dados estão a carregar
+          //Mostra algo enquanto os dados estão a carregar
           return Container(
             padding: EdgeInsets.all(16),
             child: const CircularProgressIndicator(),
@@ -54,58 +55,75 @@ class _AulaBoxState extends State<AulaBox> {
           // Caso haja erro ao carregar
           return Container(
             padding: EdgeInsets.all(16),
-            child: Text('Erro ao carregar a aula',
-                style: TextStyle(color: Colors.red)),
+            child: Text(
+              'Erro ao carregar a aula',
+              style: TextStyle(color: Colors.red),
+            ),
           );
         } else {
-          // Dados carregados com sucesso
+          //Dados carregados com sucesso
           final Cadeira cadeira = snapshot.data![0] as Cadeira;
           final Periodo periodo = snapshot.data![1] as Periodo;
 
           return Container(
-            margin: EdgeInsets.symmetric(
-                horizontal: comprimento * 0.03, vertical: altura * 0.01),
+            margin: EdgeInsets.symmetric(vertical: altura * marginAlura),
             padding: EdgeInsets.symmetric(
-                horizontal: comprimento * 0.03, vertical: altura * 0.01),
+              horizontal: comprimento * paddingComprimento,
+              vertical: altura * paddingAltura,
+            ),
             decoration: BoxDecoration(
               color: corTerciaria.withValues(alpha: 0.5),
-              border: Border.all(
-                color: corSecundaria,
-                width: comprimento / 50,
-              ),
+              border: Border.all(color: corSecundaria, width: comprimento / 50),
               borderRadius: BorderRadius.circular(comprimento * 0.05),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(cadeira.sigla,
-                          style: TextStyle(
-                            fontSize: comprimento * tamanhoTexto,
-                            fontWeight: FontWeight.bold,
-                            color: corTexto,
-                          )),
-                      SizedBox(height: altura * 0.005),
-                      Text(
-                        '${periodo.horaInicio} - ${periodo.horaFim}',
-                        style: TextStyle(
-                          fontSize: comprimento * tamanhoSubTexto,
-                          color: corTexto,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
                 Text(
-                  aula.sala,
+                  '${cadeira.sigla} - ${cadeira.nome}',
                   style: TextStyle(
-                    fontSize: tamanhoTexto,
+                    fontSize: comprimento * tamanhoTexto,
+                    fontWeight: FontWeight.bold,
                     color: corTexto,
                   ),
+                ),
+                SizedBox(height: altura * 0.005),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            aula.data,
+                            style: TextStyle(
+                              fontSize: comprimento * tamanhoSubTexto,
+                              color: corTexto,
+                            ),
+                          ),
+                          Text(
+                            '${periodo.horaInicio} - ${periodo.horaFim}',
+                            style: TextStyle(
+                              fontSize: comprimento * tamanhoSubTexto,
+                              color: corTexto,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: Icon(iconInformacao, color: corTerciaria),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/classInfo',
+                          arguments: aula.aulaID, //ID do Objeto
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

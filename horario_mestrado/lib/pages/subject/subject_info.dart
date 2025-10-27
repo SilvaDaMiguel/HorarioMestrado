@@ -9,9 +9,10 @@ import '../../variables/icons.dart';
 import '../../variables/size.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
+import '../../components/structure/snack_bar.dart';
 import '../../components/info_box.dart';
 import '../../components/structure/app_bar.dart';
-import '../../components/icon_button.dart';
+import '../../components/round_icon_button.dart';
 
 class CadeiraInformacao extends StatefulWidget {
   final int cadeiraID;
@@ -102,9 +103,11 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                   itemBuilder: (context, index) {
                     return Row(
                       children: [
-                        Icon(iconProfessor,
-                            size: comprimento * tamanhoIcon,
-                            color: corTerciaria),
+                        Icon(
+                          iconProfessor,
+                          size: comprimento * tamanhoIcon,
+                          color: corTerciaria,
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           cadeira.professores![index],
@@ -175,28 +178,54 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                       fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
-                  SizedBox(height: altura * distanciaTemas),
+                SizedBox(height: altura * distanciaTemas),
 
-                  //BOTÃO APAGAR
-                  //TODO: Adicionar Pop-Up confirmação
-                  Center(
-                    child: IconBotao(
-                      aoSelecionar: () async {
-                        //Apagar a cadeira
+                //BOTÃO APAGAR
+                Center(
+                  child: IconBotaoRedondo(
+                    corIcon: Colors.red,
+                    aoSelecionar: () async {
+                      try {
+                        //Tenta apagar a cadeira
                         await _dbService.apagarCadeira(cadeira.cadeiraID);
-                        //Volt à página das cadeiras
+
+                        // Se for bem-sucedido, volta à página das cadeiras
                         if (context.mounted) {
-                          //TODO: VErificar se não dá para remover até rota especifica
-                          Navigator.pushNamedAndRemoveUntil(context, '/subjects', (route) => false);
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/subjects',
+                            (route) => false,
+                          );
+                          Future.microtask(() {
+                            MinhaSnackBar.mostrar(
+                              Navigator.of(context).context,
+                              texto: 'Cadeira apagada com sucesso!',
+                            );
+                          });
                         }
-                      },
-                    ),
+                      } catch (e) {
+                        //Mostra o sncakbar de erro se algo falhar
+                        if (context.mounted) {
+                          if (context.mounted) {
+                            MinhaSnackBar.mostrar(
+                              context,
+                              texto: e.toString().contains('aulas')
+                                  ? 'Não é possível apagar a cadeira porque está associada a uma ou mais aulas.' //Para não aparecer o"Exception:"
+                                  : 'Ocorreu um erro ao apagar a cadeira.',
+                            );
+                          }
+                        }
+                      }
+                    },
                   ),
+                ),
               ],
             ),
           ),
-          bottomNavigationBar:
-              MyNavigationBar(mostrarSelecionado: false, IconSelecionado: 1),
+          bottomNavigationBar: MyNavigationBar(
+            mostrarSelecionado: false,
+            IconSelecionado: 1,
+          ),
         );
       },
     );

@@ -31,6 +31,10 @@ class TextInputForm extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       maxLines: maxLinhas,
+      style: TextStyle(
+        color: corTexto, //Cor do Texto
+        fontSize: comprimento * tamanhoTexto,
+      ),
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
