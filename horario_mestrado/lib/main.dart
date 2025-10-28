@@ -50,9 +50,9 @@ class MyApp extends StatelessWidget {
         '/calendar': (context) => const CalendarioPage(),
         '/classInfo': (context) {
           //usando uma rota nomeada com parâmetros/argumentos
-          final args = ModalRoute.of(context)!.settings.arguments as Aula;
+          final args = ModalRoute.of(context)!.settings.arguments as int;
           return AulaInformacao(
-              aula: args); // Passa os argumentos para a página
+              aulaID: args); // Passa os argumentos para a página
         },
         '/subjects': (context) => const CadeirasPage(),
         '/subjectInfo': (context) {

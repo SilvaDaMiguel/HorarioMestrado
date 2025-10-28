@@ -96,7 +96,7 @@ class _AulaBoxState extends State<AulaBox> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            aula.data,
+                            '${aula.data}, ${periodo.diaSemana}',
                             style: TextStyle(
                               fontSize: comprimento * tamanhoSubTexto,
                               color: corTexto,

@@ -39,14 +39,11 @@ String timeOfDayParaString(TimeOfDay hora) {
   return '$horaFormatada:$minutoFormatado';
 }
 
-//Função para determinar o intervalo temporal com base em "day", "week" ou "month"
+//Função para determinar o intervalo temporal
 Map<String, DateTime> obterIntervaloTempo(Tempo tempo) {
   final agora = DateTime.now();
   late DateTime inicio;
   late DateTime fim;
-
-  print("Day.now = ${agora}");
-  print("Tempo = ${tempo.valorTempo}");
 
   switch (tempo) {
     case Tempo.dia:
@@ -55,7 +52,7 @@ Map<String, DateTime> obterIntervaloTempo(Tempo tempo) {
       break;
 
     case Tempo.semana:
-      inicio = agora.subtract(Duration(days: agora.weekday - 1)); // segunda-feira
+      inicio = agora.subtract(Duration(days: agora.weekday - 1)); //segunda-feira
       fim = inicio.add(const Duration(days: 7));
       break;
 
@@ -64,7 +61,5 @@ Map<String, DateTime> obterIntervaloTempo(Tempo tempo) {
       fim = DateTime(agora.year, agora.month + 1, 1);
       break;
   }
-
-  print("Inicio = ${inicio}, Fim: ${fim}");
   return {'inicio': inicio, 'fim': fim};
 }

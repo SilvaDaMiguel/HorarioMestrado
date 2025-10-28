@@ -7,12 +7,16 @@ import '../../models/cadeira.dart';
 import '../../models/periodo.dart';
 //VARIABLES
 import '../../variables/colors.dart';
-//Components
-import '../../components/info_box.dart';
+import '../../variables/icons.dart';
+import '../../variables/size.dart';
+//COMPONENTS
+import '../../components/round_icon_button.dart';
+import '../../components/structure/app_bar.dart';
+import '../../components/structure/snack_bar.dart';
 
 class AulaInformacao extends StatefulWidget {
-  final Aula aula;
-  const AulaInformacao({super.key, required this.aula});
+  final int aulaID;
+  const AulaInformacao({super.key, required this.aulaID});
 
   @override
   State<AulaInformacao> createState() => _AulaInformacaoState();
@@ -20,87 +24,83 @@ class AulaInformacao extends StatefulWidget {
 
 class _AulaInformacaoState extends State<AulaInformacao> {
   final DataBaseService _dbService = DataBaseService();
-  late Future<List<dynamic>> _dadosFuture;
+  late Future<Map<String, dynamic>> _dadosCompletosFuture;
 
   @override
   void initState() {
     super.initState();
-    _dadosFuture = Future.wait([
-      _dbService.obterCadeiraPorId(widget.aula.cadeiraID),
-      _dbService.obterPeriodoPorId(widget.aula.periodoID),
-    ]);
+    _dadosCompletosFuture = _carregarDados();
+  }
+
+  Future<Map<String, dynamic>> _carregarDados() async {
+    final aula = await _dbService.obterAulaPorId(widget.aulaID);
+    final cadeira = await _dbService.obterCadeiraPorId(aula.cadeiraID);
+    final periodo = await _dbService.obterPeriodoPorId(aula.periodoID);
+
+    return {'aula': aula, 'cadeira': cadeira, 'periodo': periodo};
   }
 
   @override
   Widget build(BuildContext context) {
-    var tamanho = MediaQuery.of(context).size;
-    double comprimento = tamanho.width;
-    double altura = tamanho.height;
+    final tamanho = MediaQuery.of(context).size;
+    final comprimento = tamanho.width;
+    final altura = tamanho.height;
 
-    //TEXTO
-    double tamanhoTexto = comprimento * 0.04;
-    double tamanhoTitulo = comprimento * 0.05;
-    double tamanhoSubTexto = tamanhoTexto * 0.8;
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _dadosCompletosFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(body: Center(child: Text('Erro: ${snapshot.error}')));
+        } else if (!snapshot.hasData) {
+          return const Scaffold(
+            body: Center(child: Text('Dados não encontrados')),
+          );
+        }
 
-    //ESPAÇAMENTO
-    double espacoTextoTitulo = altura * 0.01;
-    double espacoTemas = altura * 0.035;
+        final aula = snapshot.data!['aula'] as Aula;
+        final cadeira = snapshot.data!['cadeira'] as Cadeira;
+        final periodo = snapshot.data!['periodo'] as Periodo;
 
-    //PADDING
-    double paddingAltura = altura * 0.075;
-    double paddingComprimento = comprimento * 0.06;
-
-    //OUTROS
-    double tamanhoIcon = comprimento * 0.05;
-
-    return Scaffold(
-      body: FutureBuilder<List<dynamic>>(
-        future: _dadosFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Erro: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Dados não encontrados'));
-          }
-
-          final cadeira = snapshot.data![0] as Cadeira;
-          final periodo = snapshot.data![1] as Periodo;
-
-          return SingleChildScrollView(
+        return Scaffold(
+          appBar: MinhaAppBar(
+            nome: 'Informação da Aula',
+            icon: iconEditar,
+            rota: '/error',
+            argumento: aula,
+          ),
+          body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              vertical: paddingAltura,
-              horizontal: paddingComprimento,
+              vertical: altura * paddingAltura,
+              horizontal: comprimento * paddingComprimento,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${cadeira.sigla} - ${cadeira.nome}',
+                  'Aula do dia ${aula.data}, ${periodo.diaSemana}',
                   style: TextStyle(
-                    fontSize: tamanhoTitulo,
+                    fontSize: comprimento * tamanhoTitulo,
                     fontWeight: FontWeight.bold,
                     color: corTexto,
                   ),
                 ),
-                SizedBox(height: espacoTemas),
-                Text(
-                  'Aula do dia ${widget.aula.data}',
-                  style: TextStyle(
-                    fontSize: tamanhoTitulo,
-                    fontWeight: FontWeight.bold,
-                    color: corTexto,
-                  ),
-                ),
+                SizedBox(height: altura * distanciaItens),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.timer, size: tamanhoIcon),
+                    Icon(
+                      iconHora,
+                      size: comprimento * tamanhoIcon,
+                      color: corTerciaria,
+                    ),
+                    SizedBox(width: 8),
                     Text(
                       '${periodo.horaInicio} - ${periodo.horaFim}',
                       style: TextStyle(
-                        fontSize: tamanhoTexto,
+                        fontSize: comprimento * tamanhoTexto,
                         fontWeight: FontWeight.bold,
                         color: corTexto,
                       ),
@@ -108,52 +108,91 @@ class _AulaInformacaoState extends State<AulaInformacao> {
                   ],
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.room, size: tamanhoIcon),
+                    Icon(
+                      iconSala,
+                      size: comprimento * tamanhoIcon,
+                      color: corTerciaria,
+                    ),
+                    SizedBox(width: 8),
                     Text(
-                      widget.aula.sala,
-                      style: TextStyle(fontSize: tamanhoTexto, color: corTexto),
+                      aula.sala,
+                      style: TextStyle(
+                        fontSize: comprimento * tamanhoTexto,
+                        color: corTexto,
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: espacoTemas),
+                SizedBox(height: altura * distanciaTemas),
+                //OUTRAS INFORMAÇÕES
                 Text(
-                  "Professores da Cadeira:",
-                  style: TextStyle(fontSize: tamanhoTexto, color: corTexto),
+                  'Outras Informações:',
+                  style: TextStyle(
+                    fontSize: comprimento * tamanhoTitulo,
+                    color: corTexto,
+                  ),
                 ),
-                SizedBox(height: espacoTextoTitulo),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: cadeira.professores?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.person, size: tamanhoIcon),
-                        Text(
-                          cadeira.professores![index],
-                          style: TextStyle(
-                              fontSize: tamanhoSubTexto, color: corTexto),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                SizedBox(height: espacoTemas),
+                SizedBox(height: altura * distanciaItens),
                 Text(
-                  "Informação da Cadeira:",
-                  style: TextStyle(fontSize: tamanhoTexto, color: corTexto),
+                  '${cadeira.sigla} - ${cadeira.nome}',
+                  style: TextStyle(
+                    fontSize: comprimento * tamanhoTexto,
+                    fontWeight: FontWeight.bold,
+                    color: corTexto,
+                  ),
                 ),
-                SizedBox(height: espacoTextoTitulo),
-                InfoBox(informacao: cadeira.informacao),
+                SizedBox(height: altura * distanciaItens),
+                Text(
+                  '${cadeira.ano}º Ano ${cadeira.semestre}º Semestre',
+                  style: TextStyle(
+                    color: corTexto,
+                    fontSize: comprimento * tamanhoTexto,
+                  ),
+                ),
+                SizedBox(height: altura * distanciaTemas),
+                //BOTÃO APAGAR
+                Center(
+                  child: IconBotaoRedondo(
+                    corIcon: Colors.red,
+                    aoSelecionar: () async {
+                      try {
+                        //Tenta apagar a aula
+                        await _dbService.apagarAula(aula.aulaID);
+
+                        //Se for bem-sucedido, volta à página das aulas
+                        if (context.mounted) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/classes',
+                            (route) => false,
+                          );
+                          Future.microtask(() {
+                            MinhaSnackBar.mostrar(
+                              Navigator.of(context).context,
+                              texto: 'Aula apagada com sucesso!',
+                            );
+                          });
+                        }
+                      } catch (e) {
+                        //Mostra o snack-bar de erro se algo falhar
+                        if (context.mounted) {
+                          MinhaSnackBar.mostrar(
+                            context,
+                            texto: e.toString().contains('aula')
+                                ? 'Não é possível apagar a aula.' //Para não aparecer o "Exception:"
+                                : 'Ocorreu um erro ao apagar a aula.',
+                          );
+                        }
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
