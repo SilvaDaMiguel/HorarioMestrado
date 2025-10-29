@@ -36,7 +36,7 @@ class _PeriodosPageState extends State<PeriodosPage> {
         _periodosFuture = _dbService.obterPeriodos();
       } else {
         _periodosFuture =
-            _dbService.obterPeriodosFiltradosDiaSemana([dia.nomeComAcento]);
+            _dbService.obterPeriodosFiltradosDiaSemana(dia.nomeComAcento);
       }
     });
   }

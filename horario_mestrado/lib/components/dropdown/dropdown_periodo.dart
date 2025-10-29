@@ -1,21 +1,21 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-//MODELS
+// MODELS
 import '../../models/periodo.dart';
-//VARIABLES
+// VARIABLES
 import '../../variables/colors.dart';
 import '../../variables/size.dart';
 
 class PeriodoDropdown extends StatelessWidget {
-  final Periodo? valorSelecionado;
+  final int? valorSelecionadoID;
   final bool obrigatorio;
-  final ValueChanged<Periodo?> onValueChanged;
+  final ValueChanged<int?> onValueChanged;
   final String? label;
   final List<Periodo> periodos;
 
   const PeriodoDropdown({
     super.key,
-    required this.valorSelecionado,
+    required this.valorSelecionadoID,
     required this.onValueChanged,
     required this.periodos,
     this.obrigatorio = false,
@@ -28,9 +28,9 @@ class PeriodoDropdown extends StatelessWidget {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    return DropdownButtonFormField2<Periodo>(
+    return DropdownButtonFormField2<int>(
       isExpanded: true,
-      value: valorSelecionado,
+      value: valorSelecionadoID,
       decoration: InputDecoration(
         labelText: label ?? 'Período',
         labelStyle: TextStyle(
@@ -62,15 +62,15 @@ class PeriodoDropdown extends StatelessWidget {
         ),
       ),
       hint: Text(
-        'Selecionar',
+        periodos.isNotEmpty ? 'Selecionar' : 'Não existem períodos neste dia',
         style: TextStyle(
           color: corTexto.withValues(alpha: 0.6),
           fontSize: comprimento * tamanhoTexto,
         ),
       ),
       items: periodos.map((periodo) {
-        return DropdownMenuItem<Periodo>(
-          value: periodo,
+        return DropdownMenuItem<int>(
+          value: periodo.periodoID,
           child: Text(
             '${periodo.diaSemana}: ${periodo.horaInicio} - ${periodo.horaFim}',
             style: TextStyle(
@@ -80,7 +80,7 @@ class PeriodoDropdown extends StatelessWidget {
           ),
         );
       }).toList(),
-      onChanged: (novoValor) => onValueChanged(novoValor),
+      onChanged: periodos.isNotEmpty ? onValueChanged : null,
       validator: obrigatorio
           ? (value) => value == null ? 'Campo obrigatório' : null
           : null,

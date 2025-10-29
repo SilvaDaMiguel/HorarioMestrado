@@ -7,6 +7,7 @@ import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/colors.dart';
 import '../../variables/enums.dart';
+import '../../variables/size.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/structure/app_bar.dart';
@@ -79,11 +80,11 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
       //print('Cadeira: ${cadeiraAdicionada.cadeiraID}, ${cadeiraAdicionada.nome}');
       try {
         await _dbService.adicionarCadeira(cadeiraAdicionada);
-        
+
         if (context.mounted) {
           //Volta para a página das cadeiras
           Navigator.pop(context, cadeiraAdicionada);
-          
+
           // Show snackbar in the previous screen's context
           Future.microtask(() {
             MinhaSnackBar.mostrar(
@@ -97,7 +98,10 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
         }
       } catch (e) {
         if (context.mounted) {
-          MinhaSnackBar.mostrar(context, texto: 'Erro ao adicionar cadeira: $e');
+          MinhaSnackBar.mostrar(
+            context,
+            texto: 'Erro ao adicionar cadeira: $e',
+          );
         }
         //print(e);
       }
@@ -113,23 +117,27 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
     return Scaffold(
       appBar: MinhaAppBar(nome: 'Adicionar Cadeira'),
       body: Padding(
-        padding: EdgeInsets.all(comprimento * 0.05),
+        padding: EdgeInsets.symmetric(
+          horizontal: comprimento * paddingComprimento,
+          vertical: altura * paddingAltura,
+        ),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
+              SizedBox(height: altura * distanciaItens),
               TextInputForm(
                 controller: _nomeController,
                 label: 'Nome',
                 obrigatorio: true,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _siglaController,
                 label: 'Sigla',
                 obrigatorio: true,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaInputs),
               FiltroCadeiraDropdown(
                 valorSelecionado: FiltroCadeiras.values.firstWhere(
                   (filtro) =>
@@ -148,25 +156,25 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
                 },
                 obrigatorio: true,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _creditosController,
                 label: 'Créditos (ECTS)',
                 keyboardType: TextInputType.number,
                 obrigatorio: true,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _informacaoController,
                 label: 'Informação',
                 maxLinhas: 3,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _professoresController,
                 label: 'Professores (separados por vírgula)',
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: altura * distanciaInputs),
               Row(
                 children: [
                   const Text(
@@ -184,6 +192,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
                   ),
                 ],
               ),
+              if (_concluida) SizedBox(height: altura * distanciaInputs),
               if (_concluida)
                 TextInputForm(
                   controller: _notaController,
@@ -192,7 +201,8 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
                     decimal: true,
                   ),
                 ),
-              SizedBox(height: altura * 0.05),
+              SizedBox(height: altura * distanciaTemas),
+              //TODO: Botão Custom
               ElevatedButton(
                 onPressed: _guardarAlteracoes,
                 style: ElevatedButton.styleFrom(

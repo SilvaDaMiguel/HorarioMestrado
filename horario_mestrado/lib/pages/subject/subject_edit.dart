@@ -135,13 +135,13 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                 label: 'Nome',
                 obrigatorio: true,
               ),
-              SizedBox(height: altura * distanciaTemas),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _siglaController,
                 label: 'Sigla',
                 obrigatorio: true,
               ),
-              SizedBox(height: altura * distanciaTemas),
+              SizedBox(height: altura * distanciaInputs),
               FiltroCadeiraDropdown(
                 valorSelecionado: FiltroCadeiras.values.firstWhere(
                   (filtro) =>
@@ -160,24 +160,24 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                 },
                 obrigatorio: true,
               ),
-              SizedBox(height: altura * distanciaTemas),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _creditosController,
                 label: 'Créditos (ECTS)',
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: altura * distanciaTemas),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _informacaoController,
                 label: 'Informação',
                 maxLinhas: 3,
               ),
-              SizedBox(height: altura * distanciaTemas),
+              SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _professoresController,
                 label: 'Professores (separados por vírgula)',
               ),
-              SizedBox(height: altura * distanciaTemas),
+              SizedBox(height: altura * distanciaInputs),
               Row(
                 children: [
                   Text(
@@ -199,7 +199,7 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                   ),
                 ],
               ),
-              SizedBox(height: altura * distanciaItens),
+              SizedBox(height: altura * distanciaInputs),
               if (_concluida)
                 TextInputForm(
                   controller: _notaController,

@@ -69,7 +69,7 @@ class _AulaInformacaoState extends State<AulaInformacao> {
           appBar: MinhaAppBar(
             nome: 'Informação da Aula',
             icon: iconEditar,
-            rota: '/error',
+            rota: '/classEdit',
             argumento: aula,
           ),
           body: SingleChildScrollView(

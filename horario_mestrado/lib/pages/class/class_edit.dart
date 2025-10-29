@@ -20,22 +20,23 @@ import '../../components/form/date_picker.dart';
 //FUNCTIONS
 import '../../functions.dart';
 
-class AulaAdicionar extends StatefulWidget {
-  const AulaAdicionar({super.key});
+class AulaEditar extends StatefulWidget {
+  final Aula aula;
+  const AulaEditar({super.key, required this.aula});
 
   @override
-  State<AulaAdicionar> createState() => _AulaAdicionarState();
+  State<AulaEditar> createState() => _AulaEditarState();
 }
 
-class _AulaAdicionarState extends State<AulaAdicionar> {
+class _AulaEditarState extends State<AulaEditar> {
   final DataBaseService _dbService = DataBaseService();
   final _formKey = GlobalKey<FormState>();
 
   // Controladores
-  final TextEditingController _salaController = TextEditingController();
+  late TextEditingController _salaController;
 
-  //Outros inputs
-  DateTime _diaSelecionado = DateTime.now();
+  // Outros inputs
+  late DateTime _diaSelecionado;
 
   Periodo? _periodoSelecionado;
   List<Periodo> _periodosDisponiveis = [];
@@ -47,14 +48,27 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
   @override
   void initState() {
     super.initState();
+    _salaController = TextEditingController(text: widget.aula.sala);
+    _diaSelecionado = stringDDMMYYYYParaDateTime(widget.aula.data)!;
+    _inicializarDados();
+  }
+
+  Future<void> _inicializarDados() async {
+    //Carregar periodo e cadeira da aula inicial
+    _periodoSelecionado = await _dbService.obterPeriodoPorId(
+      widget.aula.periodoID,
+    );
+    _cadeiraSelecionada = await _dbService.obterCadeiraPorId(
+      widget.aula.cadeiraID,
+    );
+
+    //Obter o dia da semana e carregar opções
     _obterDiaSemana();
-    _carregarPeriodos();
-    _carregarCadeiras();
   }
 
   Future<void> _carregarPeriodos() async {
-    final List<Periodo> periodos;
-    periodos = await _dbService.obterPeriodosFiltradosDiaSemana(
+    if (diaSemana == null) return;
+    final periodos = await _dbService.obterPeriodosFiltradosDiaSemana(
       diaSemana!.nomeComAcento,
     );
     setState(() {
@@ -69,13 +83,12 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
     });
   }
 
-  Future<void> _obterDiaSemana() async {
+  void _obterDiaSemana() {
     setState(() {
       diaSemana = obterDiaSemana(_diaSelecionado);
     });
-    print('Dia: ${formatarDataDDMMYYYY(_diaSelecionado)}');
-    print('Dia da Semana: ${diaSemana!.nomeComAcento}');
     _carregarPeriodos();
+    _carregarCadeiras();
   }
 
   @override
@@ -84,42 +97,23 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
     super.dispose();
   }
 
-  Future<void> _guardarAula() async {
-    if (_formKey.currentState!.validate()) {
-      if (_periodoSelecionado == null) {
-        MinhaSnackBar.mostrar(context, texto: 'Seleciona um período!');
-        return;
-      }
-      if (_cadeiraSelecionada == null) {
-        MinhaSnackBar.mostrar(context, texto: 'Seleciona uma cadeira!');
-        return;
-      }
+  Future<void> _guardarAlteracoes() async {
+    if (!_formKey.currentState!.validate()) return;
 
-      final novaAula = Aula(
-        aulaID: await _dbService.obterNovoIDAula(),
-        cadeiraID: _cadeiraSelecionada!.cadeiraID, //Nunca será Null
-        periodoID: _periodoSelecionado!.periodoID, //Nunca será Null
-        data: formatarDataDDMMYYYY(_diaSelecionado),
-        sala: _salaController.text.trim(),
-      );
+    final aulaAtualizada = Aula(
+      aulaID: widget.aula.aulaID,
+      cadeiraID: _cadeiraSelecionada!.cadeiraID, //Não será Null
+      periodoID: _periodoSelecionado!.periodoID, //Não será Null
+      data: formatarDataDDMMYYYY(_diaSelecionado),
+      sala: _salaController.text.trim(),
+    );
 
-      try {
-        await _dbService.adicionarAula(novaAula);
-
-        if (context.mounted) {
-          Navigator.pop(context, novaAula);
-          Future.microtask(() {
-            MinhaSnackBar.mostrar(
-              Navigator.of(context).context,
-              texto: 'Aula adicionada com sucesso!',
-            );
-          });
-        }
-      } catch (e) {
-        if (context.mounted) {
-          MinhaSnackBar.mostrar(context, texto: 'Erro ao adicionar aula: $e');
-        }
-      }
+    try {
+      await _dbService.atualizarAula(aulaAtualizada);
+      MinhaSnackBar.mostrar(context, texto: 'Aula atualizada com sucesso!');
+      Navigator.pop(context, aulaAtualizada);
+    } catch (e) {
+      MinhaSnackBar.mostrar(context, texto: 'Erro ao editar aula: $e');
     }
   }
 
@@ -130,7 +124,7 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: const MinhaAppBar(nome: 'Adicionar Aula'),
+      appBar: const MinhaAppBar(nome: 'Editar Aula'),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: comprimento * paddingComprimento,
@@ -166,13 +160,13 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
                   ),
                   const Spacer(),
                   DatePicker(
+                    diaInicial: _diaSelecionado,
                     onDiaSelecionado: (novoDia) {
                       setState(() {
                         _diaSelecionado = novoDia;
                       });
-                      _obterDiaSemana(); //obter o dia da Semana para o filtro dos períodos
+                      _obterDiaSemana();
                     },
-                    diaInicial: _diaSelecionado,
                   ),
                 ],
               ),
@@ -205,9 +199,8 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
                 },
               ),
               SizedBox(height: altura * distanciaTemas),
-              //TODO: Botão Personalizado
               ElevatedButton(
-                onPressed: _guardarAula,
+                onPressed: _guardarAlteracoes,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: corPrimaria,
                   padding: EdgeInsets.symmetric(

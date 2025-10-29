@@ -18,16 +18,14 @@ class PeriodoBox extends StatelessWidget {
     double altura = tamanho.height;
 
     return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: comprimento * 0.03, vertical: altura * 0.01),
+      margin: EdgeInsets.symmetric(vertical: altura * marginAlura),
       padding: EdgeInsets.symmetric(
-          horizontal: comprimento * 0.03, vertical: altura * 0.01),
+        horizontal: comprimento * paddingComprimento,
+        vertical: altura * paddingAltura,
+      ),
       decoration: BoxDecoration(
         color: corTerciaria.withValues(alpha: 0.5), //withOpacity descontinuado
-        border: Border.all(
-          color: corSecundaria,
-          width: comprimento / 50,
-        ),
+        border: Border.all(color: corSecundaria, width: comprimento / 50),
         borderRadius: BorderRadius.circular(comprimento * 0.05),
       ),
       child: Row(
@@ -37,12 +35,14 @@ class PeriodoBox extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(periodo.diaSemana,
-                    style: TextStyle(
-                      fontSize: comprimento * tamanhoTexto,
-                      fontWeight: FontWeight.bold,
-                      color: corTexto,
-                    )),
+                Text(
+                  periodo.diaSemana,
+                  style: TextStyle(
+                    fontSize: comprimento * tamanhoTexto,
+                    fontWeight: FontWeight.bold,
+                    color: corTexto,
+                  ),
+                ),
                 SizedBox(height: altura * 0.005),
                 Text(
                   '${periodo.horaInicio} - ${periodo.horaFim}',

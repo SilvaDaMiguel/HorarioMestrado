@@ -1,21 +1,21 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-//MODELS
+// MODELS
 import '../../models/cadeira.dart';
-//VARIABLES
+// VARIABLES
 import '../../variables/colors.dart';
 import '../../variables/size.dart';
 
 class CadeiraDropdown extends StatelessWidget {
-  final Cadeira? valorSelecionado;
+  final int? valorSelecionadoID;
   final bool obrigatorio;
-  final ValueChanged<Cadeira?> onValueChanged;
+  final ValueChanged<int?> onValueChanged;
   final String? label;
   final List<Cadeira> cadeiras;
 
   const CadeiraDropdown({
     super.key,
-    required this.valorSelecionado,
+    required this.valorSelecionadoID,
     required this.onValueChanged,
     required this.cadeiras,
     this.obrigatorio = false,
@@ -28,9 +28,9 @@ class CadeiraDropdown extends StatelessWidget {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    return DropdownButtonFormField2<Cadeira>(
+    return DropdownButtonFormField2<int>(
       isExpanded: true,
-      value: valorSelecionado,
+      value: valorSelecionadoID,
       decoration: InputDecoration(
         labelText: label ?? 'Cadeira',
         labelStyle: TextStyle(
@@ -69,8 +69,8 @@ class CadeiraDropdown extends StatelessWidget {
         ),
       ),
       items: cadeiras.map((cadeira) {
-        return DropdownMenuItem<Cadeira>(
-          value: cadeira,
+        return DropdownMenuItem<int>(
+          value: cadeira.cadeiraID,
           child: Text(
             '${cadeira.sigla}: ${cadeira.ano}º - ${cadeira.semestre}ª',
             style: TextStyle(
@@ -80,7 +80,7 @@ class CadeiraDropdown extends StatelessWidget {
           ),
         );
       }).toList(),
-      onChanged: (novoValor) => onValueChanged(novoValor),
+      onChanged: cadeiras.isNotEmpty ? onValueChanged : null,
       validator: obrigatorio
           ? (value) => value == null ? 'Campo obrigatório' : null
           : null,

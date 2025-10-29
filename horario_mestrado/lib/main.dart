@@ -11,6 +11,7 @@ import 'pages/subject/subject_edit.dart';
 import 'pages/subject/subject_add.dart';
 import 'pages/class/classes.dart';
 import 'pages/class/class_add.dart';
+import 'pages/class/class_edit.dart';
 import 'pages/period/periods.dart';
 import 'pages/period/period_info.dart';
 import 'pages/period/period_edit.dart';
@@ -49,12 +50,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const CalendarioPage(),
         '/calendar': (context) => const CalendarioPage(),
-        '/classInfo': (context) {
-          //usando uma rota nomeada com parâmetros/argumentos
-          final args = ModalRoute.of(context)!.settings.arguments as int;
-          return AulaInformacao(
-              aulaID: args); // Passa os argumentos para a página
-        },
         '/subjects': (context) => const CadeirasPage(),
         '/subjectInfo': (context) {
           //Usa argumento
@@ -69,6 +64,16 @@ class MyApp extends StatelessWidget {
         },
         '/subjectAdd': (context) => const CadeiraAdicionar(),
         '/classes': (context) => const AulasPage(),
+        '/classInfo': (context) {
+          //usando uma rota nomeada com parâmetros/argumentos
+          final args = ModalRoute.of(context)!.settings.arguments as int;
+          return AulaInformacao(
+              aulaID: args); // Passa os argumentos para a página
+        },
+        '/classEdit': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Aula;
+          return AulaEditar(aula: args);
+        },
         '/classAdd': (context) => const AulaAdicionar(),
         '/periods': (context) => const PeriodosPage(),
         '/periodInfo': (context) {

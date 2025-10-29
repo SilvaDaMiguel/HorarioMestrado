@@ -91,7 +91,6 @@ class _AulasPageState extends State<AulasPage> {
                 
               ],
             ),
-            SizedBox(height: altura * 0.02),
 
             // Lista dinâmica das aulas
             Expanded(

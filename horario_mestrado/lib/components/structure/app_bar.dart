@@ -9,19 +9,26 @@ class MinhaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String rota;
   final dynamic argumento; //Pode ser INT, Objeto, etc
 
-  const MinhaAppBar(
-      {Key? key, required this.nome, this.icon, this.rota = '/error', this.argumento})
-      : super(key: key);
+  const MinhaAppBar({
+    Key? key,
+    required this.nome,
+    this.icon,
+    this.rota = '/error',
+    this.argumento,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     //RESPONSIVIDADE
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
-    double altura = tamanho.height * 0.025;
+    double altura = tamanho.height * 0.5;
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: altura * paddingAltura, horizontal: comprimento * paddingComprimento), // Adicionando padding em todos os lados
+      padding: EdgeInsets.symmetric(
+        vertical: altura * paddingAltura,
+        horizontal: comprimento * paddingComprimento,
+      ), //Adicionando padding em todos os lados
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -32,28 +39,32 @@ class MinhaAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: corPrimaria,
       ),
       child: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(nome,
+        child: Center( //CENTRAR
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                nome,
                 style: TextStyle(
                   color: corTexto,
                   fontWeight: FontWeight.bold,
                   fontSize: comprimento * tamanhoTitulo,
-                )),
-            Spacer(),
-            if (icon != null)
-              IconButton(
-                icon: Icon(
-                  icon,
-                  size: comprimento * tamanhoIconGrande,
-                  color: corTexto,
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, rota, arguments: argumento);
-                },
               ),
-          ],
+              Spacer(),
+              if (icon != null)
+                IconButton(
+                  icon: Icon(
+                    icon,
+                    size: comprimento * tamanhoIconGrande,
+                    color: corTexto,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, rota, arguments: argumento);
+                  },
+                ),
+            ],
+          ),
         ),
       ),
     );

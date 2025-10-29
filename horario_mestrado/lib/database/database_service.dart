@@ -37,14 +37,14 @@ class DataBaseService {
   }
 
   Future<List<Periodo>> obterPeriodosFiltradosDiaSemana(
-    List<String> filtro,
+    String filtro,
   ) async {
     final db = await _dbProvider.database;
 
     final result = await db.query(
       'Periodo',
       where: 'diaSemana = ?', //Condição WHERE
-      whereArgs: filtro,
+      whereArgs: [filtro],
       orderBy:
           'diaSemana, horaInicio', //Ordenar por dia da semana e hora de início
     );
