@@ -4,51 +4,56 @@ import '../../variables/colors.dart';
 import '../../variables/size.dart';
 import '../../variables/icons.dart';
 
-class TimePicker extends StatefulWidget {
-  final TimeOfDay? horaInicial;
-  final Function(TimeOfDay) onHoraSelecionada;
+class DatePicker extends StatefulWidget {
+  final DateTime? diaInicial;
+  final Function(DateTime) onDiaSelecionado;
 
-  const TimePicker({
-    Key? key,
-    this.horaInicial,
-    required this.onHoraSelecionada,
-  }) : super(key: key);
+  const DatePicker({Key? key, this.diaInicial, required this.onDiaSelecionado})
+    : super(key: key);
 
   @override
-  State<TimePicker> createState() => _TimePickerState();
+  State<DatePicker> createState() => _DatePickerState();
 }
 
-class _TimePickerState extends State<TimePicker> {
-  late TimeOfDay horaSelecionada;
+class _DatePickerState extends State<DatePicker> {
+  late DateTime diaSelecionado;
 
   @override
   void initState() {
     super.initState();
-    horaSelecionada = widget.horaInicial ?? TimeOfDay.now();
+    diaSelecionado = widget.diaInicial ?? DateTime.now();
   }
 
-  Future<void> _mostrarTimePicker(BuildContext context) async {
-    final TimeOfDay? novaHora = await showTimePicker(
+  Future<void> _mostrarDatePicker(BuildContext context) async {
+    final DateTime? novaData = await showDatePicker(
       context: context,
-      initialTime: horaSelecionada,
+      initialDate: diaSelecionado,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(3100),
       builder: (context, child) {
-        // Personalização opcional para tema dark
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        // Forçar tema escuro se quiseres personalizar
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: corSecundaria,
+              onPrimary: Colors.white,
+              surface: corPrimaria,
+              onSurface: Colors.white,
+            ),
+          ),
           child: child!,
         );
       },
     );
 
-    if (novaHora != null && novaHora != horaSelecionada) {
+    if (novaData != null && novaData != diaSelecionado) {
       setState(() {
-        horaSelecionada = novaHora;
+        diaSelecionado = novaData;
       });
-      widget.onHoraSelecionada(novaHora);
+      widget.onDiaSelecionado(novaData);
     }
   }
 
-  //TODO: Testar TimePicker
   @override
   Widget build(BuildContext context) {
     var tamanho = MediaQuery.of(context).size;
@@ -56,7 +61,7 @@ class _TimePickerState extends State<TimePicker> {
     double altura = tamanho.height;
 
     return GestureDetector(
-      onTap: () => _mostrarTimePicker(context),
+      onTap: () => _mostrarDatePicker(context),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(
@@ -73,7 +78,7 @@ class _TimePickerState extends State<TimePicker> {
           border: Border.all(color: corTerciaria, width: 2),
         ),
         child: Icon(
-          iconHora,
+          iconDia,
           color: corTerciaria,
           size: comprimento * tamanhoIcon,
         ),

@@ -51,7 +51,7 @@ class _AulasPageState extends State<AulasPage> {
       appBar: const MinhaAppBar(
         nome: 'Lista de Aulas',
         icon: iconAdicionar,
-        rota: '/error', //TODO: Adicionar rota Adicionar Aula
+        rota: '/classAdd',
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(

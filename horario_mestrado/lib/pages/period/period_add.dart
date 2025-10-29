@@ -110,6 +110,14 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    timeOfDayParaString(_horaInicioSelecionada),
+                    style: TextStyle(
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
+                  ),
+                  const Spacer(),
                   TimePicker(
                     onHoraSelecionada: (novaHora) {
                       setState(() {
@@ -117,13 +125,6 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
                       });
                     },
                     horaInicial: _horaInicioSelecionada,
-                  ),
-                  Text(
-                    timeOfDayParaString(_horaInicioSelecionada),
-                    style: TextStyle(
-                      color: corTexto,
-                      fontSize: comprimento * tamanhoTexto,
-                    ),
                   ),
                 ],
               ),
@@ -138,6 +139,14 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    timeOfDayParaString(_horaFimSelecionada),
+                    style: TextStyle(
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
+                  ),
+                  const Spacer(),
                   TimePicker(
                     onHoraSelecionada: (novaHora) {
                       setState(() {
@@ -145,13 +154,6 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
                       });
                     },
                     horaInicial: _horaFimSelecionada,
-                  ),
-                  Text(
-                    timeOfDayParaString(_horaFimSelecionada),
-                    style: TextStyle(
-                      color: corTexto,
-                      fontSize: comprimento * tamanhoTexto,
-                    ),
                   ),
                 ],
               ),

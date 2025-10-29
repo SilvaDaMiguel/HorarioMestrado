@@ -10,6 +10,7 @@ import 'pages/subject/subject_info.dart';
 import 'pages/subject/subject_edit.dart';
 import 'pages/subject/subject_add.dart';
 import 'pages/class/classes.dart';
+import 'pages/class/class_add.dart';
 import 'pages/period/periods.dart';
 import 'pages/period/period_info.dart';
 import 'pages/period/period_edit.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         },
         '/subjectAdd': (context) => const CadeiraAdicionar(),
         '/classes': (context) => const AulasPage(),
+        '/classAdd': (context) => const AulaAdicionar(),
         '/periods': (context) => const PeriodosPage(),
         '/periodInfo': (context) {
           //Usa argumento

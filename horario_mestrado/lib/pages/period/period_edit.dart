@@ -112,6 +112,14 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    timeOfDayParaString(_horaInicioSelecionada),
+                    style: TextStyle(
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
+                  ),
+                  const Spacer(),
                   TimePicker(
                     onHoraSelecionada: (novaHora) {
                       setState(() {
@@ -119,13 +127,6 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       });
                     },
                     horaInicial: _horaInicioSelecionada,
-                  ),
-                  Text(
-                    timeOfDayParaString(_horaInicioSelecionada),
-                    style: TextStyle(
-                      color: corTexto,
-                      fontSize: comprimento * tamanhoTexto,
-                    ),
                   ),
                 ],
               ),
@@ -140,6 +141,14 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    timeOfDayParaString(_horaFimSelecionada),
+                    style: TextStyle(
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
+                  ),
+                  const Spacer(),
                   TimePicker(
                     onHoraSelecionada: (novaHora) {
                       setState(() {
@@ -147,13 +156,6 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
                       });
                     },
                     horaInicial: _horaFimSelecionada,
-                  ),
-                  Text(
-                    timeOfDayParaString(_horaFimSelecionada),
-                    style: TextStyle(
-                      color: corTexto,
-                      fontSize: comprimento * tamanhoTexto,
-                    ),
                   ),
                 ],
               ),

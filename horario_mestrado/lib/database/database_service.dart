@@ -202,7 +202,6 @@ class DataBaseService {
     return id;
   }
 
-  //TODO: Repetir processo de JSON LOCAL em todos os métodos CRUD necessários
   Future<int> atualizarCadeira(Cadeira cadeira) async {
     final db = await _dbProvider.database;
 
@@ -312,26 +311,26 @@ class DataBaseService {
         '${fim.month.toString().padLeft(2, '0')}-'
         '${fim.day.toString().padLeft(2, '0')}';
 
-    // Construir WHERE
+    //Construir WHERE
     final whereClauses = <String>[];
     final whereArgs = <dynamic>[];
 
-    // Converter campo data (dd-MM-yyyy) → yyyy-MM-dd para comparar
+    //Converter campo data (dd-MM-yyyy) → yyyy-MM-dd para comparar
     const dataConvertida =
         "(substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2))";
 
-    // Filtro base: dentro do intervalo de tempo
+    //Filtro base: dentro do intervalo de tempo
     whereClauses.add("$dataConvertida >= ? AND $dataConvertida < ?");
     whereArgs.addAll([dataInicio, dataFim]);
 
-    // Data atual (para comparar aulas passadas ou futuras)
+    //Data atual (para comparar aulas passadas ou futuras)
     final agora = DateTime.now();
     final hoje =
         '${agora.year.toString().padLeft(4, '0')}-'
         '${agora.month.toString().padLeft(2, '0')}-'
         '${agora.day.toString().padLeft(2, '0')}';
 
-    // Filtro de momento temporal
+    //Filtro de momento temporal
     if (momento != null && momento.isNotEmpty) {
       if (momento == '<') {
         whereClauses.add('$dataConvertida < ?');
@@ -360,24 +359,61 @@ class DataBaseService {
     return (maxId ?? 0) + 1;
   }
 
-  Future<int> inserirAula(Aula aula) async {
+  Future<int> adicionarAula(Aula aula) async {
     final db = await _dbProvider.database;
-    return await db.insert('Aula', aula.toMap());
+    final id = await db.insert('Aula', aula.toMap());
+
+    //Adiciona o novo item ao JSON LOCAL
+    await JsonCrud.adicionarDadoJSON(
+      '${Ficheiros.aulas.nomeFicheiro}.json',
+      aula.toMap(),
+    );
+
+    return id;
   }
 
   Future<int> atualizarAula(Aula aula) async {
     final db = await _dbProvider.database;
-    return await db.update(
+
+    //Atualiza a BD
+    final linhasAfetadas = await db.update(
       'Aula',
       aula.toMap(),
       where: 'aulaID = ?',
       whereArgs: [aula.aulaID],
     );
+
+    //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
+    if (linhasAfetadas > 0) {
+      await JsonCrud.atualizarDadoJSON(
+        '${Ficheiros.aulas.nomeFicheiro}.json',
+        aula.aulaID,
+        aula.toMap(),
+      );
+    }
+
+    return linhasAfetadas;
   }
 
   Future<int> apagarAula(int id) async {
     final db = await _dbProvider.database;
-    return await db.delete('Aula', where: 'aulaID = ?', whereArgs: [id]);
+
+    //Apaga da BD
+    final linhasAfetadas = await db.delete(
+      'Aula',
+      where: 'aulaID = ?',
+      whereArgs: [id],
+    );
+
+    //Se a remoção na BD for bem sucedida, remove do JSON LOCAL
+    if (linhasAfetadas > 0) {
+      await JsonCrud.apagarDadoJSON(
+        '${Ficheiros.aulas.nomeFicheiro}.json',
+        id,
+      );
+    }
+
+    return linhasAfetadas;
   }
 
   //RESET => PERIGO
