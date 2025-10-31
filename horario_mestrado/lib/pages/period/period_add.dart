@@ -8,13 +8,13 @@ import '../../models/periodo.dart';
 //VARIABLES
 import '../../variables/colors.dart';
 import '../../variables/enums.dart';
-import '../../variables/icons.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/structure/app_bar.dart';
 import '../../components/structure/snack_bar.dart';
 import '../../components/form/time_picker.dart';
 import '../../components/dropdown/dropdown_diaSemana.dart';
+import '../../components/form/submit_button.dart';
 //FUNCTIONS
 import '../../functions.dart';
 
@@ -29,16 +29,21 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
   final DataBaseService _dbService = DataBaseService();
   final _formKey = GlobalKey<FormState>();
 
-
-  // Valores para dropdown e timepicker
-  // initialize with sensible defaults to avoid LateInitializationError
+  //Valores para dropdown e timepicker
+  //Iniciar com valores default
   late DiaSemana _diaSemanaSelecionado = DiaSemana.segunda;
   late TimeOfDay _horaInicioSelecionada = TimeOfDay.now();
   late TimeOfDay _horaFimSelecionada = TimeOfDay.now();
 
-
   Future<void> _guardarAlteracoes() async {
     if (_formKey.currentState!.validate()) {
+      if (!verificarHoraInicioFim(
+        _horaInicioSelecionada,
+        _horaFimSelecionada,
+      )) {
+        MinhaSnackBar.mostrar(context, texto: 'Selecione uma hora válida!');
+        return;
+      }
 
       final periodoAdicionado = Periodo(
         periodoID: await _dbService.obterNovoIDPeriodo(),
@@ -49,7 +54,7 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
 
       try {
         await _dbService.adicionarPeriodo(periodoAdicionado);
-        
+
         if (context.mounted) {
           //Volta para a página dos períodos
           Navigator.pop(context, periodoAdicionado);
@@ -66,7 +71,10 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
         }
       } catch (e) {
         if (context.mounted) {
-          MinhaSnackBar.mostrar(context, texto: 'Erro ao adicionar período: $e');
+          MinhaSnackBar.mostrar(
+            context,
+            texto: 'Erro ao adicionar período: $e',
+          );
         }
         //print(e);
       }
@@ -99,7 +107,7 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
                   }
                 },
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: altura * distanciaInputs),
               Row(
                 children: [
                   Text(
@@ -128,7 +136,7 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: altura * distanciaInputs),
               Row(
                 children: [
                   Text(
@@ -157,23 +165,8 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
-              
-              SizedBox(height: altura * 0.05),
-              ElevatedButton(
-                onPressed: _guardarAlteracoes,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: corPrimaria,
-                  padding: EdgeInsets.symmetric(
-                    vertical: altura * 0.02,
-                    horizontal: comprimento * 0.2,
-                  ),
-                ),
-                child: const Text(
-                  'Guardar Alterações',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
+              SizedBox(height: altura * distanciaTemas),
+              BotaoSubmeter(texto: 'Adicionar Período', aoPressionar: _guardarAlteracoes),
             ],
           ),
         ),

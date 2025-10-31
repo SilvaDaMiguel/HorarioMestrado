@@ -17,6 +17,7 @@ import '../../components/form/text_input_form.dart';
 import '../../components/dropdown/dropdown_periodo.dart';
 import '../../components/dropdown/dropdown_cadeira.dart';
 import '../../components/form/date_picker.dart';
+import '../../components/form/submit_button.dart';
 //FUNCTIONS
 import '../../functions.dart';
 
@@ -199,19 +200,9 @@ class _AulaEditarState extends State<AulaEditar> {
                 },
               ),
               SizedBox(height: altura * distanciaTemas),
-              ElevatedButton(
-                onPressed: _guardarAlteracoes,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: corPrimaria,
-                  padding: EdgeInsets.symmetric(
-                    vertical: altura * 0.02,
-                    horizontal: comprimento * 0.2,
-                  ),
-                ),
-                child: const Text(
-                  'Guardar Aula',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
+              BotaoSubmeter(
+                texto: 'Guardar Alterações',
+                aoPressionar: _guardarAlteracoes,
               ),
             ],
           ),

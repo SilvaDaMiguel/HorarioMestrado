@@ -11,6 +11,8 @@ const double paddingComprimento = 0.05;
 const double paddingIconComprimento = 0.015;
 const double marginComprimento = 0.02;
 
+const double arredondamento = 0.05;
+
 //NOTA: Tamanhos a ser multiplicados pelo "tamanho.height" (Altura do Ecrã)
 const double paddingAltura = 0.015;
 const double paddingIconAltura = 0.005;

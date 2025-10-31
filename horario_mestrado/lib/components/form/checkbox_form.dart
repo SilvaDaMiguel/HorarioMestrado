@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 //VARIABLES
 import '../../variables/colors.dart';
 import '../../variables/size.dart';
+import '../../variables/icons.dart';
 
 class CheckboxForm extends StatelessWidget {
   final bool valor;
   final ValueChanged<bool?>? aoMudar; //callback com o novo valor
 
-  const CheckboxForm({
-    Key? key,
-    required this.valor,
-    this.aoMudar,
-  }) : super(key: key);
+  const CheckboxForm({Key? key, required this.valor, this.aoMudar})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,7 @@ class CheckboxForm extends StatelessWidget {
       ),
     );*/
     //TODO: Testar e Adicionar Margin/Padding
-        GestureDetector(
+    GestureDetector(
       onTap: aoMudar != null ? () => aoMudar!(!valor) : null,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -45,10 +43,15 @@ class CheckboxForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: valor ? corTerciaria : Colors.grey,
-            width: 2          ),
+            width: 2,
+          ),
         ),
         child: valor
-            ? Icon(Icons.check, color: corTexto, size: comprimento * tamanhoIconPequeno)
+            ? Icon(
+                iconSelecionado,
+                color: corTexto,
+                size: comprimento * tamanhoIcon, //TODO: Teste tamanho icon checkbox
+              )
             : null,
       ),
     );

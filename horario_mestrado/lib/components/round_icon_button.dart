@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:horario_mestrado/variables/icons.dart';
 //VARIABLES
 import '../variables/colors.dart';
 import '../variables/size.dart';
+import '../variables/icons.dart';
 
 class IconBotaoRedondo extends StatelessWidget {
   final VoidCallback? aoSelecionar;

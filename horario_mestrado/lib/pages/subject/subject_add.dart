@@ -5,7 +5,6 @@ import '../../database/database_service.dart';
 //MODELS
 import '../../models/cadeira.dart';
 //VARIABLES
-import '../../variables/colors.dart';
 import '../../variables/enums.dart';
 import '../../variables/size.dart';
 //COMPONENTS
@@ -15,6 +14,7 @@ import '../../components/structure/snack_bar.dart';
 import '../../components/form/text_input_form.dart';
 import '../../components/form/checkbox_form.dart';
 import '../../components/dropdown/dropdown_filtroCadeira.dart';
+import '../../components/form/submit_button.dart';
 
 class CadeiraAdicionar extends StatefulWidget {
   const CadeiraAdicionar({super.key});
@@ -202,20 +202,9 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
                   ),
                 ),
               SizedBox(height: altura * distanciaTemas),
-              //TODO: Botão Custom
-              ElevatedButton(
-                onPressed: _guardarAlteracoes,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: corPrimaria,
-                  padding: EdgeInsets.symmetric(
-                    vertical: altura * 0.02,
-                    horizontal: comprimento * 0.2,
-                  ),
-                ),
-                child: const Text(
-                  'Guardar Alterações',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
+              BotaoSubmeter(
+                texto: 'Adicionar Cadeira',
+                aoPressionar: _guardarAlteracoes,
               ),
             ],
           ),

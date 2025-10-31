@@ -8,3 +8,4 @@ const iconApagar = Icons.delete;
 const iconHora = Icons.timer;
 const iconDia = Icons.calendar_month;
 const iconSala = Icons.room;
+const iconSelecionado = Icons.check;

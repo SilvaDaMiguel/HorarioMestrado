@@ -27,7 +27,6 @@ DateTime? stringDDMMYYYYParaDateTime(String dataString) {
   }
 }
 
-
 //Função para remover a hora de um DateTime => Útil para comparar apenas datas (no calendar)
 DateTime removerHora(DateTime dt) {
   return DateTime(dt.year, dt.month, dt.day);
@@ -59,28 +58,97 @@ String timeOfDayParaString(TimeOfDay hora) {
   return '$horaFormatada:$minutoFormatado';
 }
 
-//Função para determinar o intervalo temporal
-Map<String, DateTime> obterIntervaloTempo(Tempo tempo) {
+//Função para determinar o intervalo temporal baseado no momento
+Map<String, DateTime> obterIntervaloTempoComMomento(Tempo tempo, Momento momento) {
   final agora = DateTime.now();
   late DateTime inicio;
   late DateTime fim;
 
   switch (tempo) {
     case Tempo.dia:
-      inicio = DateTime(agora.year, agora.month, agora.day);
-      fim = inicio.add(const Duration(days: 1));
+      switch (momento) {
+        case Momento.passado:
+          // Ontem
+          inicio = DateTime(agora.year, agora.month, agora.day - 1);
+          fim = DateTime(agora.year, agora.month, agora.day);
+          break;
+        case Momento.agora:
+          // Hoje
+          inicio = DateTime(agora.year, agora.month, agora.day);
+          fim = inicio.add(const Duration(days: 1));
+          break;
+        case Momento.futuro:
+          // Amanhã
+          inicio = DateTime(agora.year, agora.month, agora.day + 1);
+          fim = inicio.add(const Duration(days: 1));
+          break;
+      }
       break;
 
     case Tempo.semana:
-      inicio = agora.subtract(Duration(days: agora.weekday - 1)); //segunda-feira
-      fim = inicio.add(const Duration(days: 7));
+      // Segunda-feira da semana atual
+      final segundaAtual = agora.subtract(Duration(days: agora.weekday - 1));
+      
+      switch (momento) {
+        case Momento.passado:
+          // Semana passada (segunda a domingo)
+          inicio = segundaAtual.subtract(const Duration(days: 7));
+          fim = segundaAtual;
+          break;
+        case Momento.agora:
+          // Esta semana
+          inicio = segundaAtual;
+          fim = inicio.add(const Duration(days: 7));
+          break;
+        case Momento.futuro:
+          // Próxima semana
+          inicio = segundaAtual.add(const Duration(days: 7));
+          fim = inicio.add(const Duration(days: 7));
+          break;
+      }
       break;
 
     case Tempo.mes:
-      inicio = DateTime(agora.year, agora.month, 1);
-      fim = DateTime(agora.year, agora.month + 1, 1);
+      switch (momento) {
+        case Momento.passado:
+          // Mês passado
+          inicio = DateTime(agora.year, agora.month - 1, 1);
+          fim = DateTime(agora.year, agora.month, 1);
+          break;
+        case Momento.agora:
+          // Este mês
+          inicio = DateTime(agora.year, agora.month, 1);
+          fim = DateTime(agora.year, agora.month + 1, 1);
+          break;
+        case Momento.futuro:
+          // Próximo mês
+          inicio = DateTime(agora.year, agora.month + 1, 1);
+          fim = DateTime(agora.year, agora.month + 2, 1);
+          break;
+      }
+      break;
+
+    case Tempo.ano:
+      switch (momento) {
+        case Momento.passado:
+          // Ano passado
+          inicio = DateTime(agora.year - 1, 1, 1);
+          fim = DateTime(agora.year, 1, 1);
+          break;
+        case Momento.agora:
+          // Este ano
+          inicio = DateTime(agora.year, 1, 1);
+          fim = DateTime(agora.year + 1, 1, 1);
+          break;
+        case Momento.futuro:
+          // Próximo ano
+          inicio = DateTime(agora.year + 1, 1, 1);
+          fim = DateTime(agora.year + 2, 1, 1);
+          break;
+      }
       break;
   }
+
   return {'inicio': inicio, 'fim': fim};
 }
 
@@ -105,4 +173,24 @@ DiaSemana obterDiaSemana(DateTime data) {
       //Prevenção => fallback
       return DiaSemana.segunda;
   }
+}
+
+//VERIFICAR HORA PARA PERÍODO DE AULAS
+bool verificarHoraExcecao(TimeOfDay horaFinal) {
+  //Permitir apenas se a hora final estiver entre 00h00 e 03h00 (inclusive)
+  return horaFinal.hour >= 0 && horaFinal.hour <= 3 && horaFinal.minute >= 0;
+}
+
+bool verificarHoraInicioFim(TimeOfDay horaInicial, TimeOfDay horaFinal) {
+  //TimeOfDay não permite comparação direta através de "<" e ">"
+  final inicioMinutos = horaInicial.hour * 60 + horaInicial.minute;
+  final fimMinutos = horaFinal.hour * 60 + horaFinal.minute;
+
+  //Se a hora final for menor que a inicial, verifica a exceção
+  if (fimMinutos < inicioMinutos) {
+    return verificarHoraExcecao(horaFinal);
+  }
+
+  //Caso normal
+  return inicioMinutos < fimMinutos;
 }

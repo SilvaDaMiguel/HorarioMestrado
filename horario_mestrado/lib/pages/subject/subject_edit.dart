@@ -15,6 +15,7 @@ import '../../components/structure/snack_bar.dart';
 import '../../components/form/text_input_form.dart';
 import '../../components/form/checkbox_form.dart';
 import '../../components/dropdown/dropdown_filtroCadeira.dart';
+import '../../components/form/submit_button.dart';
 
 class CadeiraEditar extends StatefulWidget {
   final Cadeira cadeira;
@@ -107,7 +108,10 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
 
       try {
         await _dbService.atualizarCadeira(cadeiraAtualizada);
-        MinhaSnackBar.mostrar(context, texto: 'Cadeira atualizada com sucesso!');
+        MinhaSnackBar.mostrar(
+          context,
+          texto: 'Cadeira atualizada com sucesso!',
+        );
         Navigator.pop(context, cadeiraAtualizada);
       } catch (e) {
         MinhaSnackBar.mostrar(context, texto: 'Erro ao editar cadeira: $e');
@@ -124,7 +128,10 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
     return Scaffold(
       appBar: MinhaAppBar(nome: 'Editar Informação da Cadeira'),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: comprimento * paddingComprimento, vertical: altura * paddingAltura),
+        padding: EdgeInsets.symmetric(
+          horizontal: comprimento * paddingComprimento,
+          vertical: altura * paddingAltura,
+        ),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -209,20 +216,9 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                   ),
                 ),
               SizedBox(height: altura * distanciaTemas),
-              ElevatedButton(
-                onPressed: _guardarAlteracoes,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: corPrimaria,
-                  padding: EdgeInsets.symmetric(
-                    vertical: altura * 0.02,
-                    horizontal: comprimento * 0.2,
-                  ),
-                ),
-                //TODO: Botão Customizado
-                child: const Text(
-                  'Guardar Alterações',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
+              BotaoSubmeter(
+                texto: 'Guardar Alterações',
+                aoPressionar: _guardarAlteracoes,
               ),
             ],
           ),

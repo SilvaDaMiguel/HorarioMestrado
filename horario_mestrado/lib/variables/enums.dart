@@ -39,35 +39,22 @@ extension FicheirosExtension on Ficheiros {
 }
 
 //Para filtro do tipo: Aulas (Todas, Passadas, Futuras)
-enum Momento { passado, sempre, futuro }
+enum Momento { passado, agora, futuro }
 
 extension MomentoExtension on Momento {
   String get momentoAulas {
     switch (this) {
-      case Momento.sempre:
-        return 'Todas';
+      case Momento.agora:
+        return 'Atual';
       case Momento.passado:
-        return 'Passadas';
+        return 'Passada';
       case Momento.futuro:
-        return 'Próximas';
+        return 'Próxima';
     }
   }
 }
 
-extension ValorMomentoExtension on Momento {
-  String get valorMomentoAulas {
-    switch (this) {
-      case Momento.sempre:
-        return '';
-      case Momento.passado:
-        return '<';
-      case Momento.futuro:
-        return '>';
-    }
-  }
-}
-
-enum Tempo { dia, semana, mes }
+enum Tempo { dia, semana, mes, ano }
 
 extension TempoExtension on Tempo {
   String get nomeTempo {
@@ -78,20 +65,8 @@ extension TempoExtension on Tempo {
         return 'Semana';
       case Tempo.mes:
         return 'Mês';
-    }
-  }
-}
-
-//Para Base de Dados
-extension ValorTempoExtension on Tempo {
-  String get valorTempo {
-    switch (this) {
-      case Tempo.dia:
-        return 'day';
-      case Tempo.semana:
-        return 'week';
-      case Tempo.mes:
-        return 'month';
+      case Tempo.ano:
+        return 'Ano';
     }
   }
 }

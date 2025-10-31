@@ -26,7 +26,7 @@ class MomentoDropdown extends StatelessWidget {
 
     return DropdownButtonFormField2<Momento>(
       isExpanded: true,
-      value: valorSelecionado ?? Momento.sempre, //Default
+      value: valorSelecionado ?? Momento.agora, //Default
       decoration: InputDecoration(
         labelText: label ?? 'Momento',
         labelStyle: TextStyle(

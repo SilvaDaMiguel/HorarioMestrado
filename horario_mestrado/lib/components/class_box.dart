@@ -74,7 +74,7 @@ class _AulaBoxState extends State<AulaBox> {
             decoration: BoxDecoration(
               color: corTerciaria.withValues(alpha: 0.5),
               border: Border.all(color: corSecundaria, width: comprimento / 50),
-              borderRadius: BorderRadius.circular(comprimento * 0.05),
+              borderRadius: BorderRadius.circular(comprimento * arredondamento),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

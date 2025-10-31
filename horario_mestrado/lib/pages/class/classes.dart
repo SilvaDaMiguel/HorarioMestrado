@@ -25,7 +25,7 @@ class _AulasPageState extends State<AulasPage> {
   final DataBaseService _dbService = DataBaseService();
   late Future<List<Aula>> _aulasFuture;
 
-  Momento _momentoSelecionado = Momento.sempre;
+  Momento _momentoSelecionado = Momento.agora;
   Tempo _tempoSelecionado = Tempo.semana;
 
   @override
@@ -36,7 +36,7 @@ class _AulasPageState extends State<AulasPage> {
 
   void _carregarAulas() {
     setState(() {
-      _aulasFuture = _dbService.obterAulasFiltradasPorMomentoTempo(_momentoSelecionado.valorMomentoAulas, _tempoSelecionado);
+      _aulasFuture = _dbService.obterAulasFiltradasPorMomentoTempo(_momentoSelecionado, _tempoSelecionado);
     });
   }
 
@@ -65,8 +65,20 @@ class _AulasPageState extends State<AulasPage> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: TempoDropdown(
+                  child: MomentoDropdown(
+                    valorSelecionado: _momentoSelecionado,
                     label: 'Quando',
+                    onValueChanged: (novoMomento) {
+                      _momentoSelecionado = novoMomento!;
+                      _carregarAulas();
+                    },
+                  ),
+                ),
+                SizedBox(width: comprimento * paddingComprimento),
+                Expanded(
+                  flex: 1,
+                  child: TempoDropdown(
+                    label: 'Tempo',
                     valorSelecionado: _tempoSelecionado,
                     onValueChanged: (novoTempo) {
                       _tempoSelecionado = novoTempo!;
@@ -74,20 +86,6 @@ class _AulasPageState extends State<AulasPage> {
                     },
                   ),
                 ),
-                SizedBox(width: comprimento * paddingComprimento),
-                // Dropdown de filtro (Momento do dia)
-                Expanded(
-                  flex: 1,
-                  child: MomentoDropdown(
-                    valorSelecionado: _momentoSelecionado,
-                    label: 'Estado',
-                    onValueChanged: (novoMomento) {
-                      _momentoSelecionado = novoMomento!;
-                      _carregarAulas();
-                    },
-                  ),
-                ),
-                
                 
               ],
             ),

@@ -36,9 +36,7 @@ class DataBaseService {
     return result.map((e) => Periodo.fromMap(e)).toList();
   }
 
-  Future<List<Periodo>> obterPeriodosFiltradosDiaSemana(
-    String filtro,
-  ) async {
+  Future<List<Periodo>> obterPeriodosFiltradosDiaSemana(String filtro) async {
     final db = await _dbProvider.database;
 
     final result = await db.query(
@@ -290,13 +288,13 @@ class DataBaseService {
   }
 
   Future<List<Aula>> obterAulasFiltradasPorMomentoTempo(
-    String? momento,
+    Momento momento,
     Tempo tempo,
   ) async {
     final db = await _dbProvider.database;
 
-    // Obter intervalo (inicio e fim)
-    final intervalo = obterIntervaloTempo(tempo);
+    // Obter intervalo baseado no momento e tempo
+    final intervalo = obterIntervaloTempoComMomento(tempo, momento);
     final inicio = intervalo['inicio']!;
     final fim = intervalo['fim']!;
 
@@ -311,41 +309,15 @@ class DataBaseService {
         '${fim.month.toString().padLeft(2, '0')}-'
         '${fim.day.toString().padLeft(2, '0')}';
 
-    //Construir WHERE
-    final whereClauses = <String>[];
-    final whereArgs = <dynamic>[];
-
     //Converter campo data (dd-MM-yyyy) → yyyy-MM-dd para comparar
     const dataConvertida =
         "(substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2))";
 
-    //Filtro base: dentro do intervalo de tempo
-    whereClauses.add("$dataConvertida >= ? AND $dataConvertida < ?");
-    whereArgs.addAll([dataInicio, dataFim]);
-
-    //Data atual (para comparar aulas passadas ou futuras)
-    final agora = DateTime.now();
-    final hoje =
-        '${agora.year.toString().padLeft(4, '0')}-'
-        '${agora.month.toString().padLeft(2, '0')}-'
-        '${agora.day.toString().padLeft(2, '0')}';
-
-    //Filtro de momento temporal
-    if (momento != null && momento.isNotEmpty) {
-      if (momento == '<') {
-        whereClauses.add('$dataConvertida < ?');
-        whereArgs.add(hoje);
-      } else if (momento == '>') {
-        whereClauses.add('$dataConvertida > ?');
-        whereArgs.add(hoje);
-      }
-      // Se for "", não adiciona nada (mostra todas)
-    }
-
+    // Query: aulas dentro do intervalo
     final result = await db.query(
       'Aula',
-      where: whereClauses.join(' AND '),
-      whereArgs: whereArgs,
+      where: "$dataConvertida >= ? AND $dataConvertida < ?",
+      whereArgs: [dataInicio, dataFim],
       orderBy: '$dataConvertida ASC',
     );
 
@@ -407,10 +379,7 @@ class DataBaseService {
 
     //Se a remoção na BD for bem sucedida, remove do JSON LOCAL
     if (linhasAfetadas > 0) {
-      await JsonCrud.apagarDadoJSON(
-        '${Ficheiros.aulas.nomeFicheiro}.json',
-        id,
-      );
+      await JsonCrud.apagarDadoJSON('${Ficheiros.aulas.nomeFicheiro}.json', id);
     }
 
     return linhasAfetadas;

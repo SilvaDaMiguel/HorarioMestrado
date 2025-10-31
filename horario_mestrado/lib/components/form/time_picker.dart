@@ -48,7 +48,6 @@ class _TimePickerState extends State<TimePicker> {
     }
   }
 
-  //TODO: Testar TimePicker
   @override
   Widget build(BuildContext context) {
     var tamanho = MediaQuery.of(context).size;

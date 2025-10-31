@@ -26,7 +26,7 @@ class CadeiraBox extends StatelessWidget {
       decoration: BoxDecoration(
         color: corTerciaria.withValues(alpha: 0.5), //withOpacity descontinuado
         border: Border.all(color: corSecundaria, width: comprimento / 50),
-        borderRadius: BorderRadius.circular(comprimento * 0.05),
+        borderRadius: BorderRadius.circular(comprimento * arredondamento),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
