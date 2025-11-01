@@ -115,7 +115,8 @@ class _CalendarioPageState extends State<CalendarioPage> {
             focusedDay: _diaSelecionado,
             calendarFormat: _calendarFormat,
             eventLoader: (dia) => listaAulas[removerHora(dia)] ?? [],
-            locale: 'pt_PT', // Definir o idioma como português
+            locale: 'pt_BR', // Definir o idioma como português
+            //PT: "segunda" "terça" / BR: "seg." "ter." => Por isso a escolha do BR
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
                 color: corSecundaria,
