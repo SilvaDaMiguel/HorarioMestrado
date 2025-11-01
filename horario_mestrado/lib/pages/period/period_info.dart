@@ -63,8 +63,22 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
           appBar: MinhaAppBar(
             nome: 'Informação do Período',
             icon: iconEditar,
-            rota: '/periodEdit',
-            argumento: periodo, //Passa o objeto completo
+            //rota: '/periodEdit',
+            //argumento: periodo, //Passa o objeto completo
+            aoPressionar: () async {
+              final periodoAtualizado = await Navigator.pushNamed(
+                context,
+                '/periodEdit',
+                arguments: periodo,
+              );
+
+              //Se a página de adicionar devolver true => Adicionado/Removido um Período
+              if (periodoAtualizado is Periodo) {
+                setState(() {
+                  _periodoFuture = Future.value(periodoAtualizado);
+                });
+              }
+            },
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -118,11 +132,10 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
 
                         // Se for bem-sucedido, volta à página dos períodos
                         if (context.mounted) {
-                          Navigator.pushNamedAndRemoveUntil(
+                          Navigator.pop(
                             context,
-                            '/periods',
-                            (route) => false,
-                          );
+                            true,
+                          ); //Devolve True pois apagou 1 periodo
                           Future.microtask(() {
                             MinhaSnackBar.mostrar(
                               Navigator.of(context).context,

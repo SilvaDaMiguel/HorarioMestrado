@@ -26,7 +26,7 @@ class BotaoSubmeter extends StatelessWidget {
         backgroundColor: corTerciaria.withValues(alpha: 0.5),
         shadowColor: Colors.black.withValues(
           alpha: 0.2,
-        ), //TODO: Talvez mudar sombra do botão
+        ), //Talvez mudar sombra do botão
         elevation: 5, // Sombra
         side: BorderSide(color: corSecundaria, width: comprimento / 50), //Borda
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(comprimento * arredondamento)),

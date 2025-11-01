@@ -172,17 +172,21 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                 controller: _creditosController,
                 label: 'Créditos (ECTS)',
                 keyboardType: TextInputType.number,
+                obrigatorio: true,
+                maxCaracteres: 4,
               ),
               SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _informacaoController,
                 label: 'Informação',
                 maxLinhas: 3,
+                maxCaracteres: 1000,
               ),
               SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _professoresController,
                 label: 'Professores (separados por vírgula)',
+                maxCaracteres: 250,
               ),
               SizedBox(height: altura * distanciaInputs),
               Row(
@@ -214,6 +218,7 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
+                  maxCaracteres: 6,
                 ),
               SizedBox(height: altura * distanciaTemas),
               BotaoSubmeter(

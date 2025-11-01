@@ -15,29 +15,16 @@ class CheckboxForm extends StatelessWidget {
   Widget build(BuildContext context) {
     var tamanho = MediaQuery.of(context).size;
     double comprimento = tamanho.width;
+    double altura = tamanho.height;
 
-    return /*Checkbox(
-      value: valor,
-      onChanged: aoMudar,
-      activeColor: corTerciaria, //Cor quando selecionada
-      checkColor: corTexto, //Cor do certo
-      side: const BorderSide(
-        //Borda do checkbox
-        color: corSecundaria,
-        width: 2.5,
-      ),
-      shape: RoundedRectangleBorder(
-        //Forma do checkbox
-        borderRadius: BorderRadius.circular(5),
-      ),
-    );*/
-    //TODO: Testar e Adicionar Margin/Padding
+    return
     GestureDetector(
       onTap: aoMudar != null ? () => aoMudar!(!valor) : null,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: 24,
         height: 24,
+        margin: EdgeInsets.symmetric(horizontal: comprimento * paddingIconComprimento, vertical: altura * paddingIconAltura),
         decoration: BoxDecoration(
           color: valor ? corTerciaria : Colors.transparent,
           borderRadius: BorderRadius.circular(6),
@@ -50,7 +37,7 @@ class CheckboxForm extends StatelessWidget {
             ? Icon(
                 iconSelecionado,
                 color: corTexto,
-                size: comprimento * tamanhoIcon, //TODO: Teste tamanho icon checkbox
+                size: comprimento * tamanhoIcon,
               )
             : null,
       ),

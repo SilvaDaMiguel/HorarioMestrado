@@ -62,10 +62,22 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
           appBar: MinhaAppBar(
             nome: 'Informação da Cadeira',
             icon: iconEditar,
-            rota: '/subjectEdit',
-            argumento: cadeira, //Passa o objeto completo
+            //rota: '/subjectEdit',
+            //argumento: cadeira, //Passa o objeto completo
+            aoPressionar: () async {
+              final cadeiraAtualizada = await Navigator.pushNamed(
+                context,
+                '/subjectEdit',
+                arguments: cadeira,
+              );
+
+              if (cadeiraAtualizada is Cadeira) {
+                setState(() {
+                  _cadeiraFuture = Future.value(cadeiraAtualizada);
+                });
+              }
+            },
           ),
-          //TODO: atualizar a pagina depois de editar
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               vertical: altura * paddingAltura,
@@ -191,11 +203,8 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
 
                         // Se for bem-sucedido, volta à página das cadeiras
                         if (context.mounted) {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/subjects',
-                            (route) => false,
-                          );
+                          Navigator.pop(context, true); //Devolve True pois apagou 1 cadeira
+
                           Future.microtask(() {
                             MinhaSnackBar.mostrar(
                               Navigator.of(context).context,

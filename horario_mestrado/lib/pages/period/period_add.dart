@@ -57,7 +57,7 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
 
         if (context.mounted) {
           //Volta para a página dos períodos
-          Navigator.pop(context, periodoAdicionado);
+          Navigator.pop(context, true); //Devolve true
 
           Future.microtask(() {
             MinhaSnackBar.mostrar(

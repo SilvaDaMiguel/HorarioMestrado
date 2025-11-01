@@ -76,7 +76,7 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
           context,
           texto: 'Período atualizado com sucesso!',
         );
-        Navigator.pop(context, periodoAtualizado);
+        Navigator.pop(context, periodoAtualizado); //Devolve o periodo atualizado
       } catch (e) {
         MinhaSnackBar.mostrar(context, texto: 'Erro ao editar período: $e');
       }

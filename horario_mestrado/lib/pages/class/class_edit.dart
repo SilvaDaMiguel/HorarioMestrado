@@ -112,7 +112,7 @@ class _AulaEditarState extends State<AulaEditar> {
     try {
       await _dbService.atualizarAula(aulaAtualizada);
       MinhaSnackBar.mostrar(context, texto: 'Aula atualizada com sucesso!');
-      Navigator.pop(context, aulaAtualizada);
+      Navigator.pop(context, aulaAtualizada); //Volta para a página da aula e devolve a Aula atualizada
     } catch (e) {
       MinhaSnackBar.mostrar(context, texto: 'Erro ao editar aula: $e');
     }

@@ -12,6 +12,7 @@ import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/size.dart';
 import '../../variables/enums.dart';
+import '../../variables/colors.dart';
 
 class CadeirasPage extends StatefulWidget {
   const CadeirasPage({super.key});
@@ -48,7 +49,15 @@ class _CadeirasPageState extends State<CadeirasPage> {
       appBar: MinhaAppBar(
         nome: 'Lista de Cadeiras',
         icon: iconAdicionar,
-        rota: '/subjectAdd',
+        //rota: '/subjectAdd',
+        aoPressionar: () async {
+          final resultado = await Navigator.pushNamed(context, '/subjectAdd');
+
+          //Se a página de adicionar devolver true => Adicionado/Removido uma cadeira
+          if (resultado == true) {
+            _carregarCadeiras(_filtroSelecionado); //Atualiza a lista
+          }
+        },
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -79,9 +88,25 @@ class _CadeirasPageState extends State<CadeirasPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Erro: ${snapshot.error}'));
+                    return Center(
+                      child: Text(
+                        'Erro: ${snapshot.error}',
+                        style: TextStyle(
+                          color: corTexto,
+                          fontSize: comprimento * tamanhoTexto,
+                        ),
+                      ),
+                    );
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('Cadeiras não encontradas'));
+                    return Center(
+                      child: Text(
+                        'Não foram encontradas Cadeiras do ${_filtroSelecionado.nomeFiltro}',
+                        style: TextStyle(
+                          color: corTexto,
+                          fontSize: comprimento * tamanhoTexto,
+                        ),
+                      ),
+                    );
                   }
 
                   final cadeiras = snapshot.data!;

@@ -108,7 +108,12 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
         await _dbService.adicionarAula(novaAula);
 
         if (context.mounted) {
-          Navigator.pop(context, novaAula);
+          //Volta para a pagina das aulas
+          Navigator.pop(
+            context,
+            true,
+          ); //Devolve True porque uma aula foi adicionada
+
           Future.microtask(() {
             MinhaSnackBar.mostrar(
               Navigator.of(context).context,
@@ -206,7 +211,10 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
                 },
               ),
               SizedBox(height: altura * distanciaTemas),
-              BotaoSubmeter(texto: 'Adicionar Aula', aoPressionar: _guardarAula),
+              BotaoSubmeter(
+                texto: 'Adicionar Aula',
+                aoPressionar: _guardarAula,
+              ),
             ],
           ),
         ),

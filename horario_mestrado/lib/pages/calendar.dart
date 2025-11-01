@@ -26,7 +26,7 @@ class CalendarioPage extends StatefulWidget {
 class _CalendarioPageState extends State<CalendarioPage> {
   //Map<DateTime, List<Aula>> para o TableCalendar
   Map<DateTime, List<Aula>> listaAulas = {};
-  CalendarFormat _calendarFormat =
+  final CalendarFormat _calendarFormat =
       CalendarFormat.month; //Formato inicial do calendário
   DateTime _diaSelecionado = DateTime.now(); // Dia atualmente selecionado
   List<Aula> _aulasDoDia = []; // Lista de listaAulas do dia selecionado
@@ -115,7 +115,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
             focusedDay: _diaSelecionado,
             calendarFormat: _calendarFormat,
             eventLoader: (dia) => listaAulas[removerHora(dia)] ?? [],
-            locale: 'pt_BR', // Defina o idioma como português (Brasil) aqui
+            locale: 'pt_PT', // Definir o idioma como português
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
                 color: corSecundaria,

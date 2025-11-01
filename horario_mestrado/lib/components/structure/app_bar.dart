@@ -6,15 +6,17 @@ import '../../variables/size.dart';
 class MinhaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String nome;
   final IconData? icon;
-  final String rota;
-  final dynamic argumento; //Pode ser INT, Objeto, etc
+  //final String rota;
+  //final dynamic argumento; //Pode ser INT, Objeto, etc
+  final VoidCallback? aoPressionar;
 
   const MinhaAppBar({
     Key? key,
     required this.nome,
     this.icon,
-    this.rota = '/error',
-    this.argumento,
+    //this.rota = '/error',
+    //this.argumento,
+    this.aoPressionar,
   }) : super(key: key);
 
   @override
@@ -59,8 +61,9 @@ class MinhaAppBar extends StatelessWidget implements PreferredSizeWidget {
                     size: comprimento * tamanhoIconGrande,
                     color: corTexto,
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, rota, arguments: argumento);
+                  onPressed: aoPressionar ?? () {
+                    print('Sem função atribuida!');
+                    //Navigator.pushNamed(context, rota, arguments: argumento);
                   },
                 ),
             ],

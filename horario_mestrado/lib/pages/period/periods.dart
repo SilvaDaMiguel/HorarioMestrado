@@ -11,6 +11,8 @@ import '../../components/dropdown/dropdown_diaSemana.dart';
 import '../../database/database_service.dart';
 // MODELS
 import '../../models/periodo.dart';
+//VARIABLES
+import '../../variables/colors.dart';
 
 class PeriodosPage extends StatefulWidget {
   const PeriodosPage({super.key});
@@ -35,8 +37,9 @@ class _PeriodosPageState extends State<PeriodosPage> {
       if (dia == null) {
         _periodosFuture = _dbService.obterPeriodos();
       } else {
-        _periodosFuture =
-            _dbService.obterPeriodosFiltradosDiaSemana(dia.nomeComAcento);
+        _periodosFuture = _dbService.obterPeriodosFiltradosDiaSemana(
+          dia.nomeComAcento,
+        );
       }
     });
   }
@@ -49,9 +52,19 @@ class _PeriodosPageState extends State<PeriodosPage> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: const MinhaAppBar(nome: 'Lista de Períodos',
-      icon: iconAdicionar,
-      rota: '/periodAdd'),
+      appBar: MinhaAppBar(
+        nome: 'Lista de Períodos',
+        icon: iconAdicionar,
+        //rota: '/periodAdd',
+        aoPressionar: () async {
+          final resultado = await Navigator.pushNamed(context, '/subjectAdd');
+
+          //Se a página de adicionar devolver true => Adicionado/Removido um Periodo
+          if (resultado == true) {
+            _carregarPeriodos(dia: _diaSelecionado); //Atualiza a lista
+          }
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: altura * paddingAltura,
@@ -78,10 +91,25 @@ class _PeriodosPageState extends State<PeriodosPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Erro: ${snapshot.error}'));
+                    return Center(
+                      child: Text(
+                        'Erro: ${snapshot.error}',
+                        style: TextStyle(
+                          color: corTexto,
+                          fontSize: comprimento * tamanhoTexto,
+                        ),
+                      ),
+                    );
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(
-                        child: Text('Nenhum período encontrado'));
+                    return Center(
+                      child: Text(
+                        'Não foi encontrado nenhum Período na(o) ${_diaSelecionado!.nomeComAcento}',
+                        style: TextStyle(
+                          color: corTexto,
+                          fontSize: comprimento * tamanhoTexto,
+                        ),
+                      ),
+                    );
                   }
 
                   final periodos = snapshot.data!;

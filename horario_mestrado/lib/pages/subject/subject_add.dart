@@ -1,5 +1,6 @@
 //subject_edit.dart
 import 'package:flutter/material.dart';
+import 'package:horario_mestrado/variables/colors.dart';
 //DATABASE
 import '../../database/database_service.dart';
 //MODELS
@@ -82,8 +83,8 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
         await _dbService.adicionarCadeira(cadeiraAdicionada);
 
         if (context.mounted) {
-          //Volta para a página das cadeiras
-          Navigator.pop(context, cadeiraAdicionada);
+          //Volta para a página das cadeiras com valor True
+          Navigator.pop(context, true);
 
           // Show snackbar in the previous screen's context
           Future.microtask(() {
@@ -162,24 +163,31 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
                 label: 'Créditos (ECTS)',
                 keyboardType: TextInputType.number,
                 obrigatorio: true,
+                maxCaracteres: 4,
               ),
               SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _informacaoController,
                 label: 'Informação',
                 maxLinhas: 3,
+                maxCaracteres: 1000,
               ),
               SizedBox(height: altura * distanciaInputs),
               TextInputForm(
                 controller: _professoresController,
                 label: 'Professores (separados por vírgula)',
+                maxCaracteres: 250,
               ),
               SizedBox(height: altura * distanciaInputs),
               Row(
                 children: [
-                  const Text(
+                  Text(
                     'Cadeira concluída?',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: corTexto,
+                      fontSize: comprimento * tamanhoTexto,
+                    ),
                   ),
                   CheckboxForm(
                     valor: _concluida,
@@ -200,6 +208,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
+                  maxCaracteres: 6,
                 ),
               SizedBox(height: altura * distanciaTemas),
               BotaoSubmeter(
