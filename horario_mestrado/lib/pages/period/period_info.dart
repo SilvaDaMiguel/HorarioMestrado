@@ -37,10 +37,6 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    //PADDING
-    double paddingAltura = altura * 0.075;
-    double paddingComprimento = comprimento * 0.06;
-
     return FutureBuilder<Periodo>(
       future: _periodoFuture,
       builder: (context, snapshot) {
@@ -82,8 +78,8 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              vertical: paddingAltura,
-              horizontal: paddingComprimento,
+              vertical: altura * paddingAltura,
+              horizontal: comprimento *paddingComprimento,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +101,7 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
                 ),
                 SizedBox(height: altura * distanciaItens),
                 Text(
-                  'Início: ${periodo.horaInicio}',
+                  'Hora Inicial: ${periodo.horaInicio}',
                   style: TextStyle(
                     fontSize: comprimento * tamanhoTexto,
                     color: corTexto,
@@ -113,7 +109,7 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
                 ),
                 SizedBox(height: altura * distanciaItens),
                 Text(
-                  'Fim: ${periodo.horaFim}',
+                  'Hora Final: ${periodo.horaFim}',
                   style: TextStyle(
                     fontSize: comprimento * tamanhoTexto,
                     color: corTexto,

@@ -57,7 +57,7 @@ class _PeriodosPageState extends State<PeriodosPage> {
         icon: iconAdicionar,
         //rota: '/periodAdd',
         aoPressionar: () async {
-          final resultado = await Navigator.pushNamed(context, '/subjectAdd');
+          final resultado = await Navigator.pushNamed(context, '/periodAdd');
 
           //Se a página de adicionar devolver true => Adicionado/Removido um Periodo
           if (resultado == true) {

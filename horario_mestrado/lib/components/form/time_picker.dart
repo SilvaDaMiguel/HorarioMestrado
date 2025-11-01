@@ -1,3 +1,4 @@
+//time_picker.dart
 import 'package:flutter/material.dart';
 //VARIABLES
 import '../../variables/colors.dart';
@@ -32,10 +33,32 @@ class _TimePickerState extends State<TimePicker> {
       context: context,
       initialTime: horaSelecionada,
       builder: (context, child) {
-        // Personalização opcional para tema dark
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
+        return Theme(
+          data: Theme.of(context).copyWith(
+            //Forçar tema escuro para edição
+            colorScheme: const ColorScheme.dark(
+              primary: corSecundaria,
+              onPrimary: corTexto,
+              surface: corPrimaria,
+              onSurface: corTexto,
+            ),
+            //Força a cor dos botões "Cancelar" / "OK"
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: corTexto, //cor do texto dos botões
+              ),
+            ),
+            //Forçar o texto a ser da cor desejada
+            textTheme: const TextTheme(
+              bodyMedium: TextStyle(color: corTexto),
+              bodyLarge: TextStyle(color: corTexto),
+              titleMedium: TextStyle(color: corTexto),
+            ),
+          ),
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child!,
+          ),
         );
       },
     );

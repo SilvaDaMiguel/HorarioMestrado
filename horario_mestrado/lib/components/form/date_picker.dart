@@ -31,14 +31,26 @@ class _DatePickerState extends State<DatePicker> {
       firstDate: DateTime(2000),
       lastDate: DateTime(3100),
       builder: (context, child) {
-        // Forçar tema escuro se quiseres personalizar
+        //Forçar tema escuro para edição
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.dark(
               primary: corSecundaria,
-              onPrimary: Colors.white,
+              onPrimary: corTexto,
               surface: corPrimaria,
-              onSurface: Colors.white,
+              onSurface: corTexto,
+            ),
+            //Força a cor dos botões "Cancelar" / "OK"
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: corTexto, //cor do texto dos botões
+              ),
+            ),
+            //Forçar o texto a ser da cor desejada
+            textTheme: const TextTheme(
+              bodyMedium: TextStyle(color: corTexto),
+              bodyLarge: TextStyle(color: corTexto),
+              titleMedium: TextStyle(color: corTexto),
             ),
           ),
           child: child!,
