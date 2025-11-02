@@ -6,7 +6,7 @@ Inicialmente, o objetivo era apenas ler ficheiros **JSON** e exibir um **calend�
 <br><br>
 Funcionalidades e Tecnologias <br>
 
-📄 **Leitura de ficheiros JSON** <br>
+💾 **Leitura & Armazenamento ficheiros JSON** <br>
 🗄️ **Base de dados interna** (SQLite)  <br>
 📅 **Calendário interativo**  <br>
 ✏️ **CRUD completo** (Create, Read, Update & Delete)  <br>
