@@ -55,6 +55,7 @@ class _CadeirasPageState extends State<CadeirasPage> {
 
           //Se a página de adicionar devolver true => Adicionado/Removido uma cadeira
           if (resultado == true) {
+            print("Cadeira adicionada ou Apagada!!!");
             _carregarCadeiras(_filtroSelecionado); //Atualiza a lista
           }
         },
@@ -114,7 +115,18 @@ class _CadeirasPageState extends State<CadeirasPage> {
                     itemCount: cadeiras.length,
                     itemBuilder: (context, index) {
                       final cadeira = cadeiras[index];
-                      return CadeiraBox(cadeira: cadeira);
+                      return CadeiraBox(cadeira: cadeira, aoPressionar: () async {
+                        final resultado = await Navigator.pushNamed(
+                            context,
+                            '/subjectInfo',
+                            arguments: cadeira.cadeiraID, //ID do Objeto
+                          );
+
+                          //Se a página de adicionar devolver true => Adicionado/Removido uma Aula
+                          if (resultado == true) {
+                            _carregarCadeiras(_filtroSelecionado);
+                          }
+                      },);
                     },
                   );
                 },

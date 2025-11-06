@@ -135,7 +135,21 @@ class _AulasPageState extends State<AulasPage> {
                     itemCount: aulas.length,
                     itemBuilder: (context, index) {
                       final aula = aulas[index];
-                      return AulaBox(aula: aula);
+                      return AulaBox(
+                        aula: aula,
+                        aoPressionar: () async {
+                          final resultado = await Navigator.pushNamed(
+                            context,
+                            '/classInfo',
+                            arguments: aula.aulaID, //ID do Objeto
+                          );
+
+                          //Se a página de adicionar devolver true => Adicionado/Removido uma Aula
+                          if (resultado == true) {
+                            _carregarAulas();
+                          }
+                        },
+                      );
                     },
                   );
                 },

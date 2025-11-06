@@ -8,8 +8,9 @@ import '../variables/size.dart';
 
 class CadeiraBox extends StatelessWidget {
   final Cadeira cadeira;
+  final VoidCallback? aoPressionar;
 
-  const CadeiraBox({Key? key, required this.cadeira}) : super(key: key);
+  const CadeiraBox({Key? key, required this.cadeira, this.aoPressionar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +60,14 @@ class CadeiraBox extends StatelessWidget {
               Spacer(),
               IconButton(
                 icon: Icon(iconInformacao, color: corTerciaria),
-                onPressed: () {
+                onPressed: aoPressionar ?? () {
+                  print('Sem função atribuída!');
+                  /*
                   Navigator.pushNamed(
                     context,
                     '/subjectInfo',
                     arguments: cadeira.cadeiraID, //ID da Cadeira
-                  );
+                  );*/
                 },
               ),
             ],

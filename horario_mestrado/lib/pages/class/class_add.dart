@@ -96,7 +96,7 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
         return;
       }
 
-      final novaAula = Aula(
+      final aulaAdicionada = Aula(
         aulaID: await _dbService.obterNovoIDAula(),
         cadeiraID: _cadeiraSelecionada!.cadeiraID, //Nunca será Null
         periodoID: _periodoSelecionado!.periodoID, //Nunca será Null
@@ -105,7 +105,7 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
       );
 
       try {
-        await _dbService.adicionarAula(novaAula);
+        await _dbService.adicionarAula(aulaAdicionada);
 
         if (context.mounted) {
           //Volta para a pagina das aulas
@@ -118,6 +118,9 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
             MinhaSnackBar.mostrar(
               Navigator.of(context).context,
               texto: 'Aula adicionada com sucesso!',
+              botao: 'Ver',
+              rota: '/aulaInfo',
+              argumento: aulaAdicionada.aulaID,
             );
           });
         }

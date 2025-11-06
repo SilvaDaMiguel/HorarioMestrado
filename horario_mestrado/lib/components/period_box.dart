@@ -8,8 +8,9 @@ import '../variables/size.dart';
 
 class PeriodoBox extends StatelessWidget {
   final Periodo periodo;
+  final VoidCallback? aoPressionar;
 
-  const PeriodoBox({Key? key, required this.periodo}) : super(key: key);
+  const PeriodoBox({Key? key, required this.periodo, this.aoPressionar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +59,13 @@ class PeriodoBox extends StatelessWidget {
           IconButton(
             icon: Icon(iconInformacao, color: corTerciaria),
             onPressed: () {
+              print('Sem função atribuída!');
+              /*
               Navigator.pushNamed(
                 context,
                 '/periodInfo',
                 arguments: periodo.periodoID, //ID do Objeto
-              );
+              );*/
             },
           ),
         ],

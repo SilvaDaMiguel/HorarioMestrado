@@ -184,7 +184,7 @@ class _AulaInformacaoState extends State<AulaInformacao> {
                         await _dbService.apagarAula(aula.aulaID);
 
                         if (context.mounted) {
-                          Navigator.pop(context, true);
+                          Navigator.pop(context, true); //Devolve true
                           Future.microtask(() {
                             MinhaSnackBar.mostrar(
                               Navigator.of(context).context,

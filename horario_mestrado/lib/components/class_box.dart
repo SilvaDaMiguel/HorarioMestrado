@@ -12,8 +12,9 @@ import '../variables/size.dart';
 
 class AulaBox extends StatefulWidget {
   final Aula aula;
+  final VoidCallback? aoPressionar;
 
-  const AulaBox({Key? key, required this.aula}) : super(key: key);
+  const AulaBox({Key? key, required this.aula, this.aoPressionar}) : super(key: key);
 
   @override
   State<AulaBox> createState() => _AulaBoxState();
@@ -21,6 +22,7 @@ class AulaBox extends StatefulWidget {
 
 class _AulaBoxState extends State<AulaBox> {
   Aula get aula => widget.aula;
+  VoidCallback? get aoPressionar => widget.aoPressionar;
 
   final DataBaseService _dbService = DataBaseService();
   late Future<Cadeira> _cadeiraFuture;
@@ -115,12 +117,14 @@ class _AulaBoxState extends State<AulaBox> {
                     const Spacer(),
                     IconButton(
                       icon: Icon(iconInformacao, color: corTerciaria),
-                      onPressed: () {
+                      onPressed: aoPressionar ?? () {
+                        print('Sem função atribuída');
+                        /*
                         Navigator.pushNamed(
                           context,
                           '/classInfo',
                           arguments: aula.aulaID, //ID do Objeto
-                        );
+                        );*/
                       },
                     ),
                   ],

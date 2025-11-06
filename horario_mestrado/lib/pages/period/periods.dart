@@ -117,7 +117,18 @@ class _PeriodosPageState extends State<PeriodosPage> {
                     itemCount: periodos.length,
                     itemBuilder: (context, index) {
                       final periodo = periodos[index];
-                      return PeriodoBox(periodo: periodo);
+                      return PeriodoBox(periodo: periodo, aoPressionar: () async {
+                        final resultado = await Navigator.pushNamed(
+                            context,
+                            '/periodInfo',
+                            arguments: periodo.periodoID, //ID do Objeto
+                          );
+
+                          //Se a página de adicionar devolver true => Adicionado/Removido uma Aula
+                          if (resultado == true) {
+                            _carregarPeriodos();
+                          }
+                      },);
                     },
                   );
                 },
