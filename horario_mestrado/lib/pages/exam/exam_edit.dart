@@ -143,8 +143,8 @@ class _ProvaEditarState extends State<ProvaEditar> {
           //Volta para a pagina das provas
           Navigator.pop(
             context,
-            true,
-          ); //Devolve True porque uma prova foi atualizada
+            provaAtualizada,
+          ); 
 
           Future.microtask(() {
             MinhaSnackBar.mostrar(
