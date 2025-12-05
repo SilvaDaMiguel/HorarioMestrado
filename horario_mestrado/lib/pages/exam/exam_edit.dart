@@ -150,7 +150,6 @@ class _ProvaEditarState extends State<ProvaEditar> {
             MinhaSnackBar.mostrar(
               Navigator.of(context).context,
               texto: 'Prova atualizada com sucesso!',
-              botao: 'Ver',
             );
           });
         }
