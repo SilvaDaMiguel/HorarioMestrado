@@ -151,8 +151,6 @@ class _ProvaEditarState extends State<ProvaEditar> {
               Navigator.of(context).context,
               texto: 'Prova atualizada com sucesso!',
               botao: 'Ver',
-              rota: '/examInfo',
-              argumento: provaAtualizada.provaID,
             );
           });
         }

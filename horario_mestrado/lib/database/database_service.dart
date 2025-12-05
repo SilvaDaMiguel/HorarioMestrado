@@ -408,10 +408,7 @@ class DataBaseService {
 
   Future<List<Prova>> obterProvas() async {
     final db = await _dbProvider.database;
-    final result = await db.query(
-      'Prova',
-      orderBy: 'data, horaInicio', //Ordenar por data e hora de início
-    );
+    final result = await db.query('Prova');
     return result.map((e) => Prova.fromMap(e)).toList();
   }
 
@@ -424,7 +421,6 @@ class DataBaseService {
       where:
           'epoca = ? AND tipo = ?', //Condição WHERE (ex: "epoca = "normal" AND tipo = "quiz")
       whereArgs: filtro,
-      orderBy: 'data, horaInicio', //Ordenar por data e hora de início
     );
 
     return result.map((e) => Prova.fromMap(e)).toList();

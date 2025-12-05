@@ -4,10 +4,12 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 //MODELS
 import '../models/aula.dart';
+import '../models/prova.dart'; // NOVO
 //DATABASE
 import '../database/database_service.dart';
 //COMPONENTS
 import '../components/today_class_box.dart';
+import '../components/today_exam_box.dart'; // NOVO
 import '../components/structure/navigation_bar.dart';
 import '../components/structure/app_bar.dart';
 //FUNCTIONS
@@ -24,30 +26,40 @@ class CalendarioPage extends StatefulWidget {
 }
 
 class _CalendarioPageState extends State<CalendarioPage> {
-  //Map<DateTime, List<Aula>> para o TableCalendar
+  //Map<DateTime, List<Aula>> para o TableCalendar (apenas aulas)
   Map<DateTime, List<Aula>> listaAulas = {};
+  //Map<DateTime, List<Prova>> para as provas
+  Map<DateTime, List<Prova>> listaProvas = {};
+  //Map combinado para todos os eventos (Aulas e Provas)
+  Map<DateTime, List<dynamic>> listaEventos = {};
+
   final CalendarFormat _calendarFormat =
       CalendarFormat.month; //Formato inicial do calendário
-  DateTime _diaSelecionado = DateTime.now(); // Dia atualmente selecionado
-  List<Aula> _aulasDoDia = []; // Lista de listaAulas do dia selecionado
+  DateTime _diaSelecionado = DateTime.now(); //Dia atualmente selecionado
+  //Lista de eventos (Aulas e Provas) do dia selecionado
+  List<dynamic> _eventosDoDia = []; // ALTERADO: De List<Aula> para List<dynamic>
 
   @override
   void initState() {
     super.initState();
-    //Carrega horários da base de dados
-    DataBaseService().obterAulas().then((aulas) {
-      carregarAulas(aulas);
-      //Inicialmente mostra os horários do dia atual
+    //Carrega horários (aulas e provas) da base de dados
+    Future.wait([
+      DataBaseService().obterAulas(),
+      DataBaseService().obterProvas(),
+    ]).then((resultados) {
+      carregarAulas(resultados[0] as List<Aula>);
+      carregarProvas(resultados[1] as List<Prova>);
+      combinarEventos(); //Combina aulas e provas
+      //Mostra os eventos do dia atual
       selecionarDia(_diaSelecionado);
     });
   }
 
   //Converte lista de Aulas para o Map<DateTime, List<Aula>>
   void carregarAulas(List<Aula> aulas) {
-    listaAulas = {}; // limpa antes
+    listaAulas = {}; //limpa antes
 
     for (var aula in aulas) {
-      //DateTime dia = removerHora(DateFormat('dd-MM-yyyy').parse(aula.data));
       DateTime dia = removerHora(stringDDMMYYYYParaDateTime(aula.data)!);
 
       if (!listaAulas.containsKey(dia)) {
@@ -55,29 +67,51 @@ class _CalendarioPageState extends State<CalendarioPage> {
       }
       listaAulas[dia]!.add(aula);
     }
-
-    /*
-    print("Aulas carregadas:");
-    listaAulas.forEach((d, lista) {
-      print("Dia $d -> ${lista.length} listaAulas");
-    });*/
-
-    setState(() {});
   }
 
-  //Seleciona um dia e atualiza a lista de listaAulas
+  //Converte a lista de Provas para o Map<DateTime, List<Prova>>
+  void carregarProvas(List<Prova> provas) {
+    listaProvas = {}; //limpa antes
+
+    for (var prova in provas) {
+      DateTime dia = removerHora(stringDDMMYYYYParaDateTime(prova.data)!);
+
+      if (!listaProvas.containsKey(dia)) {
+        listaProvas[dia] = [];
+      }
+      listaProvas[dia]!.add(prova);
+    }
+  }
+
+  //Combina as aulas e provas em um único Map de eventos
+  void combinarEventos() {
+    listaEventos = {};
+    
+    //Adiciona aulas
+    listaAulas.forEach((dia, eventos) {
+      listaEventos[dia] = [...eventos];
+    });
+
+    //Adiciona provas (e combina se já houver aulas)
+    listaProvas.forEach((dia, eventos) {
+      if (listaEventos.containsKey(dia)) {
+        listaEventos[dia]!.addAll(eventos);
+      } else {
+        listaEventos[dia] = [...eventos];
+      }
+    });
+
+    setState(() {}); //Após carregar e combinar tudo
+  }
+
+  //Seleciona um dia e atualiza a lista de eventos (aulas e provas)
   void selecionarDia(DateTime dia) {
     final DateTime diaSemHora = removerHora(dia);
     //print("Selecionar dia: $diaSemHora");
 
     setState(() {
       _diaSelecionado = diaSemHora;
-      _aulasDoDia = listaAulas[diaSemHora] ?? [];
-      /*
-      print("Aulas carregadas: ${_aulasDoDia.length}");
-      for (var a in _aulasDoDia) {
-        print("  -> ${a.data}  ${a.sala}");
-      }*/
+      _eventosDoDia = listaEventos[diaSemHora] ?? []; //ALTERADO: Usa listaEventos
     });
   }
 
@@ -89,7 +123,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: MinhaAppBar(nome: 'Calendário de Aulas'),
+      appBar: MinhaAppBar(nome: 'Calendário de Eventos'),
       body: Column(
         children: [
           TableCalendar(
@@ -114,7 +148,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
             lastDay: DateTime(2125, 1, 1),
             focusedDay: _diaSelecionado,
             calendarFormat: _calendarFormat,
-            eventLoader: (dia) => listaAulas[removerHora(dia)] ?? [],
+            eventLoader: (dia) => listaEventos[removerHora(dia)] ?? [], // ALTERADO
             locale: 'pt_BR', // Definir o idioma como português
             //PT: "segunda" "terça" / BR: "seg." "ter." => Por isso a escolha do BR
             calendarStyle: CalendarStyle(
@@ -122,10 +156,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
                 color: corSecundaria,
                 shape: BoxShape.circle,
               ),
-              markerDecoration: BoxDecoration(
-                color: corTexto,
-                shape: BoxShape.circle,
-              ),
+              //removido markerDecoration para que o custom builder funcione corretamente.
               selectedDecoration: BoxDecoration(
                 color: corTerciaria,
                 shape: BoxShape.circle,
@@ -143,6 +174,42 @@ class _CalendarioPageState extends State<CalendarioPage> {
               weekendStyle: TextStyle(
                 color: corTerciaria,
               ), //Cor dos finais de semana (sábado e domingo)
+            ),
+            //Lógica para múltiplos marcadores de cores diferentes
+            calendarBuilders: CalendarBuilders(
+              markerBuilder: (context, day, events) {
+                if (events.isEmpty) {
+                  return null;
+                }
+                
+                //Map de eventos para widgets de marcador (dots)
+                final List<Widget> dots = events.map((event) {
+                  //Define a cor para Provas e Aulas
+                  Color markerColor = event is Prova ? corTerciaria : corTexto;
+                  return Container(
+                    width: 6.0,
+                    height: 6.0,
+                    margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: markerColor,
+                    ),
+                  );
+                }).toList();
+                
+                //Limita a 5 pontos e mostra-os em uma linha na parte inferior
+                //Isso mantém a funcionalidade dos "pontinhos" com cores distintas.
+                return Positioned(
+                  bottom: 1,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: dots.take(5).toList(), //Limita a 5 dots visíveis
+                  ),
+                );
+              },
             ),
             selectedDayPredicate: (day) {
               //Necessário para o TableCalendar reconhecer o dia selecionado
@@ -164,7 +231,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
             child: Row(
               children: [
                 Text(
-                  'Aulas de ${formatarDataDDMMYYYY(_diaSelecionado)}',
+                  'Eventos de ${formatarDataDDMMYYYY(_diaSelecionado)}',
                   style: TextStyle(
                     fontSize: comprimento * tamanhoTitulo,
                     fontWeight: FontWeight.bold,
@@ -177,12 +244,12 @@ class _CalendarioPageState extends State<CalendarioPage> {
 
           SizedBox(height: altura * distanciaItens),
 
-          // Lista de listaAulas do dia selecionado
+          //Lista de eventos (aulas e provas) do dia selecionado
           Expanded(
-            child: _aulasDoDia.isEmpty
+            child: _eventosDoDia.isEmpty
                 ? Center(
                     child: Text(
-                      'Nenhuma aula neste dia',
+                      'Nenhum evento neste dia',
                       style: TextStyle(
                         color: corTexto,
                         fontSize: comprimento * tamanhoTexto,
@@ -194,10 +261,15 @@ class _CalendarioPageState extends State<CalendarioPage> {
                       horizontal: comprimento * paddingComprimento,
                       vertical: altura * paddingAltura,
                     ),
-                    itemCount: _aulasDoDia.length,
+                    itemCount: _eventosDoDia.length,
                     itemBuilder: (context, index) {
-                      Aula a = _aulasDoDia[index];
-                      return AulaCalendarioBox(aula: a);
+                      final item = _eventosDoDia[index];
+                      if (item is Aula) {
+                        return AulaCalendarioBox(aula: item);
+                      } else if (item is Prova) {
+                        return ProvaCalendarioBox(prova: item);
+                      }
+                      return Container();
                     },
                   ),
           ),
