@@ -22,7 +22,7 @@ extension DiaSemanaExtension on DiaSemana {
   }
 }
 
-enum Ficheiros { cadeiras, periodos, aulas }
+enum Ficheiros { cadeiras, periodos, aulas, provas }
 
 //Converter o Enum em String e Corretamente!
 extension FicheirosExtension on Ficheiros {
@@ -34,6 +34,8 @@ extension FicheirosExtension on Ficheiros {
         return 'periodos';
       case Ficheiros.aulas:
         return 'aulas';
+      case Ficheiros.provas:
+        return 'provas';
     }
   }
 }
@@ -105,6 +107,40 @@ extension FiltroCadeirasIntExtension on FiltroCadeiras {
         return [2, 1];
       case FiltroCadeiras.ano2semestre2:
         return [2, 2];
+    }
+  }
+}
+
+enum TipoProva { frequencia, quiz, exame, outro } 
+
+extension TipoProvaStringExtension on TipoProva {
+  String get nomeTipoProva {
+    switch (this) {
+      case TipoProva.frequencia:
+        return 'Frequência';
+      case TipoProva.quiz:
+        return 'Quiz';
+      case TipoProva.exame:
+        return 'Exame';
+      case TipoProva.outro:
+        return 'Outro';
+    }
+  }
+}
+
+enum Epoca { normal, recurso, especial, extraordinaria}
+
+extension EpocaStringExtension on Epoca{
+  String get nomeEpoca {
+    switch (this) {
+      case Epoca.normal:
+        return 'Normal';
+      case Epoca.recurso:
+        return 'Recurso';
+      case Epoca.especial:
+        return 'Especial';
+      case Epoca.extraordinaria:
+        return 'Extraordinária';
     }
   }
 }

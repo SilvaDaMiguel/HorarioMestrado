@@ -23,8 +23,9 @@ class DatabaseProvider {
 
     return await openDatabase(
       path,
-      version: 1, //Incrementa se mudar a versão da base de dados
+      version: 2, //Incrementar se mudar a versão da base de dados
       onCreate: _createDB,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -65,9 +66,37 @@ class DatabaseProvider {
       )
     ''');
 
+    await _version2Upgrade(db);
+
     //Adiciona os dados à base de dados com os JSON
     final seeder = DatabaseSeeder(db);
     await seeder.seedDatabase();
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+  if (oldVersion < 2) {
+    await _version2Upgrade(db);
+  }
+}
+
+  Future<void> _version2Upgrade(Database db) async{
+    //Código SQL para a nova tabela Prova
+    await db.execute('''
+      CREATE TABLE Prova (
+        provaID INTEGER PRIMARY KEY,
+        cadeiraID INTEGER,
+        sala TEXT,
+        data TEXT,
+        horaInicio TEXT,
+        horaFim TEXT,
+        tipo TEXT,
+        epoca TEXT,
+        informacao TEXT,
+        nota REAL,
+        concluido INTEGER,
+        FOREIGN KEY (cadeiraID) REFERENCES Cadeira(cadeiraID)
+      )
+    ''');
   }
 
   //Apagar a base de dados (usado para reset)

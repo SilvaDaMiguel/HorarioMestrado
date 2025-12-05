@@ -5,6 +5,7 @@ import 'storage_json.dart';
 import '../models/periodo.dart';
 import '../models/cadeira.dart';
 import '../models/aula.dart';
+import '../models/prova.dart';
 //VARIABLES
 import '../variables/enums.dart';
 //FUNCTIONS
@@ -383,6 +384,35 @@ class DataBaseService {
     }
 
     return linhasAfetadas;
+  }
+
+  //PROVA
+  Future<List<Prova>> obterProvas() async {
+    final db = await _dbProvider.database;
+    final result = await db.query('Prova');
+    return result.map((e) => Prova.fromMap(e)).toList();
+  }
+
+  Future<int> obterNovoIDProva() async {
+    final db = await _dbProvider.database;
+    final result = await db.rawQuery(
+      'SELECT MAX(provaID) as maxId FROM Prova',
+    );
+    final maxId = result.first['maxId'] as int?;
+    return (maxId ?? 0) + 1;
+  }
+
+  Future<int> adicionarProva(Prova prova) async {
+    final db = await _dbProvider.database;
+    final id = await db.insert('Prova', prova.toMap());
+
+    //Adiciona o novo item ao JSON LOCAL
+    await JsonCrud.adicionarDadoJSON(
+      '${Ficheiros.provas.nomeFicheiro}.json',
+      prova.toMap(),
+    );
+
+    return id;
   }
 
   //RESET => PERIGO

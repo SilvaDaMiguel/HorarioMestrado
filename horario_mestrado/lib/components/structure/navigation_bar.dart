@@ -41,6 +41,9 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         case 3:
           Navigator.pushReplacementNamed(context, '/classes');
           break;
+        case 4:
+          Navigator.pushReplacementNamed(context, '/exams');
+          break;
         default:
           Navigator.pushReplacementNamed(context, '/error');
           break;
@@ -97,6 +100,9 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           BottomNavigationBarItem(
             icon: _buildIcon(Icons.school, selectedIndex == 3),
             label: 'Aulas',
+          ),BottomNavigationBarItem(
+            icon: _buildIcon(Icons.work, selectedIndex == 4),
+            label: 'Provas',
           ),
         ],
         currentIndex: selectedIndex,

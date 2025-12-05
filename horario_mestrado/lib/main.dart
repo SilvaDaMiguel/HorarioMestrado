@@ -16,6 +16,8 @@ import 'pages/period/periods.dart';
 import 'pages/period/period_info.dart';
 import 'pages/period/period_edit.dart';
 import 'pages/period/period_add.dart';
+import 'pages/exam/exams.dart';
+import 'pages/exam/exam_add.dart';
 import 'pages/error.dart';
 //MODELS
 import 'models/aula.dart';
@@ -33,6 +35,7 @@ void main() async {
   await JsonStorage.initJsonFile('${Ficheiros.cadeiras.nomeFicheiro}.json');
   await JsonStorage.initJsonFile('${Ficheiros.periodos.nomeFicheiro}.json');
   await JsonStorage.initJsonFile('${Ficheiros.aulas.nomeFicheiro}.json');
+  await JsonStorage.initJsonFile('${Ficheiros.provas.nomeFicheiro}.json');
   runApp(const MyApp());
 }
 
@@ -55,7 +58,8 @@ class MyApp extends StatelessWidget {
           //Usa argumento
           final args = ModalRoute.of(context)!.settings.arguments as int;
           return CadeiraInformacao(
-              cadeiraID: args); //Passa o ID da Cadeira como argumento
+            cadeiraID: args,
+          ); //Passa o ID da Cadeira como argumento
         },
         '/subjectEdit': (context) {
           //Usa argumento
@@ -68,7 +72,8 @@ class MyApp extends StatelessWidget {
           //usando uma rota nomeada com parâmetros/argumentos
           final args = ModalRoute.of(context)!.settings.arguments as int;
           return AulaInformacao(
-              aulaID: args); // Passa os argumentos para a página
+            aulaID: args,
+          ); // Passa os argumentos para a página
         },
         '/classEdit': (context) {
           final args = ModalRoute.of(context)!.settings.arguments as Aula;
@@ -80,7 +85,8 @@ class MyApp extends StatelessWidget {
           //Usa argumento
           final args = ModalRoute.of(context)!.settings.arguments as int;
           return PeriodoInformacao(
-              periodoID: args); //Passa o ID do Periodo como argumento
+            periodoID: args,
+          ); //Passa o ID do Periodo como argumento
         },
         '/periodEdit': (context) {
           //Usa argumento
@@ -88,6 +94,8 @@ class MyApp extends StatelessWidget {
           return PeriodoEditar(periodo: args); //Passa o Periodo como argumento
         },
         '/periodAdd': (context) => const PeriodoAdicionar(),
+        '/exams': (context) => const ProvasPage(),
+        '/examAdd': (context) => const ProvaAdicionar(),
         '/error': (context) => const ErrorPage(),
       },
       locale: Locale('pt', 'PT'), //Define o idioma para o calendário

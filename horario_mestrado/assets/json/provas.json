@@ -1,0 +1,28 @@
+[
+    {
+        "id": 1,
+        "cadeiraId": 3,
+        "sala": "L3",
+        "data": "15-11-2025",
+        "horaInicial": "8:30",
+        "horaFinal": "10:00",
+        "tipo": "Quiz",
+        "epoca": "Normal",
+        "informacao": "Presencial, Google Forms, Computador",
+        "nota": 19.15,
+        "concluido": 1
+    },
+    {
+        "id": 2,
+        "cadeiraId": 3,
+        "sala": "L3",
+        "data": "06-12-2025",
+        "horaInicial": "8:00",
+        "horaFinal": "10:00",
+        "tipo": "Quiz",
+        "epoca": "Normal",
+        "informacao": "Presencial, Google Forms, Computador",
+        "nota": null,
+        "concluido": 0
+    }
+]
