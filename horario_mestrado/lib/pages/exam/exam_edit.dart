@@ -23,45 +23,68 @@ import '../../components/form/submit_button.dart';
 //FUNCTIONS
 import '../../functions.dart';
 
-class ProvaAdicionar extends StatefulWidget {
-  const ProvaAdicionar({super.key});
+class ProvaEditar extends StatefulWidget {
+  final Prova prova;
+
+  const ProvaEditar({super.key, required this.prova});
 
   @override
-  State<ProvaAdicionar> createState() => _ProvaAdicionarState();
+  State<ProvaEditar> createState() => _ProvaEditarState();
 }
 
-class _ProvaAdicionarState extends State<ProvaAdicionar> {
+class _ProvaEditarState extends State<ProvaEditar> {
   final DataBaseService _dbService = DataBaseService();
   final _formKey = GlobalKey<FormState>();
 
   // Controladores
-  final TextEditingController _salaController = TextEditingController();
-  final TextEditingController _informacaoController = TextEditingController();
-  final TextEditingController _notaController = TextEditingController();
+  late TextEditingController _salaController;
+  late TextEditingController _informacaoController;
+  late TextEditingController _notaController;
 
   //Outros inputs
   DateTime _diaSelecionado = DateTime.now();
-  late TimeOfDay _horaInicioSelecionada = TimeOfDay.now();
-  late TimeOfDay _horaFimSelecionada = TimeOfDay.now();
+  late TimeOfDay _horaInicioSelecionada;
+  late TimeOfDay _horaFimSelecionada;
 
-  late TipoProva _tipoProvaSelecionado = TipoProva.frequencia;
-  late Epoca _epocaSelecioanda = Epoca.normal;
+  late TipoProva _tipoProvaSelecionado;
+  late Epoca _epocaSelecionada;
 
   Cadeira? _cadeiraSelecionada;
   List<Cadeira> _cadeirasDisponiveis = [];
 
-  bool _concluido = false;
+  late bool _concluido;
 
   @override
   void initState() {
     super.initState();
+    final provaInicial = widget.prova;
+
+    _salaController = TextEditingController(text: provaInicial.sala);
+    _informacaoController = TextEditingController(text: provaInicial.informacao);
+    _notaController = TextEditingController(text: provaInicial.nota?.toString() ?? '');
+    
+    _concluido = provaInicial.concluido;
+
+    _diaSelecionado = stringDDMMYYYYParaDateTime(provaInicial.data)!;//Nunca será Null
+    _horaInicioSelecionada = stringParaTimeOfDay(provaInicial.horaInicio)!; //Nunca será Null
+    _horaFimSelecionada = stringParaTimeOfDay(provaInicial.horaFim)!; //Nunca será Null
+  
+    _tipoProvaSelecionado = TipoProva.values.firstWhere(
+      (tipo) => tipo.nomeTipoProva == provaInicial.tipo,
+    );
+    _epocaSelecionada = Epoca.values.firstWhere(
+      (epoca) => epoca.nomeEpoca == provaInicial.epoca,
+    );
+
     _carregarCadeiras();
   }
 
   Future<void> _carregarCadeiras() async {
     final cadeiras = await _dbService.obterCadeiras();
+    final cadeiraInicial = await _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
     setState(() {
       _cadeirasDisponiveis = cadeiras;
+      _cadeiraSelecionada = cadeiraInicial;
     });
   }
 
@@ -73,7 +96,7 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
     super.dispose();
   }
 
-  Future<void> _guardarProva() async {
+  Future<void> _guardarAlteracoes() async {
     if (_formKey.currentState!.validate()) {
       if (!verificarHoraInicioFim(
         _horaInicioSelecionada,
@@ -99,43 +122,43 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
           ? 'Sem informação'
           : _informacaoController.text.trim();
 
-      final provaAdicionada = Prova(
-        provaID: await _dbService.obterNovoIDProva(),
+      final provaAtualizada = Prova(
+        provaID: widget.prova.provaID,
         cadeiraID: _cadeiraSelecionada!.cadeiraID, //Nunca será Null
         sala: sala, //Pode ser ? para o caso de ainda não ter sido definida
         data: formatarDataDDMMYYYY(_diaSelecionado),
         horaInicio: timeOfDayParaString(_horaInicioSelecionada),
         horaFim: timeOfDayParaString(_horaFimSelecionada),
         tipo: _tipoProvaSelecionado.nomeTipoProva,
-        epoca: _epocaSelecioanda.nomeEpoca,
+        epoca: _epocaSelecionada.nomeEpoca,
         informacao: informacao,
         concluido: _concluido,
         nota: nota,
       );
 
       try {
-        await _dbService.adicionarProva(provaAdicionada);
+        await _dbService.atualizarProva(provaAtualizada);
 
         if (context.mounted) {
           //Volta para a pagina das provas
           Navigator.pop(
             context,
             true,
-          ); //Devolve True porque uma prova foi adicionada
+          ); //Devolve True porque uma prova foi atualizada
 
           Future.microtask(() {
             MinhaSnackBar.mostrar(
               Navigator.of(context).context,
-              texto: 'Prova adicionada com sucesso!',
+              texto: 'Prova atualizada com sucesso!',
               botao: 'Ver',
               rota: '/examInfo',
-              argumento: provaAdicionada.provaID,
+              argumento: provaAtualizada.provaID,
             );
           });
         }
       } catch (e) {
         if (context.mounted) {
-          MinhaSnackBar.mostrar(context, texto: 'Erro ao adicionar prova: $e');
+          MinhaSnackBar.mostrar(context, texto: 'Erro ao atualizar prova: $e');
         }
       }
     }
@@ -187,13 +210,13 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
               ),
               SizedBox(height: altura * distanciaInputs),
               EpocaDropdown(
-                valorSelecionado: _epocaSelecioanda,
+                valorSelecionado: _epocaSelecionada,
                 label: 'Selecionar Época',
                 obrigatorio: true,
                 onValueChanged: (novoValor) {
                   if (novoValor != null) {
                     setState(() {
-                      _epocaSelecioanda = novoValor;
+                      _epocaSelecionada = novoValor;
                     });
                   }
                 },
@@ -328,8 +351,8 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
                 ),
               SizedBox(height: altura * distanciaTemas),
               BotaoSubmeter(
-                texto: 'Adicionar Prova',
-                aoPressionar: _guardarProva,
+                texto: 'Guardar Alterações',
+                aoPressionar: _guardarAlteracoes,
               ),
             ],
           ),

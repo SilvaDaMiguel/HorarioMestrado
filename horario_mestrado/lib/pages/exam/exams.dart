@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:horario_mestrado/variables/icons.dart';
 // COMPONENTS
 import '../../components/structure/navigation_bar.dart';
-import '../../components/subject_box.dart';
+import '../../components/exam_box.dart';
 import '../../components/structure/app_bar.dart';
+import '../../components/dropdown/dropdown_epoca.dart';
+import '../../components/dropdown/dropdown_tipoProva.dart';
 // DATABASE
 import '../../database/database_service.dart';
 // MODELS
@@ -24,6 +26,9 @@ class _ProvasPageState extends State<ProvasPage> {
   final DataBaseService _dbService = DataBaseService();
   late Future<List<Prova>> _provasFuture;
 
+  Epoca _epocaSelecionada = Epoca.normal;
+  TipoProva _tipoProvaSelecionado = TipoProva.exame;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +37,7 @@ class _ProvasPageState extends State<ProvasPage> {
 
   void _carregarProvas() {
     setState(() {
-      _provasFuture = _dbService.obterProvas();
+      _provasFuture = _dbService.obterProvasFiltradas([_epocaSelecionada.nomeEpoca, _tipoProvaSelecionado.nomeTipoProva]);
     });
   }
 
@@ -65,8 +70,33 @@ class _ProvasPageState extends State<ProvasPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
-            //SizedBox(height: altura * distanciaTemas),
+             Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: EpocaDropdown(
+                    label: 'Época',
+                    valorSelecionado: _epocaSelecionada,
+                    onValueChanged: (novoTempo) {
+                      _epocaSelecionada = novoTempo!;
+                      _carregarProvas();
+                    },
+                    )
+                ),
+                SizedBox(width: comprimento * paddingComprimento),
+                Expanded(
+                  flex: 1,
+                  child: TipoProvaDropdown(
+                    label: 'Tipo da Prova',
+                    valorSelecionado: _tipoProvaSelecionado,
+                    onValueChanged: (novoTipo) {
+                      _tipoProvaSelecionado = novoTipo!;
+                      _carregarProvas();
+                    },
+                  ),
+                ),
+              ],
+            ),
             //CONTEÚDO DINÂMICO (LISTA)
             Expanded(
               child: FutureBuilder<List<Prova>>(
@@ -101,13 +131,18 @@ class _ProvasPageState extends State<ProvasPage> {
                     itemCount: provas.length,
                     itemBuilder: (context, index) {
                       final prova = provas[index];
-                      return Text(
-                        'Prova ID: ${prova.provaID}, Cadeira ID: ${prova.cadeiraID}, Data: ${prova.data}, Hora Início: ${prova.horaInicio}, Hora Fim: ${prova.horaFim}, Tipo: ${prova.tipo}, Época: ${prova.epoca}, Sala: ${prova.sala}, Informação: ${prova.informacao}, Nota: ${prova.nota ?? 'N/A'}, Concluído: ${prova.concluido ? 'Sim' : 'Não'}',
-                        style: TextStyle(
-                          color: corTexto,
-                          fontSize: comprimento * tamanhoTexto,
-                        ),
-                      );
+                      return ProvaBox(prova: prova, aoPressionar: () async {
+                          final resultado = await Navigator.pushNamed(
+                            context,
+                            '/examInfo',
+                            arguments: prova.provaID, //ID do Objeto
+                          );
+
+                          //Se a página de adicionar devolver true => Adicionado/Removido uma Prova
+                          if (resultado == true) {
+                            _carregarProvas();
+                          }
+                        },);
                     },
                   );
                 },

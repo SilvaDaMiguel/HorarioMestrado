@@ -41,6 +41,7 @@ class CadeiraBox extends StatelessWidget {
               color: corTexto,
             ),
           ),
+          SizedBox(height: altura * distanciaItensBox),
           Row(
             children: [
               //Linha com o número de professores e créditos

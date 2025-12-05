@@ -3,26 +3,34 @@ import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart';
 //PAGES
-import 'pages/class/class_info.dart';
 import 'pages/calendar.dart';
+//subjects
 import 'pages/subject/subjects.dart';
 import 'pages/subject/subject_info.dart';
 import 'pages/subject/subject_edit.dart';
 import 'pages/subject/subject_add.dart';
+//classes
 import 'pages/class/classes.dart';
 import 'pages/class/class_add.dart';
 import 'pages/class/class_edit.dart';
+import 'pages/class/class_info.dart';
+//periods
 import 'pages/period/periods.dart';
 import 'pages/period/period_info.dart';
 import 'pages/period/period_edit.dart';
 import 'pages/period/period_add.dart';
+//exames
 import 'pages/exam/exams.dart';
 import 'pages/exam/exam_add.dart';
+import 'pages/exam/exam_info.dart';
+import 'pages/exam/exam_edit.dart';
+//outros
 import 'pages/error.dart';
 //MODELS
 import 'models/aula.dart';
 import 'models/cadeira.dart';
 import 'models/periodo.dart';
+import 'models/prova.dart';
 //VARIABLES
 import 'variables/colors.dart';
 import 'variables/enums.dart';
@@ -96,6 +104,18 @@ class MyApp extends StatelessWidget {
         '/periodAdd': (context) => const PeriodoAdicionar(),
         '/exams': (context) => const ProvasPage(),
         '/examAdd': (context) => const ProvaAdicionar(),
+        '/examInfo': (context) {
+          //Usa argumento
+          final args = ModalRoute.of(context)!.settings.arguments as int;
+          return ProvaInformacao(
+            provaID: args,
+          ); //Passa o ID da Prova como argumento
+        },
+        '/examEdit': (context) {
+          //Usa argumento
+          final args = ModalRoute.of(context)!.settings.arguments as Prova;
+          return ProvaEditar(prova: args); //Passa a Prova como argumento
+        },
         '/error': (context) => const ErrorPage(),
       },
       locale: Locale('pt', 'PT'), //Define o idioma para o calendário

@@ -1,40 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:horario_mestrado/functions.dart';
+import 'package:horario_mestrado/variables/enums.dart';
 //MODELS
-import '../models/aula.dart';
+import '../models/prova.dart';
 import '../models/cadeira.dart';
-import '../models/periodo.dart';
 //DATABASE
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
 import '../variables/icons.dart';
 import '../variables/size.dart';
+//FUNCTIONS
 
-class AulaBox extends StatefulWidget {
-  final Aula aula;
+class ProvaBox extends StatefulWidget {
+  final Prova prova;
   final VoidCallback? aoPressionar;
 
-  const AulaBox({Key? key, required this.aula, this.aoPressionar}) : super(key: key);
+  const ProvaBox({Key? key, required this.prova, this.aoPressionar}) : super(key: key);
 
   @override
-  State<AulaBox> createState() => _AulaBoxState();
+  State<ProvaBox> createState() => _ProvaBoxState();
 }
 
-class _AulaBoxState extends State<AulaBox> {
-  Aula get aula => widget.aula;
+class _ProvaBoxState extends State<ProvaBox> {
+  Prova get prova => widget.prova;
   VoidCallback? get aoPressionar => widget.aoPressionar;
 
   final DataBaseService _dbService = DataBaseService();
   late Future<Cadeira> _cadeiraFuture;
-  late Future<Periodo> _periodoFuture;
 
   @override
   void initState() {
     super.initState();
-    //Carrega a cadeira relacionada à aula
-    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
-    // Carrega o período relacionado à aula
-    _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
+    //Carrega a cadeira relacionada à prova
+    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
   }
 
   @override
@@ -43,10 +42,10 @@ class _AulaBoxState extends State<AulaBox> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    return FutureBuilder(
-      //Espera pelos dois Futures usando Future.wait
-      future: Future.wait([_cadeiraFuture, _periodoFuture]),
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+    return FutureBuilder<Cadeira>(
+      //Espera apenas pelo Future da cadeira
+      future: _cadeiraFuture,
+      builder: (context, AsyncSnapshot<Cadeira> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           //Mostra algo enquanto os dados estão a carregar
           return Container(
@@ -58,14 +57,13 @@ class _AulaBoxState extends State<AulaBox> {
           return Container(
             padding: EdgeInsets.all(16),
             child: Text(
-              'Erro ao carregar a aula',
+              'Erro ao carregar a prova',
               style: TextStyle(color: Colors.red),
             ),
           );
         } else {
           //Dados carregados com sucesso
-          final Cadeira cadeira = snapshot.data![0] as Cadeira;
-          final Periodo periodo = snapshot.data![1] as Periodo;
+          final Cadeira cadeira = snapshot.data!;
 
           return Container(
             margin: EdgeInsets.symmetric(vertical: altura * marginAlura),
@@ -82,7 +80,7 @@ class _AulaBoxState extends State<AulaBox> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${cadeira.sigla} - ${cadeira.nome}',
+                  '${prova.tipo} ${cadeira.sigla} - ${cadeira.nome}',
                   style: TextStyle(
                     fontSize: comprimento * tamanhoTexto,
                     fontWeight: FontWeight.bold,
@@ -98,14 +96,14 @@ class _AulaBoxState extends State<AulaBox> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${aula.data}, ${periodo.diaSemana}',
+                            '${prova.data}, ${obterDiaSemana(stringDDMMYYYYParaDateTime(prova.data)!).nomeComAcento}',
                             style: TextStyle(
                               fontSize: comprimento * tamanhoSubTexto,
                               color: corTexto,
                             ),
                           ),
                           Text(
-                            '${periodo.horaInicio} - ${periodo.horaFim}',
+                            '${prova.horaInicio} - ${prova.horaFim}',
                             style: TextStyle(
                               fontSize: comprimento * tamanhoSubTexto,
                               color: corTexto,
@@ -119,12 +117,6 @@ class _AulaBoxState extends State<AulaBox> {
                       icon: Icon(iconInformacao, color: corTerciaria),
                       onPressed: aoPressionar ?? () {
                         print('Sem função atribuída');
-                        /*
-                        Navigator.pushNamed(
-                          context,
-                          '/classInfo',
-                          arguments: aula.aulaID, //ID do Objeto
-                        );*/
                       },
                     ),
                   ],

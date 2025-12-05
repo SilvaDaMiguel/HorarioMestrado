@@ -33,7 +33,7 @@ class DataBaseService {
 
   Future<List<Periodo>> obterPeriodos() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Periodo');
+    final result = await db.query('Periodo', orderBy: 'diaSemana, horaInicio');
     return result.map((e) => Periodo.fromMap(e)).toList();
   }
 
@@ -160,7 +160,10 @@ class DataBaseService {
 
   Future<List<Cadeira>> obterCadeiras() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Cadeira');
+    final result = await db.query(
+      'Cadeira',
+      orderBy: 'nome, semestre, ano', //Ordenar por Nome, Ano e Semestre
+    );
     return result.map((e) => Cadeira.fromMap(e)).toList();
   }
 
@@ -173,7 +176,7 @@ class DataBaseService {
       where:
           'ano = ? AND semestre = ?', //Condição WHERE (ex: "ano = 1 AND semestre = 2")
       whereArgs: filtro,
-      orderBy: 'semestre, ano', //Ordenar por semestre e ano
+      orderBy: 'nome, semestre, ano', //Ordenar por nome, semestre e ano
     );
 
     return result.map((e) => Cadeira.fromMap(e)).toList();
@@ -284,7 +287,7 @@ class DataBaseService {
 
   Future<List<Aula>> obterAulas() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Aula');
+    final result = await db.query('Aula', orderBy: 'data');
     return result.map((e) => Aula.fromMap(e)).toList();
   }
 
@@ -387,17 +390,49 @@ class DataBaseService {
   }
 
   //PROVA
+  Future<Prova> obterProvaPorId(int id) async {
+    final db = await _dbProvider.database;
+    return await db.transaction((txn) async {
+      final result = await txn.query(
+        'Prova',
+        where: 'provaID = ?',
+        whereArgs: [id],
+      );
+      if (result.isNotEmpty) {
+        return Prova.fromMap(result.first);
+      } else {
+        throw Exception('Prova com ID $id não encontrada');
+      }
+    });
+  }
+
   Future<List<Prova>> obterProvas() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Prova');
+    final result = await db.query(
+      'Prova',
+      orderBy: 'data, horaInicio', //Ordenar por data e hora de início
+    );
+    return result.map((e) => Prova.fromMap(e)).toList();
+  }
+
+  //Obter Provas com filtro (epoca, tipo)
+  Future<List<Prova>> obterProvasFiltradas(List<String> filtro) async {
+    final db = await _dbProvider.database;
+
+    final result = await db.query(
+      'Prova',
+      where:
+          'epoca = ? AND tipo = ?', //Condição WHERE (ex: "epoca = "normal" AND tipo = "quiz")
+      whereArgs: filtro,
+      orderBy: 'data, horaInicio', //Ordenar por data e hora de início
+    );
+
     return result.map((e) => Prova.fromMap(e)).toList();
   }
 
   Future<int> obterNovoIDProva() async {
     final db = await _dbProvider.database;
-    final result = await db.rawQuery(
-      'SELECT MAX(provaID) as maxId FROM Prova',
-    );
+    final result = await db.rawQuery('SELECT MAX(provaID) as maxId FROM Prova');
     final maxId = result.first['maxId'] as int?;
     return (maxId ?? 0) + 1;
   }
@@ -413,6 +448,61 @@ class DataBaseService {
     );
 
     return id;
+  }
+
+  Future<int> atualizarProva(Prova prova) async {
+    final db = await _dbProvider.database;
+
+    //Atualiza a BD
+    final linhasAfetadas = await db.update(
+      'Prova',
+      prova.toMap(),
+      where: 'provaID = ?',
+      whereArgs: [prova.provaID],
+    );
+
+    //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
+    if (linhasAfetadas > 0) {
+      await JsonCrud.atualizarDadoJSON(
+        '${Ficheiros.provas.nomeFicheiro}.json',
+        prova.provaID,
+        prova.toMap(),
+      );
+    }
+
+    return linhasAfetadas;
+  }
+
+  Future<int> apagarProva(int id) async {
+    try {
+      //Verifica se a Prova foi terminada
+      final provaAtual = await obterProvaPorId(id);
+      if (provaAtual.concluido) {
+        throw Exception(
+          'Não é possível apagar a prova porque esta foi concluida.',
+        );
+      }
+    } catch (e) {
+      rethrow;
+    }
+    final db = await _dbProvider.database;
+
+    //Apaga da BD
+    final linhasAfetadas = await db.delete(
+      'Prova',
+      where: 'provaID = ?',
+      whereArgs: [id],
+    );
+
+    //Se a remoção na BD for bem sucedida, remove do JSON LOCAL
+    if (linhasAfetadas > 0) {
+      await JsonCrud.apagarDadoJSON(
+        '${Ficheiros.provas.nomeFicheiro}.json',
+        id,
+      );
+    }
+
+    return linhasAfetadas;
   }
 
   //RESET => PERIGO

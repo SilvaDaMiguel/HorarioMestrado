@@ -44,7 +44,7 @@ class PeriodoBox extends StatelessWidget {
                     color: corTexto,
                   ),
                 ),
-                SizedBox(height: altura * 0.005),
+                SizedBox(height: altura * distanciaItensBox),
                 Text(
                   '${periodo.horaInicio} - ${periodo.horaFim}',
                   style: TextStyle(

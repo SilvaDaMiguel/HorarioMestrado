@@ -1,48 +1,41 @@
 import 'package:flutter/material.dart';
 //MODELS
-import '../models/aula.dart';
+import '../models/prova.dart';
 import '../models/cadeira.dart';
-import '../models/periodo.dart';
 //DATABASE
 import '../database/database_service.dart';
 //VARIABLES
 import '../variables/colors.dart';
 import '../variables/size.dart';
 
-class AulaCalendarioBox extends StatefulWidget {
-  final Aula aula;
+class ProvaCalendarioBox extends StatefulWidget {
+  final Prova prova;
 
-  const AulaCalendarioBox({Key? key, required this.aula}) : super(key: key);
+  const ProvaCalendarioBox({Key? key, required this.prova}) : super(key: key);
 
   @override
-  State<AulaCalendarioBox> createState() => _AulaCalendarioBoxState();
+  State<ProvaCalendarioBox> createState() => _ProvaCalendarioBoxState();
 }
 
-class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
-  Aula get aula => widget.aula;
+class _ProvaCalendarioBoxState extends State<ProvaCalendarioBox> {
+  Prova get prova => widget.prova;
 
   final DataBaseService _dbService = DataBaseService();
   late Future<Cadeira> _cadeiraFuture;
-  late Future<Periodo> _periodoFuture;
 
   @override
   void initState() {
     super.initState();
-    // Carrega a cadeira relacionada ao horário
-    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
-    // Carrega o período relacionado ao horário
-    _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
+    // Carrega a cadeira relacionada à prova
+    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
   }
 
   //Atualiza a Pesquisa => Não atualizava o nome da cadeira
   @override
-  void didUpdateWidget(covariant AulaCalendarioBox oldWidget) {
+  void didUpdateWidget(covariant ProvaCalendarioBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.aula.cadeiraID != widget.aula.cadeiraID) {
-      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
-    }
-    if (oldWidget.aula.periodoID != widget.aula.periodoID) {
-      _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
+    if (oldWidget.prova.cadeiraID != widget.prova.cadeiraID) {
+      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
     }
   }
 
@@ -52,12 +45,12 @@ class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
     double comprimento = tamanho.width;
     double altura = tamanho.height;
 
-    return FutureBuilder(
+    return FutureBuilder<Cadeira>(
       //Espera pelos dois Futures usando Future.wait
-      future: Future.wait([_cadeiraFuture, _periodoFuture]),
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+       future: _cadeiraFuture,
+      builder: (context, AsyncSnapshot<Cadeira> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Mostra algo enquanto os dados estão a carregar
+          //Mostra algo enquanto os dados estão a carregar
           return Container(
             padding: EdgeInsets.all(16),
             child: const CircularProgressIndicator(),
@@ -67,14 +60,13 @@ class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
           return Container(
             padding: EdgeInsets.all(16),
             child: Text(
-              'Erro ao carregar a aula',
+              'Erro ao carregar a prova',
               style: TextStyle(color: Colors.red),
             ),
           );
         } else {
           // Dados carregados com sucesso
-          final Cadeira cadeira = snapshot.data![0] as Cadeira;
-          final Periodo periodo = snapshot.data![1] as Periodo;
+          final Cadeira cadeira = snapshot.data as Cadeira;
 
           return Container(
             margin: EdgeInsets.symmetric(vertical: altura * marginAlura),
@@ -95,7 +87,7 @@ class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        cadeira.sigla,
+                        '${prova.tipo} ${cadeira.sigla}',
                         style: TextStyle(
                           fontSize: comprimento * tamanhoTitulo,
                           fontWeight: FontWeight.bold,
@@ -104,7 +96,7 @@ class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
                       ),
                       SizedBox(height: altura * distanciaItensBox),
                       Text(
-                        '${periodo.horaInicio} - ${periodo.horaFim}',
+                        '${prova.horaInicio} - ${prova.horaFim}',
                         style: TextStyle(
                           fontSize: comprimento * tamanhoSubTexto,
                           color: corTexto,
@@ -115,7 +107,7 @@ class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
                 ),
                 const Spacer(),
                 Text(
-                  aula.sala,
+                  prova.sala,
                   style: TextStyle(
                     fontSize: comprimento * tamanhoTitulo,
                     color: corTexto,

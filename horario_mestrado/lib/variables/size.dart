@@ -22,3 +22,5 @@ const double marginIconAlura = 0.01;
 const double distanciaItens = 0.01;
 const double distanciaInputs = 0.02;
 const double distanciaTemas = 0.035;
+
+const double distanciaItensBox = 0.005;
