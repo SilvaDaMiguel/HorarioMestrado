@@ -12,6 +12,7 @@ import '../../variables/size.dart';
 import '../../components/round_icon_button.dart';
 import '../../components/structure/app_bar.dart';
 import '../../components/structure/snack_bar.dart';
+import '../../components/info_box.dart';
 
 class ProvaInformacao extends StatefulWidget {
   final int provaID;
@@ -161,6 +162,20 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
                       fontSize: comprimento * tamanhoTexto,
                     ),
                   ),
+                SizedBox(height: altura * distanciaTemas),
+                //INFORMAÇÕES
+                Text(
+                  'Informações da Prova:',
+                  style: TextStyle(
+                    fontSize: comprimento * tamanhoTexto,
+                    color: corTexto,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: altura * distanciaItens),
+
+                InfoBox(informacao: prova.informacao),
+
                 SizedBox(height: altura * distanciaTemas),
 
                 // OUTRAS INFORMAÇÕES
