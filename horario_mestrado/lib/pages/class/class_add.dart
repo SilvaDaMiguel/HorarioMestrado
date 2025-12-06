@@ -119,7 +119,7 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
               Navigator.of(context).context,
               texto: 'Aula adicionada com sucesso!',
               botao: 'Ver',
-              rota: '/aulaInfo',
+              rota: '/classInfo',
               argumento: aulaAdicionada.aulaID,
             );
           });
