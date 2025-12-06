@@ -1,71 +1,14 @@
 [
   {
     "id": 1,
-    "nome": "Design de Interfaces",
-    "sigla": "DI",
+    "nome": "Nome Cadeira",
+    "sigla": "NC",
     "ano": 1,
     "semestre": 1,
-    "informacao": "Perspectiva histórica das interfaces em sistemas computacionais. \nTeorias, modelos e enquadramentos.\nFactores humanos relevantes na interação.\nUsabilidade em sistemas interativos.\nExperiência de utilização.\nNormas, guias de estilo, linhas orientadoras, padrões de desenho, princípios, e teorias.\nGestão de processos de desenho de interação.\nIdentificação de necessidades e estabelecimento de requisitos.\nDesenho, prototipagem e construção.\nAvaliação de interfaces e do desenho de interação.",
+    "informacao": "Informação da Cadeira \nMais Informação",
     "professores": [
-      "Valter Nelson Noronha Alves",
-      "Marco André Vieira Andrade Bernardo"
-    ],
-    "creditos": 6,
-    "concluida": 0,
-    "nota": null
-  },
-  {
-    "id": 2,
-    "nome": "Integração em Sistemas Inteligentes",
-    "sigla": "ISI",
-    "ano": 1,
-    "semestre": 1,
-    "informacao": "1. Investigação\n2. Big Data\n3. Integração de dados\n4. Internet das Coisas (IoT)\n5. Sistemas Ciber Físicos (CPS)\n6. Análise de dados",
-    "professores": [
-      "Joao Pedro Menoita Henriques"
-    ],
-    "creditos": 6,
-    "concluida": 0,
-    "nota": null
-  },
-  {
-    "id": 3,
-    "nome": "Sistemas de Informação em Dispositivos Móveis",
-    "sigla": "SIDM",
-    "ano": 1,
-    "semestre": 1,
-    "informacao": "1. Introdução aos Sistemas Móveis: Evolução, categorias e diferenças com sistemas tradicionais.\n2. Arquiteturas de Sistemas Móveis: Cliente-servidor, microserviços, otimização e edge computing.\n3. Desenvolvimento de Aplicações: iOS, Android, frameworks (React Native, Flutter, Xamarin), UI/UX e modelos de interação.\n4. Gestão de Dados: Integração com cloud, sincronização, armazenamento local e offline.\n5. Segurança e Privacidade: Ameaças, criptografia, secure storage, autenticação e regulamentação (GDPR).\n6. Tecnologias Emergentes: IoT, IA, AR/VR, 5G, blockchain.\n7. Otimização de Desempenho: Gestão de recursos, profiling, caching e escalabilidade.\n8. Tendências e Desafios: Sustentabilidade, ética e inovação na computação móvel.\n9. Metodologias Ágeis: Scrum, Kanban, CI/CD, testes automatizados e monitorização.\n10. Projeto Prático: Desenvolvimento de uma aplicação móvel inovadora com apresentação final.",
-    "professores": [
-      "Pedro Miguel De Oliveira Martins"
-    ],
-    "creditos": 6,
-    "concluida": 0,
-    "nota": null
-  },
-  {
-    "id": 4,
-    "nome": "Planeamento e Gestão de Projetos",
-    "sigla": "PGP",
-    "ano": 1,
-    "semestre": 1,
-    "informacao": "1. Enquadramento da Gestão de Projetos\n2. Ciclo de Vida de um Projeto\n3. Estrutura da Gestão de Projetos\n4. Gestão Estratégica de Projetos\n5. Arranque do Projeto\n6. Gestão do Âmbito\n7. Gestão do Tempo\n8. Gestão dos Custos\n9. Gestão dos Riscos\n10. Gestão da Qualidade\n11. Gestão da Organização\n12. Gestão da Comunicação\n13. Realização dos Projetos\n14. Gestão dos Recursos Humanos\n15. Papel e Aptidões do Gestor de Projetos\n16. Metodologias Ágeis",
-    "professores": [
-      "Joao Pedro Menoita Henriques"
-    ],
-    "creditos": 6,
-    "concluida": 0,
-    "nota": null
-  },
-  {
-    "id": 5,
-    "nome": "Análise Inteligente de Dados",
-    "sigla": "AID",
-    "ano": 1,
-    "semestre": 1,
-    "informacao": "O programa contempla uma componente teórica, que inclui:\n\nIntrodução;\nPreparação de dados;\nNaive Bayes;\nDecision Trees;\nRandom Forest;\nkNN;\nLinear Regression;\nNeural Networks.\nA parte prática engloba uma introdução ao python e a implementação dos diferentes algoritmos recorrendo às bibliotecas pandas, numpy e sklearn.",
-    "professores": [
-      "Filipe Marques Da Silva Cabral Pinto",
-      "Ana Raquel Ferreira de Almeida Sebastião"
+      "Professor 1",
+      "Professor 2"
     ],
     "creditos": 6,
     "concluida": 0,

@@ -127,7 +127,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
 
     return Scaffold(
       appBar: MinhaAppBar(
-        nome: 'Calendário de Eventos',
+        nome: 'Calendário',
         icon: iconDefinicoes,
         aoPressionar: () {
           Navigator.pushNamed(
