@@ -426,6 +426,22 @@ class DataBaseService {
     return result.map((e) => Prova.fromMap(e)).toList();
   }
 
+  Future<List<Prova>> obterProvasFiltradasFiltroCadeira(List<int> filtroCadeira, List<String> filtroTipoEpoca) async {
+    final db = await _dbProvider.database;
+
+    final cadeiras = await obterCadeirasFiltradas(filtroCadeira);
+    final cadeiraIDs = cadeiras.map((c) => c.cadeiraID).toList();
+
+    //Obtem a prova das cadeiras através da lista de IDs
+    final result = await db.query(
+      'Prova',
+      where: 'cadeiraID IN (${List.filled(cadeiraIDs.length, '?').join(', ')}) AND tipo = ? AND epoca = ?',
+      whereArgs: [...cadeiraIDs, filtroTipoEpoca[0], filtroTipoEpoca[1]],
+    );
+
+    return result.map((e) => Prova.fromMap(e)).toList();
+  }
+
   Future<int> obterNovoIDProva() async {
     final db = await _dbProvider.database;
     final result = await db.rawQuery('SELECT MAX(provaID) as maxId FROM Prova');

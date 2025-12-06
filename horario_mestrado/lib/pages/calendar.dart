@@ -17,6 +17,7 @@ import '../functions.dart';
 //VARIABLES
 import '../variables/colors.dart';
 import '../variables/size.dart';
+import '../variables/icons.dart';
 
 class CalendarioPage extends StatefulWidget {
   const CalendarioPage({super.key});
@@ -37,7 +38,8 @@ class _CalendarioPageState extends State<CalendarioPage> {
       CalendarFormat.month; //Formato inicial do calendário
   DateTime _diaSelecionado = DateTime.now(); //Dia atualmente selecionado
   //Lista de eventos (Aulas e Provas) do dia selecionado
-  List<dynamic> _eventosDoDia = []; // ALTERADO: De List<Aula> para List<dynamic>
+  List<dynamic> _eventosDoDia =
+      []; // ALTERADO: De List<Aula> para List<dynamic>
 
   @override
   void initState() {
@@ -86,7 +88,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
   //Combina as aulas e provas em um único Map de eventos
   void combinarEventos() {
     listaEventos = {};
-    
+
     //Adiciona aulas
     listaAulas.forEach((dia, eventos) {
       listaEventos[dia] = [...eventos];
@@ -111,7 +113,8 @@ class _CalendarioPageState extends State<CalendarioPage> {
 
     setState(() {
       _diaSelecionado = diaSemHora;
-      _eventosDoDia = listaEventos[diaSemHora] ?? []; //ALTERADO: Usa listaEventos
+      _eventosDoDia =
+          listaEventos[diaSemHora] ?? []; //ALTERADO: Usa listaEventos
     });
   }
 
@@ -123,7 +126,16 @@ class _CalendarioPageState extends State<CalendarioPage> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: MinhaAppBar(nome: 'Calendário de Eventos'),
+      appBar: MinhaAppBar(
+        nome: 'Calendário de Eventos',
+        icon: iconDefinicoes,
+        aoPressionar: () {
+          Navigator.pushNamed(
+            context,
+            '/settings',
+          );
+        },
+      ),
       body: Column(
         children: [
           TableCalendar(
@@ -148,7 +160,8 @@ class _CalendarioPageState extends State<CalendarioPage> {
             lastDay: DateTime(2125, 1, 1),
             focusedDay: _diaSelecionado,
             calendarFormat: _calendarFormat,
-            eventLoader: (dia) => listaEventos[removerHora(dia)] ?? [], // ALTERADO
+            eventLoader: (dia) =>
+                listaEventos[removerHora(dia)] ?? [], // ALTERADO
             locale: 'pt_BR', // Definir o idioma como português
             //PT: "segunda" "terça" / BR: "seg." "ter." => Por isso a escolha do BR
             calendarStyle: CalendarStyle(
@@ -181,7 +194,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
                 if (events.isEmpty) {
                   return null;
                 }
-                
+
                 //Map de eventos para widgets de marcador (dots)
                 final List<Widget> dots = events.map((event) {
                   //Define a cor para Provas e Aulas
@@ -196,7 +209,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
                     ),
                   );
                 }).toList();
-                
+
                 //Limita a 5 pontos e mostra-os em uma linha na parte inferior
                 //Isso mantém a funcionalidade dos "pontinhos" com cores distintas.
                 return Positioned(

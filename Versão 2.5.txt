@@ -1,0 +1,8 @@
+icon definições na página do calendário
+
+-> Opção de resetar conta
+
+
+-> Na página dos exames fazer filtro pelo Ano e Semestre
+
+-> Carregar/Importar/Exportar jsons locais?

@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart';
 //PAGES
-import 'pages/calendar.dart';
 //subjects
 import 'pages/subject/subjects.dart';
 import 'pages/subject/subject_info.dart';
@@ -25,7 +24,9 @@ import 'pages/exam/exam_add.dart';
 import 'pages/exam/exam_info.dart';
 import 'pages/exam/exam_edit.dart';
 //outros
+import 'pages/calendar.dart';
 import 'pages/error.dart';
+import 'pages/settings.dart';
 //MODELS
 import 'models/aula.dart';
 import 'models/cadeira.dart';
@@ -116,6 +117,7 @@ class MyApp extends StatelessWidget {
           final args = ModalRoute.of(context)!.settings.arguments as Prova;
           return ProvaEditar(prova: args); //Passa a Prova como argumento
         },
+        '/settings': (context) => const DefinicoesPage(),
         '/error': (context) => const ErrorPage(),
       },
       locale: Locale('pt', 'PT'), //Define o idioma para o calendário

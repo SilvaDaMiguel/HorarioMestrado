@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:horario_mestrado/variables/icons.dart';
 // COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/subject_box.dart';
@@ -7,12 +6,15 @@ import '../../components/structure/app_bar.dart';
 import '../../components/dropdown/dropdown_filtroCadeira.dart';
 // DATABASE
 import '../../database/database_service.dart';
+//SERVICES
+import '../../services/preference_service.dart';
 // MODELS
 import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/size.dart';
 import '../../variables/enums.dart';
 import '../../variables/colors.dart';
+import '../../variables/icons.dart';
 
 class CadeirasPage extends StatefulWidget {
   const CadeirasPage({super.key});
@@ -29,7 +31,21 @@ class _CadeirasPageState extends State<CadeirasPage> {
   @override
   void initState() {
     super.initState();
+    //Carrega a lista imediatamente com o filtro default
     _carregarCadeiras(_filtroSelecionado);
+
+    //Em background, carrega a preferência do utilizador e aplica se diferente
+    PreferenceService.loadFiltroCadeiras().then((filtroPreferido) {
+      if (filtroPreferido != null && filtroPreferido != _filtroSelecionado) {
+        setState(() {
+          _filtroSelecionado = filtroPreferido;
+        });
+        _carregarCadeiras(_filtroSelecionado);
+      }
+    }).catchError((_) {
+      //Ignora erros ao ler preferências e mantém o valor default
+      print('Preferência de Ano e Semestre não encontrada.');
+    });
   }
 
   void _carregarCadeiras(FiltroCadeiras filtro) {
@@ -74,7 +90,10 @@ class _CadeirasPageState extends State<CadeirasPage> {
               label: 'Filtrar por Ano e Semestre',
               onValueChanged: (novoFiltro) {
                 if (novoFiltro != null) {
-                  _filtroSelecionado = novoFiltro;
+                  setState(() {
+                    _filtroSelecionado = novoFiltro;
+                  });
+                  //Aplica o filtro
                   _carregarCadeiras(novoFiltro);
                 }
               },

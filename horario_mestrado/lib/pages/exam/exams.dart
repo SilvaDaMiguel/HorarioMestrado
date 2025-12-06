@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:horario_mestrado/variables/icons.dart';
-// COMPONENTS
+//COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/exam_box.dart';
 import '../../components/structure/app_bar.dart';
 import '../../components/dropdown/dropdown_epoca.dart';
 import '../../components/dropdown/dropdown_tipoProva.dart';
-// DATABASE
+//DATABASE
 import '../../database/database_service.dart';
-// MODELS
+//MODELS
 import '../../models/prova.dart';
+//SERVICES
+import '../../services/preference_service.dart';
 //VARIABLES
 import '../../variables/size.dart';
 import '../../variables/enums.dart';
@@ -28,16 +30,32 @@ class _ProvasPageState extends State<ProvasPage> {
 
   Epoca _epocaSelecionada = Epoca.normal;
   TipoProva _tipoProvaSelecionado = TipoProva.exame;
+  FiltroCadeiras _filtroCadeiras = FiltroCadeiras.ano1semestre1; //Filtro default para prevenir erros
 
   @override
   void initState() {
     super.initState();
+    //Carrega imediatamente com o filtro default
     _carregarProvas();
+
+    //Em background, vai buscar a preferência guardada e aplica se for diferente
+    PreferenceService.loadFiltroCadeiras().then((filtroPreferido) {
+      if (filtroPreferido != null && filtroPreferido != _filtroCadeiras) {
+        setState(() {
+          _filtroCadeiras = filtroPreferido;
+        });
+        _carregarProvas();
+      }
+    }).catchError((_) {
+      //ignora erros e mantém o filtro default
+      print('Preferência de Ano e Semestre não encontrada.');
+    });
   }
 
   void _carregarProvas() {
     setState(() {
-      _provasFuture = _dbService.obterProvasFiltradas([_epocaSelecionada.nomeEpoca, _tipoProvaSelecionado.nomeTipoProva]);
+      //_provasFuture = _dbService.obterProvasFiltradas([_epocaSelecionada.nomeEpoca, _tipoProvaSelecionado.nomeTipoProva]);
+      _provasFuture = _dbService.obterProvasFiltradasFiltroCadeira(_filtroCadeiras.valorFiltro, [_epocaSelecionada.nomeEpoca, _tipoProvaSelecionado.nomeTipoProva]);
     });
   }
 
@@ -78,10 +96,14 @@ class _ProvasPageState extends State<ProvasPage> {
                     label: 'Época',
                     valorSelecionado: _epocaSelecionada,
                     onValueChanged: (novoTempo) {
-                      _epocaSelecionada = novoTempo!;
-                      _carregarProvas();
+                      if (novoTempo != null) {
+                        setState(() {
+                          _epocaSelecionada = novoTempo;
+                        });
+                        _carregarProvas();
+                      }
                     },
-                    )
+                  ),
                 ),
                 SizedBox(width: comprimento * paddingComprimento),
                 Expanded(
@@ -90,8 +112,12 @@ class _ProvasPageState extends State<ProvasPage> {
                     label: 'Tipo da Prova',
                     valorSelecionado: _tipoProvaSelecionado,
                     onValueChanged: (novoTipo) {
-                      _tipoProvaSelecionado = novoTipo!;
-                      _carregarProvas();
+                      if (novoTipo != null) {
+                        setState(() {
+                          _tipoProvaSelecionado = novoTipo;
+                        });
+                        _carregarProvas();
+                      }
                     },
                   ),
                 ),
@@ -117,7 +143,7 @@ class _ProvasPageState extends State<ProvasPage> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(
                       child: Text(
-                        'Não foram encontradas Provas',
+                        'Não foram encontradas Provas do ${_filtroCadeiras.nomeFiltro} para os filtros selecionados.',
                         style: TextStyle(
                           color: corTexto,
                           fontSize: comprimento * tamanhoTexto,

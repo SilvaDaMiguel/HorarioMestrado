@@ -9,3 +9,4 @@ const iconHora = Icons.timer;
 const iconDia = Icons.calendar_month;
 const iconSala = Icons.room;
 const iconSelecionado = Icons.check;
+const iconDefinicoes = Icons.settings;
