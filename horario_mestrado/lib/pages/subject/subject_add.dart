@@ -8,6 +8,8 @@ import '../../models/cadeira.dart';
 //VARIABLES
 import '../../variables/enums.dart';
 import '../../variables/size.dart';
+//SERVICES
+import '../../services/preference_service.dart';
 //COMPONENTS
 import '../../components/structure/navigation_bar.dart';
 import '../../components/structure/app_bar.dart';
@@ -39,6 +41,25 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
   int _ano = 1; //Valor padrão
   int _semestre = 1; //Valor padrão
   bool _concluida = false;
+  FiltroCadeiras _filtroSelecionado = FiltroCadeiras.ano1semestre1;
+
+  @override
+  void initState() {
+    super.initState();
+    // Carrega a preferência do filtro de cadeiras e aplica como valor inicial
+    PreferenceService.loadFiltroCadeiras().then((filtro) {
+      if (filtro != null) {
+        setState(() {
+          _filtroSelecionado = filtro;
+          _ano = filtro.valorFiltro[0];
+          _semestre = filtro.valorFiltro[1];
+        });
+      }
+    }).catchError((_) {
+      // Ignora erros e mantém os valores padrão
+      print('Não foi possível carregar preferência de filtro ao adicionar cadeira.');
+    });
+  }
 
   @override
   void dispose() {
@@ -140,12 +161,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
               ),
               SizedBox(height: altura * distanciaInputs),
               FiltroCadeiraDropdown(
-                valorSelecionado: FiltroCadeiras.values.firstWhere(
-                  (filtro) =>
-                      filtro.valorFiltro[0] == _ano &&
-                      filtro.valorFiltro[1] == _semestre,
-                  orElse: () => FiltroCadeiras.ano1semestre1,
-                ),
+                valorSelecionado: _filtroSelecionado,
                 label: 'Selecionar Ano e Semestre',
                 onValueChanged: (novoFiltro) {
                   if (novoFiltro != null) {
