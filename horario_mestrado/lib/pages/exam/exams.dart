@@ -40,7 +40,9 @@ class _ProvasPageState extends State<ProvasPage> {
 
     //Em background, vai buscar a preferência guardada e aplica se for diferente
     PreferenceService.loadFiltroCadeiras().then((filtroPreferido) {
+      print("Aplicando preferência de Filtro de Cadeiras: ${filtroPreferido?.nomeFiltro ?? 'Nenhuma'}");
       if (filtroPreferido != null && filtroPreferido != _filtroCadeiras) {
+        
         setState(() {
           _filtroCadeiras = filtroPreferido;
         });
@@ -55,6 +57,7 @@ class _ProvasPageState extends State<ProvasPage> {
   void _carregarProvas() {
     setState(() {
       //_provasFuture = _dbService.obterProvasFiltradas([_epocaSelecionada.nomeEpoca, _tipoProvaSelecionado.nomeTipoProva]);
+      print("Carregando Provas com Filtro de Cadeira: ${_filtroCadeiras.nomeFiltro}, Época: ${_epocaSelecionada.nomeEpoca}, Tipo de Prova: ${_tipoProvaSelecionado.nomeTipoProva}");
       _provasFuture = _dbService.obterProvasFiltradasFiltroCadeira(_filtroCadeiras.valorFiltro, [_epocaSelecionada.nomeEpoca, _tipoProvaSelecionado.nomeTipoProva]);
     });
   }

@@ -19,7 +19,10 @@ class PreferenceService {
     if (filtroIndex != null && filtroIndex >= 0 && filtroIndex < FiltroCadeiras.values.length) {
       return FiltroCadeiras.values[filtroIndex];
     }
-    return null;
+
+    // Se não existir preferência guardada, devolve o valor default em vez de null
+    // Mantemos a assinatura retornando um tipo nullable para compatibilidade com chamadas existentes.
+    return FiltroCadeiras.ano1semestre1;
   }
 
   //Função para limpar todas as preferências

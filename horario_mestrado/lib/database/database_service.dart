@@ -432,10 +432,14 @@ class DataBaseService {
     final cadeiras = await obterCadeirasFiltradas(filtroCadeira);
     final cadeiraIDs = cadeiras.map((c) => c.cadeiraID).toList();
 
+    //Se não existirem cadeiras para o filtro, devolve lista vazia
+    if (cadeiraIDs.isEmpty) return [];
+
     //Obtem a prova das cadeiras através da lista de IDs
+    //Usa a mesma ordem de argumentos (epoca, tipo) que o restante código espera
     final result = await db.query(
       'Prova',
-      where: 'cadeiraID IN (${List.filled(cadeiraIDs.length, '?').join(', ')}) AND tipo = ? AND epoca = ?',
+      where: 'cadeiraID IN (${List.filled(cadeiraIDs.length, '?').join(', ')}) AND epoca = ? AND tipo = ?',
       whereArgs: [...cadeiraIDs, filtroTipoEpoca[0], filtroTipoEpoca[1]],
     );
 
