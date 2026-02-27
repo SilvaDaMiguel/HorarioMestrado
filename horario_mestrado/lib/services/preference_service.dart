@@ -5,7 +5,7 @@ import '../variables/enums.dart';
 class PreferenceService {
   //Variáveis para as preferências
   static const FiltroCadeiras filtroCadeiras = FiltroCadeiras.ano1semestre1;
-  static const String? salaDefault = null; //Pode ser null para indicar "sem preferência"
+  static const String? salaDefault = null; //Pode ser null
 
   //Guarda o ano e semestre escolhido (ex: "1ºAno 1º Semestre")
   static Future<bool> saveFiltroCadeiras(FiltroCadeiras filtro) async {
@@ -13,7 +13,7 @@ class PreferenceService {
     return prefs.setInt('filtroCadeiras', filtro.index);
   }
 
-  //Guarda a sala default. Recebe null para indicar ausência de preferência.
+  //Guarda a sala default. Recebe null para indicar ausência
   static Future<bool> saveSalaDefault(String? sala) async {
     final prefs = await SharedPreferences.getInstance();
     if (sala == null) {

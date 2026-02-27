@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 // COMPONENTS
-import '../../components/structure/navigation_bar.dart';
-import '../../components/structure/app_bar.dart';
-import '../../components/dropdown/dropdown_filtroCadeira.dart';
+import '../components/structure/navigation_bar.dart';
+import '../components/structure/app_bar.dart';
+import '../components/dropdown/dropdown_filtroCadeira.dart';
 import '../components/form/text_input_form.dart';
 import '../components/form/submit_button.dart';
+import '../components/structure/snack_bar.dart';
 //SERVICES
 import '../services/preference_service.dart';
 //VARIABLES
@@ -101,7 +102,10 @@ class _DefinicoesPageState extends State<DefinicoesPage> {
             ),
             SizedBox(height: altura * distanciaTemas),
             //SALA DEFAULT
-            TextInputForm(controller: _salaController, label: 'Sala Padrão (opcional)'),
+            TextInputForm(
+              controller: _salaController,
+              label: 'Sala Padrão (opcional)',
+            ),
             SizedBox(height: altura * distanciaInputs),
             Center(
               child: BotaoSubmeter(
@@ -115,14 +119,18 @@ class _DefinicoesPageState extends State<DefinicoesPage> {
                     _salaSelecionada = novaSala;
                   });
                   PreferenceService.saveSalaDefault(novaSala);
+                  MinhaSnackBar.mostrar(
+                    Navigator.of(context).context,
+                    texto: 'Sala guardada com sucesso!',
+                  );
                 },
               ),
             ),
             SizedBox(height: altura * distanciaTemas),
+
             //TODO: Carregar dados do JSON Local
             //TODO: Botão para Importar JSON locais
             //TODO: Botão para Exportar JSON locais
-            
           ],
         ),
       ),
