@@ -20,6 +20,8 @@ import '../../components/form/date_picker.dart';
 import '../../components/form/submit_button.dart';
 //FUNCTIONS
 import '../../functions.dart';
+//SERVICES
+import '../../services/preference_service.dart';
 
 class AulaAdicionar extends StatefulWidget {
   const AulaAdicionar({super.key});
@@ -51,6 +53,16 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
     _obterDiaSemana();
     _carregarPeriodos();
     _carregarCadeiras();
+    _carregarSalaDefault();
+  }
+
+  Future<void> _carregarSalaDefault() async {
+    final salaDefault = await PreferenceService.loadSalaDefault();
+    if (salaDefault != null) {
+      setState(() {
+        _salaController.text = salaDefault;
+      });
+    }
   }
 
   Future<void> _carregarPeriodos() async {

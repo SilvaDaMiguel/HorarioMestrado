@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 // COMPONENTS
 import '../../components/structure/navigation_bar.dart';
-import '../../components/subject_box.dart';
 import '../../components/structure/app_bar.dart';
 import '../../components/dropdown/dropdown_filtroCadeira.dart';
-import '../../components/structure/snack_bar.dart';
-import '../../components/structure/snack_bar_confirmation.dart';
-import '../../components/round_icon_button.dart';
-// DATABASE
-import '../../database/database_service.dart';
-// MODELS
-import '../../models/cadeira.dart';
+import '../components/form/text_input_form.dart';
+import '../components/form/submit_button.dart';
 //SERVICES
 import '../services/preference_service.dart';
 //VARIABLES
 import '../../variables/size.dart';
 import '../../variables/enums.dart';
 import '../../variables/colors.dart';
-import '../../variables/icons.dart';
 
 class DefinicoesPage extends StatefulWidget {
   const DefinicoesPage({super.key});
@@ -27,30 +20,38 @@ class DefinicoesPage extends StatefulWidget {
 }
 
 class _DefinicoesPageState extends State<DefinicoesPage> {
-  final DataBaseService _dbService = DataBaseService();
+  // preferências
   FiltroCadeiras? _filtroSelecionado;
-  late Future<FiltroCadeiras?> _filtroFuture;
+  String? _salaSelecionada;
+  late TextEditingController _salaController;
+
+  late Future<void> _prefsFuture;
 
   @override
   void initState() {
     super.initState();
-    _filtroFuture = PreferenceService.loadFiltroCadeiras();
+    _salaController = TextEditingController();
+    _prefsFuture = _loadPreferences();
   }
-  
+
+  Future<void> _loadPreferences() async {
+    _filtroSelecionado =
+        await PreferenceService.loadFiltroCadeiras() ??
+        FiltroCadeiras.ano1semestre1;
+    _salaSelecionada = await PreferenceService.loadSalaDefault();
+    _salaController.text = _salaSelecionada ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<FiltroCadeiras?>(
-      future: _filtroFuture,
+    return FutureBuilder<void>(
+      future: _prefsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
-
-        //Resolve o valor do filtro (cai para o default se null)
-        _filtroSelecionado ??= snapshot.data ?? FiltroCadeiras.ano1semestre1;
 
         //Agora retorna a UI normal
         return _buildScaffold(context);
@@ -99,9 +100,29 @@ class _DefinicoesPageState extends State<DefinicoesPage> {
               obrigatorio: false,
             ),
             SizedBox(height: altura * distanciaTemas),
+            //SALA DEFAULT
+            TextInputForm(controller: _salaController, label: 'Sala Padrão (opcional)'),
+            SizedBox(height: altura * distanciaInputs),
+            Center(
+              child: BotaoSubmeter(
+                texto: 'Guardar Sala',
+                aoPressionar: () {
+                  //atualiza e salva a sala
+                  String? novaSala = _salaController.text.trim().isEmpty
+                      ? null
+                      : _salaController.text.trim();
+                  setState(() {
+                    _salaSelecionada = novaSala;
+                  });
+                  PreferenceService.saveSalaDefault(novaSala);
+                },
+              ),
+            ),
+            SizedBox(height: altura * distanciaTemas),
             //TODO: Carregar dados do JSON Local
             //TODO: Botão para Importar JSON locais
             //TODO: Botão para Exportar JSON locais
+            
           ],
         ),
       ),
