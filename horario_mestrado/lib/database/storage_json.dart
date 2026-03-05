@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:file_picker/file_picker.dart';
 
 
 class JsonStorage {
@@ -22,6 +24,32 @@ class JsonStorage {
     final directory = await getApplicationDocumentsDirectory();
     return File('${directory.path}/$fileName');
   }
+
+  //Novo método para exportar todos os ficheiros
+  static Future<void> exportarFicheiros() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final List<String> nomesFicheiros = [
+      'periodos.json',
+      'cadeiras.json',
+      'aulas.json',
+      'provas.json'
+    ];
+
+    List<XFile> ficheirosParaPartilhar = [];
+
+    for (var nome in nomesFicheiros) {
+      final path = '${directory.path}/$nome';
+      if (await File(path).exists()) {
+        ficheirosParaPartilhar.add(XFile(path));
+      }
+    }
+
+    if (ficheirosParaPartilhar.isNotEmpty) {
+      await Share.shareXFiles(ficheirosParaPartilhar, text: 'Cópia de Segurança do Horário');
+    }
+  }
+
+  
 }
 
 class JsonCrud {

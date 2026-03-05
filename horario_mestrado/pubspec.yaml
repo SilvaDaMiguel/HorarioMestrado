@@ -38,6 +38,8 @@ dependencies:
     sdk: flutter  #Suporte para localização de material widgets
   dropdown_button2: ^2.3.9
   shared_preferences: ^2.2.3
+  share_plus: ^10.1.4
+  file_picker: ^8.1.7
 
 
   # The following adds the Cupertino Icons font to your application.

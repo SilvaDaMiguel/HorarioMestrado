@@ -8,6 +8,9 @@ import '../components/form/submit_button.dart';
 import '../components/structure/snack_bar.dart';
 //SERVICES
 import '../services/preference_service.dart';
+//DATABASE
+import '../database/storage_json.dart';
+import '../database/database.dart';
 //VARIABLES
 import '../../variables/size.dart';
 import '../../variables/enums.dart';
@@ -127,10 +130,25 @@ class _DefinicoesPageState extends State<DefinicoesPage> {
               ),
             ),
             SizedBox(height: altura * distanciaTemas),
-
             //TODO: Carregar dados do JSON Local
             //TODO: Botão para Importar JSON locais
-            //TODO: Botão para Exportar JSON locais
+            Center(
+              child: BotaoSubmeter(
+                texto: 'Exportar Dados (Backup)',
+                aoPressionar: () async {
+                  try {
+                    await JsonStorage.exportarFicheiros();
+                  } catch (e) {
+                    MinhaSnackBar.mostrar(
+                      context,
+                      texto: 'Erro ao exportar ficheiros: $e',
+                    );
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: altura * distanciaItens),
+       
           ],
         ),
       ),
