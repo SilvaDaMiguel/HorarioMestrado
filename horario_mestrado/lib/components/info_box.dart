@@ -24,7 +24,7 @@ class InfoBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(comprimento * arredondamento),
       ),
       child: Text(
-        informacao,
+        informacao.isEmpty ? 'Sem Informação' : informacao,
         style: TextStyle(
           fontSize: comprimento * tamanhoTexto,
           color: corTexto,
