@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //VARIABLES
 import '../../variables/colors.dart';
+import '../../variables/size.dart';
 
 class MyNavigationBar extends StatefulWidget {
   final bool mostrarSelecionado;
@@ -71,6 +72,10 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    //Responsividade
+    var tamanho = MediaQuery.of(context).size;
+    double comprimento = tamanho.width;
+
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -108,6 +113,8 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         currentIndex: selectedIndex,
         selectedItemColor: widget.mostrarSelecionado ? corTexto : corTerciaria, //Texto Selecionado
         unselectedItemColor: corTerciaria, //Restante Textos
+        selectedFontSize: comprimento * tamanhoSubTexto,
+        unselectedFontSize: comprimento * tamanhoSubTexto,
         onTap: _onItemTapped,
       ),
     );
