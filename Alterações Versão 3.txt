@@ -39,12 +39,11 @@
 
 --- A resolver ---
 Não está a ser possível abrir a página period_info.dart
-o "aulas.json" está a ficar com um "e" no final
 Erro: type 'String' is not subtype of type 'Iterable<dynamic>' -> Lista de Professores nas Cadeiras? 
 --- Json inicial
 "pofessores": ["professor1", "professor2"]
 --- Json exportado
 "professores": "[\"professor1\",\"professor2\"]"
------ Erro das Cadeiras resolvido
-Aulas importam mas as caixas dão erro
+----- Cadeira não importa os professores
+Aulas importam mas dão erro a acessar
 Erro: type 'Null' is not a subtype of 'String' -> nas Provas; Nota? Sala?
