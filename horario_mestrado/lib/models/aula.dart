@@ -17,15 +17,15 @@ class Aula {
     id: map['id'],
     cadeiraId: map['cadeiraId'],
     periodoId: map['periodoId'],
-    data: map['data'],
     sala: map['sala'],
+    data: map['data'],
   );
 
   Map<String, dynamic> toMap() => {
     'id': id,
     'cadeiraId': cadeiraId,
     'periodoId': periodoId,
-    'data': data,
     'sala': sala,
+    'data': data,
   };
 }

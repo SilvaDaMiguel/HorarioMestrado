@@ -1,6 +1,0 @@
-icon definições na página do calendário
-
--> Opção de resetar conta
-
-
--> Carregar/Importar/Exportar jsons locais?

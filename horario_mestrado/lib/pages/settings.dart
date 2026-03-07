@@ -131,8 +131,15 @@ class _DefinicoesPageState extends State<DefinicoesPage> {
               ),
             ),
             SizedBox(height: altura * distanciaTemas),
-            //TODO: Carregar dados do JSON Local
-            //TODO: Botão para Importar JSON locais
+            Text(
+              'Exportar/Importar Dados - Avançado',
+              style: TextStyle(
+                fontSize: comprimento * tamanhoTexto,
+                fontWeight: FontWeight.bold,
+                color: corTexto,
+              ),
+            ),
+            SizedBox(height: altura * distanciaItens),
             Center(
               child: BotaoSubmeter(
                 texto: 'Exportar Dados (Backup)',
@@ -152,43 +159,50 @@ class _DefinicoesPageState extends State<DefinicoesPage> {
             Center(
               child: BotaoSubmeter(
                 texto: 'Importar Dados (Restaurar)',
-                aoPressionar: _importarDados,
+                aoPressionar: () async {
+                  try {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) =>
+                          const Center(child: CircularProgressIndicator()),
+                    );
+
+                    await JsonStorage.importarFicheiros();
+                    await DataBaseService().resetBaseDeDados();
+
+                    Navigator.pop(context); //Fecha o loading
+                    MinhaSnackBar.mostrar(
+                      context,
+                      texto: 'Dados importados e Base de Dados atualizada!',
+                    );
+
+                    //Recarregar a app ou as preferências se necessário
+                    _loadPreferences();
+                  } catch (e) {
+                    Navigator.pop(context); // Fecha o loading em caso de erro
+                    MinhaSnackBar.mostrar(
+                      context,
+                      texto: 'Erro ao importar: $e',
+                    );
+                  }
+                },
               ),
+            ),
+            SizedBox(height: altura * distanciaItens),
+            Text(
+              'Certifique-se de que tem um backup antes de importar. \nperiodos.json -> cadeiras.json -> aulas.json -> provas.json',
+              style: TextStyle(
+                fontSize: comprimento * tamanhoSubTexto,
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       ),
       bottomNavigationBar: MyNavigationBar(mostrarSelecionado: false),
     );
-  }
-
-  Future<void> _importarDados() async {
-    try {
-      // 1. Mostrar loading
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
-      );
-
-      // 2. Importar ficheiros JSON
-      await JsonStorage.importarFicheiros();
-
-      // 3. Reset da Base de Dados para forçar o Seeder a ler os novos JSONs
-      await DataBaseService().resetBaseDeDados();
-
-      // 4. Fechar loading e mostrar sucesso
-      Navigator.pop(context); // Fecha o loading
-      MinhaSnackBar.mostrar(
-        context,
-        texto: 'Dados importados e Base de Dados atualizada!',
-      );
-
-      // 5. Recarregar a app ou as preferências se necessário
-      _loadPreferences();
-    } catch (e) {
-      Navigator.pop(context); // Fecha o loading em caso de erro
-      MinhaSnackBar.mostrar(context, texto: 'Erro ao importar: $e');
-    }
   }
 }
