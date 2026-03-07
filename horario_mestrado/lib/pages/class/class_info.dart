@@ -36,8 +36,8 @@ class _AulaInformacaoState extends State<AulaInformacao> {
 
   Future<Aula> _carregarAula() async {
     final aula = await _dbService.obterAulaPorId(widget.aulaID);
-    _cadeira = await _dbService.obterCadeiraPorId(aula.id);
-    _periodo = await _dbService.obterPeriodoPorId(aula.id);
+    _cadeira = await _dbService.obterCadeiraPorId(aula.cadeiraId);
+    _periodo = await _dbService.obterPeriodoPorId(aula.periodoId);
     return aula;
   }
 

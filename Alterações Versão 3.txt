@@ -45,5 +45,5 @@ Erro: type 'String' is not subtype of type 'Iterable<dynamic>' -> Lista de Profe
 --- Json exportado
 "professores": "[\"professor1\",\"professor2\"]"
 ----- Cadeira não importa os professores
-Aulas importam mas dão erro a acessar
+Aulas importam mas dão erro a acessar -- Talvez esteja arranjado
 Erro: type 'Null' is not a subtype of 'String' -> nas Provas; Nota? Sala?

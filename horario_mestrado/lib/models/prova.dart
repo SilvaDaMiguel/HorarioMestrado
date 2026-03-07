@@ -28,14 +28,14 @@ class Prova{
   factory Prova.fromMap(Map<String, dynamic> map) => Prova(
     id: map['id'],
     cadeiraId: map['cadeiraId'],
-    sala: map['sala'],
+    sala: map['sala'] ?? '?',
     data: map['data'],
     horaInicio: map['horaInicio'],
     horaFim: map['horaFim'],
     tipo: map['tipo'],
     epoca: map['epoca'],
-    informacao: map['informacao'] ?? 'em Informação',
-    nota: map['nota'] != null ? map['nota'] as double : null,
+    informacao: map['informacao'] ?? 'Sem Informação',
+    nota: map['nota'] != null ? (map['nota'] as num).toDouble() : null, //Conversão segura de num para double
     concluido: (map['concluido'] ?? 0) == 1, //Converte para bool
   );
 
