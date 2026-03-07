@@ -107,7 +107,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
             label: 'Aulas',
           ),BottomNavigationBarItem(
             icon: _buildIcon(Icons.assignment, selectedIndex == 4),
-            label: 'Provas',
+            label: 'Avaliações',
           ),
         ],
         currentIndex: selectedIndex,

@@ -222,7 +222,7 @@ class _ProvaEditarState extends State<ProvaEditar> {
               Row(
                 children: [
                   Text(
-                    'Dia da Prova: ',
+                    'Dia do ${_tipoProvaSelecionado.nomeTipoProva}: ',
                     style: TextStyle(
                       color: corTexto,
                       fontSize: comprimento * tamanhoTexto,
@@ -318,7 +318,7 @@ class _ProvaEditarState extends State<ProvaEditar> {
               Row(
                 children: [
                   Text(
-                    'Prova concluída?',
+                    '${_tipoProvaSelecionado.nomeTipoProva} concluído(a)?',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: corTexto,

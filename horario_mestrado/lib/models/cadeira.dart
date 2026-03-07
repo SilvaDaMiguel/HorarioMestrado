@@ -25,32 +25,30 @@ class Cadeira {
     this.nota,
   });
 
-  factory Cadeira.fromMap(Map<String, dynamic> map) => Cadeira(
-    id: map['id'],
-    nome: map['nome'] ?? 'Nome Não Definido',
-    sigla: map['sigla'] ?? 'Sigla Não Definida',
-    ano: map['ano'],
-    semestre: map['semestre'],
-    informacao: map['informacao'] ?? 'Sem Informação',
-    /*
-        professores: map['professores'] != null
-            ? List<String>.from(jsonDecode(map['professores']))
-            : [],
-            */
-    professores: map['professores'] is String
-        ? List<String>.from(
-            jsonDecode(map['professores']),
-          ) //"professores": ["professor1", "professor2"]
-        : List<String>.from(
-            map['professores'] ?? [],
-          ), //"professores": "[\"professor1\",\"professor2\"]"
-    creditos: map['creditos'] ?? 0,
-    concluida: (map['concluida'] ?? 0) == 1, //Converte para bool
-    nota: map['nota'] != null
-        ? (map['nota'] as num)
-              .toDouble() //aceita int ou double
-        : null,
-  );
+  factory Cadeira.fromMap(Map<String, dynamic> map) {
+    //Tenta obter a lista de professores independentemente de vir como String ou List
+    List<String> listaProfessores = [];
+    if (map['professores'] != null) {
+      if (map['professores'] is String) {
+        listaProfessores = List<String>.from(jsonDecode(map['professores']));
+      } else {
+        listaProfessores = List<String>.from(map['professores']);
+      }
+    }
+
+    return Cadeira(
+      id: map['id'],
+      nome: map['nome'] ?? 'Nome Não Definido',
+      sigla: map['sigla'] ?? 'Sigla Não Definida',
+      ano: map['ano'],
+      semestre: map['semestre'],
+      informacao: map['informacao'] ?? 'Sem Informação',
+      professores: listaProfessores,
+      creditos: map['creditos'] ?? 0,
+      concluida: (map['concluida'] ?? 0) == 1,
+      nota: map['nota'] != null ? (map['nota'] as num).toDouble() : null,
+    );
+  }
 
   Map<String, dynamic> toMap() => {
     'id': id,

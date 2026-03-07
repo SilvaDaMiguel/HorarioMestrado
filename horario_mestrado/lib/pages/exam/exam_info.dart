@@ -146,7 +146,7 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
                 SizedBox(height: altura * distanciaItens),
                 if (prova.concluido)
                   Text(
-                    'Prova Concluída',
+                    '${prova.tipo} Concluído(a)',
                     style: TextStyle(
                       color: corTexto,
                       fontSize: comprimento * tamanhoTexto,

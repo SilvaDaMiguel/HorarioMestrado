@@ -63,7 +63,7 @@ class JsonStorage {
     
     for (var filePickerFile in result.files) {
       if (filePickerFile.path != null) {
-        // Guarda o ficheiro no diretório da app substituindo o existente
+        //Guarda o ficheiro no diretório da app substituindo o existente
         File selectedFile = File(filePickerFile.path!);
         await selectedFile.copy('${directory.path}/${filePickerFile.name}');
       }
@@ -98,21 +98,31 @@ class JsonCrud {
     Map<String, dynamic> novosDados,
   ) async {
     final data = await lerJSON(fileName);
-    print('Ficheiro JSON: $fileName');
     final index = data.indexWhere((item) => item['id'] == id);
+    
     if (index != -1) {
+      //Se novosDados contiver 'professores' como String (devido ao jsonEncode do modelo), 
+      //descodifica para voltar a ser uma lista real no JSON final.
+      if (novosDados.containsKey('professores') && novosDados['professores'] is String) {
+        novosDados['professores'] = jsonDecode(novosDados['professores']);
+      }
+
       data[index] = {...data[index], ...novosDados};
       await guardarJSON(fileName, data);
     }
   }
-
   //Adiciona um novo Item ao JSON LOCAL
   static Future<void> adicionarDadoJSON(
     String fileName,
     Map<String, dynamic> novo,
   ) async {
     final data = await lerJSON(fileName);
-    print('Ficheiro JSON: $fileName');
+    
+    //Converte a string de professores de volta para Lista antes de adicionar ao array global
+    if (novo.containsKey('professores') && novo['professores'] is String) {
+      novo['professores'] = jsonDecode(novo['professores']);
+    }
+
     data.add(novo);
     await guardarJSON(fileName, data);
   }

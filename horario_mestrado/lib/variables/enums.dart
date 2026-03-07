@@ -111,7 +111,7 @@ extension FiltroCadeirasIntExtension on FiltroCadeiras {
   }
 }
 
-enum TipoProva { frequencia, quiz, exame, outro } 
+enum TipoProva { frequencia, quiz, exame, trabalho, outro } 
 
 extension TipoProvaStringExtension on TipoProva {
   String get nomeTipoProva {
@@ -122,6 +122,8 @@ extension TipoProvaStringExtension on TipoProva {
         return 'Quiz';
       case TipoProva.exame:
         return 'Exame';
+      case TipoProva.trabalho:
+        return 'Trabalho';
       case TipoProva.outro:
         return 'Outro';
     }
