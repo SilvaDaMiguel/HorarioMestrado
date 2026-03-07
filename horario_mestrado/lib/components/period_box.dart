@@ -58,14 +58,8 @@ class PeriodoBox extends StatelessWidget {
           const Spacer(),
           IconButton(
             icon: Icon(iconInformacao, color: corTerciaria),
-            onPressed: () {
+            onPressed: aoPressionar ?? () {
               print('Sem função atribuída!');
-              /*
-              Navigator.pushNamed(
-                context,
-                '/periodInfo',
-                arguments: periodo.periodoID, //ID do Objeto
-              );*/
             },
           ),
         ],
