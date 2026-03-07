@@ -11,6 +11,7 @@ import '../services/preference_service.dart';
 //DATABASE
 import '../database/storage_json.dart';
 import '../database/database.dart';
+import '../database/database_service.dart';
 //VARIABLES
 import '../../variables/size.dart';
 import '../../variables/enums.dart';
@@ -148,11 +149,46 @@ class _DefinicoesPageState extends State<DefinicoesPage> {
               ),
             ),
             SizedBox(height: altura * distanciaItens),
-       
+            Center(
+              child: BotaoSubmeter(
+                texto: 'Importar Dados (Restaurar)',
+                aoPressionar: _importarDados,
+              ),
+            ),
           ],
         ),
       ),
       bottomNavigationBar: MyNavigationBar(mostrarSelecionado: false),
     );
+  }
+
+  Future<void> _importarDados() async {
+    try {
+      // 1. Mostrar loading
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // 2. Importar ficheiros JSON
+      await JsonStorage.importarFicheiros();
+
+      // 3. Reset da Base de Dados para forçar o Seeder a ler os novos JSONs
+      await DataBaseService().resetBaseDeDados();
+
+      // 4. Fechar loading e mostrar sucesso
+      Navigator.pop(context); // Fecha o loading
+      MinhaSnackBar.mostrar(
+        context,
+        texto: 'Dados importados e Base de Dados atualizada!',
+      );
+
+      // 5. Recarregar a app ou as preferências se necessário
+      _loadPreferences();
+    } catch (e) {
+      Navigator.pop(context); // Fecha o loading em caso de erro
+      MinhaSnackBar.mostrar(context, texto: 'Erro ao importar: $e');
+    }
   }
 }

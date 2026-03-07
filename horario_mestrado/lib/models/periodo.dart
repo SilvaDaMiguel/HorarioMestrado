@@ -1,25 +1,25 @@
 class Periodo {
-  final int periodoID;
+  final int id;
   final String diaSemana;
   final String horaInicio; // Formato "HH:MM"
   final String horaFim; // Formato "HH:MM"
 
   Periodo({
-    required this.periodoID,
+    required this.id,
     required this.diaSemana,
     required this.horaInicio,
     required this.horaFim,
   });
 
   factory Periodo.fromMap(Map<String, dynamic> map) => Periodo(
-    periodoID: map['periodoID'],
+    id: map['id'],
     diaSemana: map['diaSemana'],
     horaInicio: map['horaInicio'],
     horaFim: map['horaFim'],
   );
 
   Map<String, dynamic> toMap() => {
-    'periodoID': periodoID,
+    'id': id,
     'diaSemana': diaSemana,
     'horaInicio': horaInicio,
     'horaFim': horaFim,

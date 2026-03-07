@@ -33,7 +33,7 @@ class _ProvaBoxState extends State<ProvaBox> {
   void initState() {
     super.initState();
     //Carrega a cadeira relacionada à prova
-    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
+    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraId);
   }
 
   @override

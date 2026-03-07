@@ -27,11 +27,8 @@ class CalendarioPage extends StatefulWidget {
 }
 
 class _CalendarioPageState extends State<CalendarioPage> {
-  //Map<DateTime, List<Aula>> para o TableCalendar (apenas aulas)
   Map<DateTime, List<Aula>> listaAulas = {};
-  //Map<DateTime, List<Prova>> para as provas
   Map<DateTime, List<Prova>> listaProvas = {};
-  //Map combinado para todos os eventos (Aulas e Provas)
   Map<DateTime, List<dynamic>> listaEventos = {};
 
   final CalendarFormat _calendarFormat =

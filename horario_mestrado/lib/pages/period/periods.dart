@@ -121,7 +121,7 @@ class _PeriodosPageState extends State<PeriodosPage> {
                         final resultado = await Navigator.pushNamed(
                             context,
                             '/periodInfo',
-                            arguments: periodo.periodoID, //ID do Objeto
+                            arguments: periodo.id, //ID do Objeto
                           );
 
                           //Se a página de adicionar devolver true => Adicionado/Removido uma Aula

@@ -81,7 +81,7 @@ class _ProvaEditarState extends State<ProvaEditar> {
 
   Future<void> _carregarCadeiras() async {
     final cadeiras = await _dbService.obterCadeiras();
-    final cadeiraInicial = await _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
+    final cadeiraInicial = await _dbService.obterCadeiraPorId(widget.prova.cadeiraId);
     setState(() {
       _cadeirasDisponiveis = cadeiras;
       _cadeiraSelecionada = cadeiraInicial;
@@ -123,8 +123,8 @@ class _ProvaEditarState extends State<ProvaEditar> {
           : _informacaoController.text.trim();
 
       final provaAtualizada = Prova(
-        provaID: widget.prova.provaID,
-        cadeiraID: _cadeiraSelecionada!.cadeiraID, //Nunca será Null
+        id: widget.prova.id,
+        cadeiraId: _cadeiraSelecionada!.id, //Nunca será Null
         sala: sala, //Pode ser ? para o caso de ainda não ter sido definida
         data: formatarDataDDMMYYYY(_diaSelecionado),
         horaInicio: timeOfDayParaString(_horaInicioSelecionada),
@@ -180,14 +180,14 @@ class _ProvaEditarState extends State<ProvaEditar> {
             children: [
               SizedBox(height: altura * distanciaItens),
               CadeiraDropdown(
-                valorSelecionadoID: _cadeiraSelecionada?.cadeiraID,
+                valorSelecionadoID: _cadeiraSelecionada?.id,
                 cadeiras: _cadeirasDisponiveis,
                 label: 'Selecionar Cadeira',
                 obrigatorio: true,
                 onValueChanged: (novoID) {
                   setState(() {
                     _cadeiraSelecionada = _cadeirasDisponiveis.firstWhere(
-                      (c) => c.cadeiraID == novoID,
+                      (c) => c.id == novoID,
                     );
                   });
                 },

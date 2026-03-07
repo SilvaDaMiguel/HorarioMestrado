@@ -36,8 +36,8 @@ class _AulaInformacaoState extends State<AulaInformacao> {
 
   Future<Aula> _carregarAula() async {
     final aula = await _dbService.obterAulaPorId(widget.aulaID);
-    _cadeira = await _dbService.obterCadeiraPorId(aula.cadeiraID);
-    _periodo = await _dbService.obterPeriodoPorId(aula.periodoID);
+    _cadeira = await _dbService.obterCadeiraPorId(aula.id);
+    _periodo = await _dbService.obterPeriodoPorId(aula.id);
     return aula;
   }
 
@@ -181,7 +181,7 @@ class _AulaInformacaoState extends State<AulaInformacao> {
                     corIcon: Colors.red,
                     aoSelecionar: () async {
                       try {
-                        await _dbService.apagarAula(aula.aulaID);
+                        await _dbService.apagarAula(aula.id);
 
                         if (context.mounted) {
                           Navigator.pop(context, true); //Devolve true

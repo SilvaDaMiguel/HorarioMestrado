@@ -1,0 +1,50 @@
+--- Alterado ---
+-> database/databse.dart
+-> database/database_service.dart
+-> database/database_seeder.dart
+-> models/aula.dart (aulaID -> id; cadeiraID -> cadeiraId; periodoID -> periodoId)
+-> models/cadeira.dart (cadeiraID -> id)
+-> models/periodo.dart (periodoID -> id)
+-> models/prova.dart (provaID -> id; cadeiraID -> cadeiraId)
+
+--- Páginas Principais Alteradas ---
+-> class/class_add.dart
+-> class/class_edit.dart
+-> class/class_info.dart
+-> class/classes.dart
+-> exam/exam_add.dart
+-> exam/exam_info.dart
+-> exam/exam_edit.dart
+-> exam/exams.dart
+-> period/period_add.dart
+-> period/period_edit.dart
+-> period/period_info.dart
+-> period/periods.dart
+-> subject/subject_add.dart
+-> subject/subject_edit.dart
+-> subject/subject_info.dart
+-> subject/subjects.dart
+
+--- Componentes Alterados ---
+-> class_box.dart
+-> exam_box.dart
+-> today_class_box.dart
+-> today_exam_box.dart
+-> dropdown/dropdown_cadeira.dart
+-> dropdown/dropdown_periodo.dart
+
+--- Outros alterados ---
+-> pubspec.yaml
+-> build.grandle.kts
+
+--- A resolver ---
+Não está a ser possível abrir a página period_info.dart
+o "aulas.json" está a ficar com um "e" no final
+Erro: type 'String' is not subtype of type 'Iterable<dynamic>' -> Lista de Professores nas Cadeiras? 
+--- Json inicial
+"pofessores": ["professor1", "professor2"]
+--- Json exportado
+"professores": "[\"professor1\",\"professor2\"]"
+----- Erro das Cadeiras resolvido
+Aulas importam mas as caixas dão erro
+Erro: type 'Null' is not a subtype of 'String' -> nas Provas; Nota? Sala?

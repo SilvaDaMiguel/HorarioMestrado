@@ -70,7 +70,7 @@ class CadeiraDropdown extends StatelessWidget {
       ),
       items: cadeiras.map((cadeira) {
         return DropdownMenuItem<int>(
-          value: cadeira.cadeiraID,
+          value: cadeira.id,
           child: Text(
             '${cadeira.sigla}: ${cadeira.ano}º - ${cadeira.semestre}ª',
             style: TextStyle(

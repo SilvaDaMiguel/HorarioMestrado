@@ -164,7 +164,7 @@ class _ProvasPageState extends State<ProvasPage> {
                           final resultado = await Navigator.pushNamed(
                             context,
                             '/examInfo',
-                            arguments: prova.provaID, //ID do Objeto
+                            arguments: prova.id, //ID do Objeto
                           );
 
                           //Se a página de adicionar devolver true => Adicionado/Removido uma Prova

@@ -32,9 +32,9 @@ class _AulaBoxState extends State<AulaBox> {
   void initState() {
     super.initState();
     //Carrega a cadeira relacionada à aula
-    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
+    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraId);
     // Carrega o período relacionado à aula
-    _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
+    _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoId);
   }
 
   @override

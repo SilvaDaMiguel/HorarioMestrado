@@ -138,7 +138,7 @@ class _CadeirasPageState extends State<CadeirasPage> {
                         final resultado = await Navigator.pushNamed(
                             context,
                             '/subjectInfo',
-                            arguments: cadeira.cadeiraID, //ID do Objeto
+                            arguments: cadeira.id, //ID do Objeto
                           );
 
                           //Se a página de adicionar devolver true => Adicionado/Removido uma Aula

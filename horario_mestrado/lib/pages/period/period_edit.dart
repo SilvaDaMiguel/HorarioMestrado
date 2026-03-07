@@ -64,7 +64,7 @@ class _PeriodoEditarState extends State<PeriodoEditar> {
       }
 
       final periodoAtualizado = Periodo(
-        periodoID: widget.periodo.periodoID,
+        id: widget.periodo.id,
         diaSemana: _diaSemanaSelecionado.nomeComAcento,
         horaInicio: timeOfDayParaString(_horaInicioSelecionada),
         horaFim: timeOfDayParaString(_horaFimSelecionada),

@@ -35,7 +35,7 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
 
   Future<Prova> _carregarProva() async {
     final prova = await _dbService.obterProvaPorId(widget.provaID);
-    _cadeira = await _dbService.obterCadeiraPorId(prova.cadeiraID);
+    _cadeira = await _dbService.obterCadeiraPorId(prova.cadeiraId);
     return prova;
   }
 
@@ -211,7 +211,7 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
                     corIcon: Colors.red,
                     aoSelecionar: () async {
                       try {
-                        await _dbService.apagarProva(prova.provaID);
+                        await _dbService.apagarProva(prova.id);
 
                         if (context.mounted) {
                           Navigator.pop(context, true); //Devolve true

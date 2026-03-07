@@ -27,15 +27,15 @@ class _ProvaCalendarioBoxState extends State<ProvaCalendarioBox> {
   void initState() {
     super.initState();
     // Carrega a cadeira relacionada à prova
-    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
+    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraId);
   }
 
   //Atualiza a Pesquisa => Não atualizava o nome da cadeira
   @override
   void didUpdateWidget(covariant ProvaCalendarioBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.prova.cadeiraID != widget.prova.cadeiraID) {
-      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraID);
+    if (oldWidget.prova.cadeiraId != widget.prova.cadeiraId) {
+      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.prova.cadeiraId);
     }
   }
 

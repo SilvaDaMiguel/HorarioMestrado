@@ -29,20 +29,20 @@ class _AulaCalendarioBoxState extends State<AulaCalendarioBox> {
   void initState() {
     super.initState();
     // Carrega a cadeira relacionada ao horário
-    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
+    _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraId);
     // Carrega o período relacionado ao horário
-    _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
+    _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoId);
   }
 
   //Atualiza a Pesquisa => Não atualizava o nome da cadeira
   @override
   void didUpdateWidget(covariant AulaCalendarioBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.aula.cadeiraID != widget.aula.cadeiraID) {
-      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraID);
+    if (oldWidget.aula.cadeiraId != widget.aula.cadeiraId) {
+      _cadeiraFuture = _dbService.obterCadeiraPorId(widget.aula.cadeiraId);
     }
-    if (oldWidget.aula.periodoID != widget.aula.periodoID) {
-      _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoID);
+    if (oldWidget.aula.periodoId != widget.aula.periodoId) {
+      _periodoFuture = _dbService.obterPeriodoPorId(widget.aula.periodoId);
     }
   }
 

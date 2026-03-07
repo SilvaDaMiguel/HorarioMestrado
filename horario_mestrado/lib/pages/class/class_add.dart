@@ -109,9 +109,9 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
       }
 
       final aulaAdicionada = Aula(
-        aulaID: await _dbService.obterNovoIDAula(),
-        cadeiraID: _cadeiraSelecionada!.cadeiraID, //Nunca será Null
-        periodoID: _periodoSelecionado!.periodoID, //Nunca será Null
+        id: await _dbService.obterNovoIDAula(),
+        cadeiraId: _cadeiraSelecionada!.id, //Nunca será Null
+        periodoId: _periodoSelecionado!.id, //Nunca será Null
         data: formatarDataDDMMYYYY(_diaSelecionado),
         sala: _salaController.text.trim(),
       );
@@ -132,7 +132,7 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
               texto: 'Aula adicionada com sucesso!',
               botao: 'Ver',
               rota: '/classInfo',
-              argumento: aulaAdicionada.aulaID,
+              argumento: aulaAdicionada.id,
             );
           });
         }
@@ -199,28 +199,28 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
               ),
               SizedBox(height: altura * distanciaInputs),
               PeriodoDropdown(
-                valorSelecionadoID: _periodoSelecionado?.periodoID,
+                valorSelecionadoID: _periodoSelecionado?.id,
                 periodos: _periodosDisponiveis,
                 label: 'Selecionar Período',
                 obrigatorio: true,
                 onValueChanged: (novoID) {
                   setState(() {
                     _periodoSelecionado = _periodosDisponiveis.firstWhere(
-                      (p) => p.periodoID == novoID,
+                      (p) => p.id == novoID,
                     );
                   });
                 },
               ),
               SizedBox(height: altura * distanciaInputs),
               CadeiraDropdown(
-                valorSelecionadoID: _cadeiraSelecionada?.cadeiraID,
+                valorSelecionadoID: _cadeiraSelecionada?.id,
                 cadeiras: _cadeirasDisponiveis,
                 label: 'Selecionar Cadeira',
                 obrigatorio: true,
                 onValueChanged: (novoID) {
                   setState(() {
                     _cadeiraSelecionada = _cadeirasDisponiveis.firstWhere(
-                      (c) => c.cadeiraID == novoID,
+                      (c) => c.id == novoID,
                     );
                   });
                 },

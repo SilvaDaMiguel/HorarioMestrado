@@ -100,8 +100,8 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
           : _informacaoController.text.trim();
 
       final provaAdicionada = Prova(
-        provaID: await _dbService.obterNovoIDProva(),
-        cadeiraID: _cadeiraSelecionada!.cadeiraID, //Nunca será Null
+        id: await _dbService.obterNovoIDProva(),
+        cadeiraId: _cadeiraSelecionada!.id, //Nunca será Null
         sala: sala, //Pode ser ? para o caso de ainda não ter sido definida
         data: formatarDataDDMMYYYY(_diaSelecionado),
         horaInicio: timeOfDayParaString(_horaInicioSelecionada),
@@ -129,7 +129,7 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
               texto: 'Prova adicionada com sucesso!',
               botao: 'Ver',
               rota: '/examInfo',
-              argumento: provaAdicionada.provaID,
+              argumento: provaAdicionada.id,
             );
           });
         }
@@ -160,14 +160,14 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
             children: [
               SizedBox(height: altura * distanciaItens),
               CadeiraDropdown(
-                valorSelecionadoID: _cadeiraSelecionada?.cadeiraID,
+                valorSelecionadoID: _cadeiraSelecionada?.id,
                 cadeiras: _cadeirasDisponiveis,
                 label: 'Selecionar Cadeira',
                 obrigatorio: true,
                 onValueChanged: (novoID) {
                   setState(() {
                     _cadeiraSelecionada = _cadeirasDisponiveis.firstWhere(
-                      (c) => c.cadeiraID == novoID,
+                      (c) => c.id == novoID,
                     );
                   });
                 },

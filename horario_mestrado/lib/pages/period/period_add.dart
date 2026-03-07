@@ -46,7 +46,7 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
       }
 
       final periodoAdicionado = Periodo(
-        periodoID: await _dbService.obterNovoIDPeriodo(),
+        id: await _dbService.obterNovoIDPeriodo(),
         diaSemana: _diaSemanaSelecionado.nomeComAcento,
         horaInicio: timeOfDayParaString(_horaInicioSelecionada),
         horaFim: timeOfDayParaString(_horaFimSelecionada),
@@ -65,7 +65,7 @@ class _PeriodoAdicionarState extends State<PeriodoAdicionar> {
               texto: 'Período adicionado com sucesso!',
               botao: 'Ver',
               rota: '/periodInfo',
-              argumento: periodoAdicionado.periodoID,
+              argumento: periodoAdicionado.id,
             );
           });
         }

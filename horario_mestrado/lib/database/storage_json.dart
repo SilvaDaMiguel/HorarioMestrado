@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:file_picker/file_picker.dart';
 
-
 class JsonStorage {
   //Copia um ficheiro JSON dos assets para o armazenamento local, se ainda não existir
   static Future<File> initJsonFile(String fileName) async {
@@ -32,7 +31,7 @@ class JsonStorage {
       'periodos.json',
       'cadeiras.json',
       'aulas.json',
-      'provas.json'
+      'provas.json',
     ];
 
     List<XFile> ficheirosParaPartilhar = [];
@@ -45,11 +44,34 @@ class JsonStorage {
     }
 
     if (ficheirosParaPartilhar.isNotEmpty) {
-      await Share.shareXFiles(ficheirosParaPartilhar, text: 'Cópia de Segurança do Horário');
+      await Share.shareXFiles(
+        ficheirosParaPartilhar,
+        text: 'Cópia de Segurança do Horário',
+      );
     }
   }
 
-  
+  static Future<void> importarFicheiros() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    allowMultiple: true,
+    type: FileType.custom,
+    allowedExtensions: ['json'],
+  );
+
+  if (result != null) {
+    final directory = await getApplicationDocumentsDirectory();
+    
+    for (var filePickerFile in result.files) {
+      if (filePickerFile.path != null) {
+        // Guarda o ficheiro no diretório da app substituindo o existente
+        File selectedFile = File(filePickerFile.path!);
+        await selectedFile.copy('${directory.path}/${filePickerFile.name}');
+      }
+    }
+  } else {
+    throw Exception("Nenhum ficheiro selecionado");
+  }
+}
 }
 
 class JsonCrud {
@@ -61,13 +83,20 @@ class JsonCrud {
   }
 
   //Substitui todos os dados do JSON LOCAL => Sobrescreve o ficheiro
-  static Future<void> guardarJSON(String fileName, List<Map<String, dynamic>> data) async {
+  static Future<void> guardarJSON(
+    String fileName,
+    List<Map<String, dynamic>> data,
+  ) async {
     final file = await JsonStorage.getLocalJsonFile(fileName);
     await file.writeAsString(jsonEncode(data));
   }
 
   //Atualiza os dados JSON LOCAL de um Item específico => Utiliza o ID
-  static Future<void> atualizarDadoJSON(String fileName, int id, Map<String, dynamic> novosDados) async {
+  static Future<void> atualizarDadoJSON(
+    String fileName,
+    int id,
+    Map<String, dynamic> novosDados,
+  ) async {
     final data = await lerJSON(fileName);
     print('Ficheiro JSON: $fileName');
     final index = data.indexWhere((item) => item['id'] == id);
@@ -78,7 +107,10 @@ class JsonCrud {
   }
 
   //Adiciona um novo Item ao JSON LOCAL
-  static Future<void> adicionarDadoJSON(String fileName, Map<String, dynamic> novo) async {
+  static Future<void> adicionarDadoJSON(
+    String fileName,
+    Map<String, dynamic> novo,
+  ) async {
     final data = await lerJSON(fileName);
     print('Ficheiro JSON: $fileName');
     data.add(novo);
@@ -92,5 +124,4 @@ class JsonCrud {
     data.removeWhere((item) => item['id'] == id);
     await guardarJSON(fileName, data);
   }
-
 }

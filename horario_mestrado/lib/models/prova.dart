@@ -1,6 +1,6 @@
 class Prova{
-  final int provaID;
-  final int cadeiraID;
+  final int id;
+  final int cadeiraId;
   final String sala;
   final String data; // Formato "DD-MM-YYYY"
   final String horaInicio; // Formato "HH:MM"
@@ -12,8 +12,8 @@ class Prova{
   final bool concluido; // Bool, 0 ou 1
 
   Prova({
-    required this.provaID,
-    required this.cadeiraID,
+    required this.id,
+    required this.cadeiraId,
     this.sala = '?',
     required this.data,
     required this.horaInicio,
@@ -26,8 +26,8 @@ class Prova{
   });
 
   factory Prova.fromMap(Map<String, dynamic> map) => Prova(
-    provaID: map['provaID'],
-    cadeiraID: map['cadeiraID'],
+    id: map['id'],
+    cadeiraId: map['cadeiraId'],
     sala: map['sala'],
     data: map['data'],
     horaInicio: map['horaInicio'],
@@ -40,8 +40,8 @@ class Prova{
   );
 
   Map<String, dynamic> toMap() => {
-    'provaID': provaID,
-    'cadeiraID': cadeiraID,
+    'id': id,
+    'cadeiraId': cadeiraId,
     'sala': sala,
     'data': data,
     'horaInicio': horaInicio,

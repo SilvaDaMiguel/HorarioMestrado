@@ -70,7 +70,7 @@ class PeriodoDropdown extends StatelessWidget {
       ),
       items: periodos.map((periodo) {
         return DropdownMenuItem<int>(
-          value: periodo.periodoID,
+          value: periodo.id,
           child: Text(
             '${periodo.diaSemana}: ${periodo.horaInicio} - ${periodo.horaFim}',
             style: TextStyle(

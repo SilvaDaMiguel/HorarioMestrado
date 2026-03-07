@@ -57,10 +57,10 @@ class _AulaEditarState extends State<AulaEditar> {
   Future<void> _inicializarDados() async {
     //Carregar periodo e cadeira da aula inicial
     _periodoSelecionado = await _dbService.obterPeriodoPorId(
-      widget.aula.periodoID,
+      widget.aula.periodoId,
     );
     _cadeiraSelecionada = await _dbService.obterCadeiraPorId(
-      widget.aula.cadeiraID,
+      widget.aula.cadeiraId,
     );
 
     //Obter o dia da semana e carregar opções
@@ -102,9 +102,9 @@ class _AulaEditarState extends State<AulaEditar> {
     if (!_formKey.currentState!.validate()) return;
 
     final aulaAtualizada = Aula(
-      aulaID: widget.aula.aulaID,
-      cadeiraID: _cadeiraSelecionada!.cadeiraID, //Não será Null
-      periodoID: _periodoSelecionado!.periodoID, //Não será Null
+      id: widget.aula.id,
+      cadeiraId: _cadeiraSelecionada!.id, //Não será Null
+      periodoId: _periodoSelecionado!.id, //Não será Null
       data: formatarDataDDMMYYYY(_diaSelecionado),
       sala: _salaController.text.trim(),
     );
@@ -173,28 +173,28 @@ class _AulaEditarState extends State<AulaEditar> {
               ),
               SizedBox(height: altura * distanciaInputs),
               PeriodoDropdown(
-                valorSelecionadoID: _periodoSelecionado?.periodoID,
+                valorSelecionadoID: _periodoSelecionado?.id,
                 periodos: _periodosDisponiveis,
                 label: 'Selecionar Período',
                 obrigatorio: true,
                 onValueChanged: (novoID) {
                   setState(() {
                     _periodoSelecionado = _periodosDisponiveis.firstWhere(
-                      (p) => p.periodoID == novoID,
+                      (p) => p.id == novoID,
                     );
                   });
                 },
               ),
               SizedBox(height: altura * distanciaInputs),
               CadeiraDropdown(
-                valorSelecionadoID: _cadeiraSelecionada?.cadeiraID,
+                valorSelecionadoID: _cadeiraSelecionada?.id,
                 cadeiras: _cadeirasDisponiveis,
                 label: 'Selecionar Cadeira',
                 obrigatorio: true,
                 onValueChanged: (novoID) {
                   setState(() {
                     _cadeiraSelecionada = _cadeirasDisponiveis.firstWhere(
-                      (c) => c.cadeiraID == novoID,
+                      (c) => c.id == novoID,
                     );
                   });
                 },

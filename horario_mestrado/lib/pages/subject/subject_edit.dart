@@ -94,7 +94,7 @@ class _CadeiraEditarState extends State<CadeiraEditar> {
           : null;
 
       final cadeiraAtualizada = Cadeira(
-        cadeiraID: widget.cadeira.cadeiraID,
+        id: widget.cadeira.id,
         nome: nome,
         sigla: sigla,
         ano: _ano,

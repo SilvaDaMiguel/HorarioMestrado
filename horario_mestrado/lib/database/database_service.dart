@@ -20,7 +20,7 @@ class DataBaseService {
     return await db.transaction((txn) async {
       final result = await txn.query(
         'Periodo',
-        where: 'periodoID = ?',
+        where: 'id = ?',
         whereArgs: [id],
       );
       if (result.isNotEmpty) {
@@ -53,9 +53,7 @@ class DataBaseService {
 
   Future<int> obterNovoIDPeriodo() async {
     final db = await _dbProvider.database;
-    final result = await db.rawQuery(
-      'SELECT MAX(periodoID) as maxId FROM Periodo',
-    );
+    final result = await db.rawQuery('SELECT MAX(id) as maxId FROM Periodo');
     final maxId = result.first['maxId'] as int?;
     return (maxId ?? 0) + 1;
   }
@@ -78,15 +76,15 @@ class DataBaseService {
     final linhasAfetadas = await db.update(
       'Periodo',
       periodo.toMap(),
-      where: 'periodoID = ?',
-      whereArgs: [periodo.periodoID],
+      where: 'id = ?',
+      whereArgs: [periodo.id],
     );
 
     //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
     if (linhasAfetadas > 0) {
       await JsonCrud.atualizarDadoJSON(
         '${Ficheiros.periodos.nomeFicheiro}.json',
-        periodo.periodoID,
+        periodo.id,
         periodo.toMap(),
       );
     }
@@ -111,7 +109,7 @@ class DataBaseService {
     //Apaga da BD
     final linhasAfetadas = await db.delete(
       'Periodo',
-      where: 'periodoID = ?',
+      where: 'id = ?',
       whereArgs: [id],
     );
 
@@ -131,7 +129,7 @@ class DataBaseService {
     final db = await _dbProvider.database;
     final result = await db.query(
       'Aula',
-      where: 'periodoID = ?',
+      where: 'periodoId = ?',
       whereArgs: [id],
     );
     if (result.isNotEmpty) {
@@ -147,7 +145,7 @@ class DataBaseService {
     return await db.transaction((txn) async {
       final result = await txn.query(
         'Cadeira',
-        where: 'cadeiraID = ?',
+        where: 'id = ?',
         whereArgs: [id],
       );
       if (result.isNotEmpty) {
@@ -184,9 +182,7 @@ class DataBaseService {
 
   Future<int> obterNovoIDCadeira() async {
     final db = await _dbProvider.database;
-    final result = await db.rawQuery(
-      'SELECT MAX(cadeiraID) as maxId FROM Cadeira',
-    );
+    final result = await db.rawQuery('SELECT MAX(id) as maxId FROM Cadeira');
     final maxId = result.first['maxId'] as int?;
     return (maxId ?? 0) + 1;
   }
@@ -211,15 +207,15 @@ class DataBaseService {
     final linhasAfetadas = await db.update(
       'Cadeira',
       cadeira.toMap(),
-      where: 'cadeiraID = ?',
-      whereArgs: [cadeira.cadeiraID],
+      where: 'id = ?',
+      whereArgs: [cadeira.id],
     );
 
     //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
     if (linhasAfetadas > 0) {
       await JsonCrud.atualizarDadoJSON(
         '${Ficheiros.cadeiras.nomeFicheiro}.json',
-        cadeira.cadeiraID,
+        cadeira.id,
         cadeira.toMap(),
       );
     }
@@ -244,7 +240,7 @@ class DataBaseService {
     //Apaga da BD
     final linhasAfetadas = await db.delete(
       'Cadeira',
-      where: 'cadeiraID = ?',
+      where: 'id = ?',
       whereArgs: [id],
     );
 
@@ -264,7 +260,7 @@ class DataBaseService {
     final db = await _dbProvider.database;
     final result = await db.query(
       'Aula',
-      where: 'cadeiraID = ?',
+      where: 'cadeiraId = ?',
       whereArgs: [id],
     );
     if (result.isNotEmpty) {
@@ -277,7 +273,7 @@ class DataBaseService {
   //AULA
   Future<Aula> obterAulaPorId(int id) async {
     final db = await _dbProvider.database;
-    final result = await db.query('Aula', where: 'aulaID = ?', whereArgs: [id]);
+    final result = await db.query('Aula', where: 'id = ?', whereArgs: [id]);
     if (result.isNotEmpty) {
       return Aula.fromMap(result.first);
     } else {
@@ -330,7 +326,7 @@ class DataBaseService {
 
   Future<int> obterNovoIDAula() async {
     final db = await _dbProvider.database;
-    final result = await db.rawQuery('SELECT MAX(aulaID) as maxId FROM Aula');
+    final result = await db.rawQuery('SELECT MAX(id) as maxId FROM Aula');
     final maxId = result.first['maxId'] as int?;
     return (maxId ?? 0) + 1;
   }
@@ -355,15 +351,15 @@ class DataBaseService {
     final linhasAfetadas = await db.update(
       'Aula',
       aula.toMap(),
-      where: 'aulaID = ?',
-      whereArgs: [aula.aulaID],
+      where: 'id = ?',
+      whereArgs: [aula.id],
     );
 
     //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
     if (linhasAfetadas > 0) {
       await JsonCrud.atualizarDadoJSON(
         '${Ficheiros.aulas.nomeFicheiro}.json',
-        aula.aulaID,
+        aula.id,
         aula.toMap(),
       );
     }
@@ -377,7 +373,7 @@ class DataBaseService {
     //Apaga da BD
     final linhasAfetadas = await db.delete(
       'Aula',
-      where: 'aulaID = ?',
+      where: 'id = ?',
       whereArgs: [id],
     );
 
@@ -393,11 +389,7 @@ class DataBaseService {
   Future<Prova> obterProvaPorId(int id) async {
     final db = await _dbProvider.database;
     return await db.transaction((txn) async {
-      final result = await txn.query(
-        'Prova',
-        where: 'provaID = ?',
-        whereArgs: [id],
-      );
+      final result = await txn.query('Prova', where: 'id = ?', whereArgs: [id]);
       if (result.isNotEmpty) {
         return Prova.fromMap(result.first);
       } else {
@@ -426,11 +418,14 @@ class DataBaseService {
     return result.map((e) => Prova.fromMap(e)).toList();
   }
 
-  Future<List<Prova>> obterProvasFiltradasFiltroCadeira(List<int> filtroCadeira, List<String> filtroTipoEpoca) async {
+  Future<List<Prova>> obterProvasFiltradasFiltroCadeira(
+    List<int> filtroCadeira,
+    List<String> filtroTipoEpoca,
+  ) async {
     final db = await _dbProvider.database;
 
     final cadeiras = await obterCadeirasFiltradas(filtroCadeira);
-    final cadeiraIDs = cadeiras.map((c) => c.cadeiraID).toList();
+    final cadeiraIDs = cadeiras.map((c) => c.id).toList();
 
     //Se não existirem cadeiras para o filtro, devolve lista vazia
     if (cadeiraIDs.isEmpty) return [];
@@ -439,7 +434,8 @@ class DataBaseService {
     //Usa a mesma ordem de argumentos (epoca, tipo) que o restante código espera
     final result = await db.query(
       'Prova',
-      where: 'cadeiraID IN (${List.filled(cadeiraIDs.length, '?').join(', ')}) AND epoca = ? AND tipo = ?',
+      where:
+          'cadeiraId IN (${List.filled(cadeiraIDs.length, '?').join(', ')}) AND epoca = ? AND tipo = ?',
       whereArgs: [...cadeiraIDs, filtroTipoEpoca[0], filtroTipoEpoca[1]],
     );
 
@@ -448,7 +444,7 @@ class DataBaseService {
 
   Future<int> obterNovoIDProva() async {
     final db = await _dbProvider.database;
-    final result = await db.rawQuery('SELECT MAX(provaID) as maxId FROM Prova');
+    final result = await db.rawQuery('SELECT MAX(id) as maxId FROM Prova');
     final maxId = result.first['maxId'] as int?;
     return (maxId ?? 0) + 1;
   }
@@ -473,15 +469,15 @@ class DataBaseService {
     final linhasAfetadas = await db.update(
       'Prova',
       prova.toMap(),
-      where: 'provaID = ?',
-      whereArgs: [prova.provaID],
+      where: 'id = ?',
+      whereArgs: [prova.id],
     );
 
     //Se a atualização na BD for bem sucedida, atualiza o JSON LOCAL
     if (linhasAfetadas > 0) {
       await JsonCrud.atualizarDadoJSON(
         '${Ficheiros.provas.nomeFicheiro}.json',
-        prova.provaID,
+        prova.id,
         prova.toMap(),
       );
     }
@@ -506,7 +502,7 @@ class DataBaseService {
     //Apaga da BD
     final linhasAfetadas = await db.delete(
       'Prova',
-      where: 'provaID = ?',
+      where: 'id = ?',
       whereArgs: [id],
     );
 

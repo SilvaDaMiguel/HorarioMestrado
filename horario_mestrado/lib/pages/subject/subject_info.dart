@@ -146,7 +146,6 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                 ),
                 SizedBox(height: altura * distanciaItens),
                 InfoBox(informacao: cadeira.informacao),
-
                 SizedBox(height: altura * distanciaTemas),
 
                 //OUTRAS INFORMAÇÕES
@@ -199,7 +198,7 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                     aoSelecionar: () async {
                       try {
                         //Tenta apagar a cadeira
-                        await _dbService.apagarCadeira(cadeira.cadeiraID);
+                        await _dbService.apagarCadeira(cadeira.id);
 
                         // Se for bem-sucedido, volta à página das cadeiras
                         if (context.mounted) {

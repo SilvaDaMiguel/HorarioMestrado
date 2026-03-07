@@ -88,7 +88,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
           : null;
 
       final cadeiraAdicionada = Cadeira(
-        cadeiraID: await _dbService.obterNovoIDCadeira(),
+        id: await _dbService.obterNovoIDCadeira(),
         nome: nome,
         sigla: sigla,
         ano: _ano,
@@ -114,7 +114,7 @@ class _CadeiraAdicionarState extends State<CadeiraAdicionar> {
               texto: 'Cadeira adicionada com sucesso!',
               botao: 'Ver',
               rota: '/subjectInfo',
-              argumento: cadeiraAdicionada.cadeiraID,
+              argumento: cadeiraAdicionada.id,
             );
           });
         }

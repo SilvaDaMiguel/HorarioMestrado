@@ -1,30 +1,30 @@
 class Aula {
-  final int aulaID;
-  final int cadeiraID;
-  final int periodoID;
+  final int id;
+  final int cadeiraId;
+  final int periodoId;
   final String data;
   final String sala;
 
   Aula({
-    required this.aulaID,
-    required this.cadeiraID,
-    required this.periodoID,
+    required this.id,
+    required this.cadeiraId,
+    required this.periodoId,
     required this.data,
     required this.sala,
   });
 
   factory Aula.fromMap(Map<String, dynamic> map) => Aula(
-    aulaID: map['aulaID'],
-    cadeiraID: map['cadeiraID'],
-    periodoID: map['periodoID'],
+    id: map['id'],
+    cadeiraId: map['cadeiraId'],
+    periodoId: map['periodoId'],
     data: map['data'],
     sala: map['sala'],
   );
 
   Map<String, dynamic> toMap() => {
-    'aulaID': aulaID,
-    'cadeiraID': cadeiraID,
-    'periodoID': periodoID,
+    'id': id,
+    'cadeiraId': cadeiraId,
+    'periodoId': periodoId,
     'data': data,
     'sala': sala,
   };

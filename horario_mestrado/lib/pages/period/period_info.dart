@@ -124,7 +124,7 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
                     aoSelecionar: () async {
                       try {
                         //Tenta apagar o período
-                        await _dbService.apagarPeriodo(periodo.periodoID);
+                        await _dbService.apagarPeriodo(periodo.id);
 
                         // Se for bem-sucedido, volta à página dos períodos
                         if (context.mounted) {

@@ -44,7 +44,7 @@ class DatabaseSeeder {
       await db.insert(
         "Periodo",
         {
-          "periodoID": p["id"],
+          "id": p["id"],
           "diaSemana": p["diaSemana"],
           "horaInicio": p["horaInicial"],
           "horaFim": p["horaFinal"],
@@ -58,7 +58,7 @@ class DatabaseSeeder {
       await db.insert(
         "Cadeira",
         {
-          "cadeiraID": c["id"],
+          "id": c["id"],
           "nome": c["nome"],
           "sigla": c["sigla"],
           "ano": c["ano"],
@@ -80,9 +80,9 @@ class DatabaseSeeder {
       await db.insert(
         "Aula",
         {
-          "aulaID": a["id"],
-          "cadeiraID": a["cadeiraId"],
-          "periodoID": a["periodoId"],
+          "id": a["id"],
+          "cadeiraId": a["cadeiraId"],
+          "periodoId": a["periodoId"],
           "sala": a["sala"],
           "data": a["data"],
         },
@@ -95,8 +95,8 @@ class DatabaseSeeder {
       await db.insert(
         "Prova",
         {
-          "provaID": p["id"],
-          "cadeiraID": p["cadeiraId"],
+          "id": p["id"],
+          "cadeiraId": p["cadeiraId"],
           "sala": p["sala"] ?? "?",
           "data": p["data"],
           "horaInicio": p["horaInicial"],

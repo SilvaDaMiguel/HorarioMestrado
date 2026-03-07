@@ -141,7 +141,7 @@ class _AulasPageState extends State<AulasPage> {
                           final resultado = await Navigator.pushNamed(
                             context,
                             '/classInfo',
-                            arguments: aula.aulaID, //ID do Objeto
+                            arguments: aula.id, //ID do Objeto
                           );
 
                           //Se a página de adicionar devolver true => Adicionado/Removido uma Aula

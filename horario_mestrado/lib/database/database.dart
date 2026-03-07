@@ -32,7 +32,7 @@ class DatabaseProvider {
   Future<void> _createDB(Database db, int version) async {
     await db.execute('''
       CREATE TABLE Periodo (
-        periodoID INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         diaSemana TEXT,
         horaInicio TEXT,
         horaFim TEXT
@@ -41,7 +41,7 @@ class DatabaseProvider {
 
     await db.execute('''
       CREATE TABLE Cadeira (
-        cadeiraID INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         nome TEXT,
         sigla TEXT,
         ano INTEGER,
@@ -56,13 +56,13 @@ class DatabaseProvider {
 
     await db.execute('''
       CREATE TABLE Aula (
-        aulaID INTEGER PRIMARY KEY,
-        cadeiraID INTEGER,
-        periodoID INTEGER,
+        id INTEGER PRIMARY KEY,
+        cadeiraId INTEGER,
+        periodoId INTEGER,
         sala TEXT,
         data TEXT,
-        FOREIGN KEY (periodoID) REFERENCES Periodo(periodoID),
-        FOREIGN KEY (cadeiraID) REFERENCES Cadeira(cadeiraID)
+        FOREIGN KEY (periodoId) REFERENCES Periodo(id),
+        FOREIGN KEY (cadeiraId) REFERENCES Cadeira(id)
       )
     ''');
 
@@ -74,17 +74,17 @@ class DatabaseProvider {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-  if (oldVersion < 2) {
-    await _version2Upgrade(db);
+    if (oldVersion < 2) {
+      await _version2Upgrade(db);
+    }
   }
-}
 
-  Future<void> _version2Upgrade(Database db) async{
+  Future<void> _version2Upgrade(Database db) async {
     //Código SQL para a nova tabela Prova
     await db.execute('''
       CREATE TABLE Prova (
-        provaID INTEGER PRIMARY KEY,
-        cadeiraID INTEGER,
+        id INTEGER PRIMARY KEY,
+        cadeiraId INTEGER,
         sala TEXT,
         data TEXT,
         horaInicio TEXT,
@@ -94,9 +94,23 @@ class DatabaseProvider {
         informacao TEXT,
         nota REAL,
         concluido INTEGER,
-        FOREIGN KEY (cadeiraID) REFERENCES Cadeira(cadeiraID)
+        FOREIGN KEY (cadeiraId) REFERENCES Cadeira(id)
       )
     ''');
+  }
+
+  Future<void> sincronizarComJson() async {
+    final db = await database;
+
+    //Limpar os dados atuais para evitar duplicados ou conflitos
+    await db.delete('Periodo');
+    await db.delete('Cadeira');
+    await db.delete('Aula');
+    await db.delete('Prova');
+
+    //Chamar o seeder para ler os JSONs locais e inserir na BD
+    final seeder = DatabaseSeeder(db);
+    await seeder.seedDatabase();
   }
 
   //Apagar a base de dados (usado para reset)
