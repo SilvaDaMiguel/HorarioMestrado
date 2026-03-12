@@ -11,6 +11,7 @@ import '../../variables/size.dart';
 // COMPONENTS
 import '../../components/round_icon_button.dart';
 import '../../components/structure/app_bar.dart';
+import '../../components/structure/navigation_bar.dart';
 import '../../components/structure/snack_bar.dart';
 import '../../components/info_box.dart';
 
@@ -237,6 +238,10 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
                 ),
               ],
             ),
+          ),
+          bottomNavigationBar: MyNavigationBar(
+            mostrarSelecionado: false,
+            IconSelecionado: 4,
           ),
         );
       },

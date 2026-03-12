@@ -13,6 +13,7 @@ import '../../variables/size.dart';
 import '../../components/round_icon_button.dart';
 import '../../components/structure/app_bar.dart';
 import '../../components/structure/snack_bar.dart';
+import '../../components/structure/navigation_bar.dart';
 
 class AulaInformacao extends StatefulWidget {
   final int aulaID;
@@ -207,6 +208,10 @@ class _AulaInformacaoState extends State<AulaInformacao> {
                 ),
               ],
             ),
+          ),
+          bottomNavigationBar: MyNavigationBar(
+            mostrarSelecionado: false,
+            IconSelecionado: 3,
           ),
         );
       },
