@@ -405,7 +405,11 @@ class DataBaseService {
 
   Future<List<Prova>> obterProvas() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Prova');
+    final result = await db.query(
+      'Prova',
+      orderBy:
+          "(substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2)) ASC, horaInicio ASC",
+    );
     return result.map((e) => Prova.fromMap(e)).toList();
   }
 
@@ -418,6 +422,8 @@ class DataBaseService {
       where:
           'epoca = ? AND tipo = ?', //Condição WHERE (ex: "epoca = "normal" AND tipo = "quiz")
       whereArgs: filtro,
+      orderBy:
+          "(substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2)) ASC, horaInicio ASC",
     );
 
     return result.map((e) => Prova.fromMap(e)).toList();
@@ -436,12 +442,13 @@ class DataBaseService {
     if (cadeiraIDs.isEmpty) return [];
 
     //Obtem a prova das cadeiras através da lista de IDs
-    //Usa a mesma ordem de argumentos (epoca, tipo) que o restante código espera
     final result = await db.query(
       'Prova',
       where:
           'cadeiraId IN (${List.filled(cadeiraIDs.length, '?').join(', ')}) AND epoca = ? AND tipo = ?',
       whereArgs: [...cadeiraIDs, filtroTipoEpoca[0], filtroTipoEpoca[1]],
+      orderBy:
+          "(substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2)) ASC, horaInicio ASC",
     );
 
     return result.map((e) => Prova.fromMap(e)).toList();

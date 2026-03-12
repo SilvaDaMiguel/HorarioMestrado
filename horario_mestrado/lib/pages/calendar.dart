@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 //MODELS
 import '../models/aula.dart';
 import '../models/prova.dart'; // NOVO
+import '../models/periodo.dart'; // NOVO
 //DATABASE
 import '../database/database_service.dart';
 //COMPONENTS
@@ -30,6 +31,7 @@ class _CalendarioPageState extends State<CalendarioPage> {
   Map<DateTime, List<Aula>> listaAulas = {};
   Map<DateTime, List<Prova>> listaProvas = {};
   Map<DateTime, List<dynamic>> listaEventos = {};
+  Map<int, Periodo> mapaPeriodos = {}; // NOVO: Armazenar períodos por ID
 
   final CalendarFormat _calendarFormat =
       CalendarFormat.month; //Formato inicial do calendário
@@ -43,15 +45,25 @@ class _CalendarioPageState extends State<CalendarioPage> {
     super.initState();
     //Carrega horários (aulas e provas) da base de dados
     Future.wait([
+      DataBaseService().obterPeriodos(), // NOVO: Carregar períodos
       DataBaseService().obterAulas(),
       DataBaseService().obterProvas(),
     ]).then((resultados) {
-      carregarAulas(resultados[0] as List<Aula>);
-      carregarProvas(resultados[1] as List<Prova>);
+      carregarPeriodos(resultados[0] as List<Periodo>); // NOVO
+      carregarAulas(resultados[1] as List<Aula>);
+      carregarProvas(resultados[2] as List<Prova>);
       combinarEventos(); //Combina aulas e provas
       //Mostra os eventos do dia atual
       selecionarDia(_diaSelecionado);
     });
+  }
+
+  //Converte lista de Períodos para um mapa por ID
+  void carregarPeriodos(List<Periodo> periodos) {
+    mapaPeriodos = {}; //limpa antes
+    for (var periodo in periodos) {
+      mapaPeriodos[periodo.id] = periodo;
+    }
   }
 
   //Converte lista de Aulas para o Map<DateTime, List<Aula>>
@@ -103,15 +115,35 @@ class _CalendarioPageState extends State<CalendarioPage> {
     setState(() {}); //Após carregar e combinar tudo
   }
 
+  //Extrai a hora inicial de um evento (Aula ou Prova)
+  String extrairHoraInicial(dynamic evento) {
+    if (evento is Aula) {
+      final periodo = mapaPeriodos[evento.periodoId];
+      return periodo?.horaInicio ?? '00:00';
+    } else if (evento is Prova) {
+      return evento.horaInicio;
+    }
+    return '00:00';
+  }
+  
   //Seleciona um dia e atualiza a lista de eventos (aulas e provas)
   void selecionarDia(DateTime dia) {
     final DateTime diaSemHora = removerHora(dia);
     //print("Selecionar dia: $diaSemHora");
 
+    //Obtém os eventos do dia
+    List<dynamic> eventos = listaEventos[diaSemHora] ?? [];
+    
+    //Ordena os eventos pela hora inicial
+    eventos.sort((a, b) {
+      String horaA = extrairHoraInicial(a);
+      String horaB = extrairHoraInicial(b);
+      return horaA.compareTo(horaB);
+    });
+
     setState(() {
       _diaSelecionado = diaSemHora;
-      _eventosDoDia =
-          listaEventos[diaSemHora] ?? []; //ALTERADO: Usa listaEventos
+      _eventosDoDia = eventos;
     });
   }
 
