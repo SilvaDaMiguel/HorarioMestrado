@@ -283,7 +283,14 @@ class DataBaseService {
 
   Future<List<Aula>> obterAulas() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Aula', orderBy: 'data');
+    //JOIN para o Periodo e ordenar por data e hora
+    final result = await db.rawQuery('''
+      SELECT Aula.* FROM Aula
+      INNER JOIN Periodo ON Aula.periodoId = Periodo.id
+      ORDER BY 
+        (substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2)) ASC,
+        Periodo.horaInicio ASC
+    ''');
     return result.map((e) => Aula.fromMap(e)).toList();
   }
 
@@ -293,32 +300,30 @@ class DataBaseService {
   ) async {
     final db = await _dbProvider.database;
 
-    // Obter intervalo baseado no momento e tempo
+    //Obter intervalo baseado no momento e tempo
     final intervalo = obterIntervaloTempoComMomento(tempo, momento);
     final inicio = intervalo['inicio']!;
     final fim = intervalo['fim']!;
 
-    // Converter para yyyy-MM-dd (formato comparável)
+    //Converter para yyyy-MM-dd (formato comparável)
     final dataInicio =
-        '${inicio.year.toString().padLeft(4, '0')}-'
-        '${inicio.month.toString().padLeft(2, '0')}-'
-        '${inicio.day.toString().padLeft(2, '0')}';
-
+        '${inicio.year.toString().padLeft(4, '0')}-${inicio.month.toString().padLeft(2, '0')}-${inicio.day.toString().padLeft(2, '0')}';
     final dataFim =
-        '${fim.year.toString().padLeft(4, '0')}-'
-        '${fim.month.toString().padLeft(2, '0')}-'
-        '${fim.day.toString().padLeft(2, '0')}';
+        '${fim.year.toString().padLeft(4, '0')}-${fim.month.toString().padLeft(2, '0')}-${fim.day.toString().padLeft(2, '0')}';
 
     //Converter campo data (dd-MM-yyyy) → yyyy-MM-dd para comparar
     const dataConvertida =
-        "(substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2))";
+        "(substr(Aula.data, 7, 4) || '-' || substr(Aula.data, 4, 2) || '-' || substr(Aula.data, 1, 2))";
 
-    // Query: aulas dentro do intervalo
-    final result = await db.query(
-      'Aula',
-      where: "$dataConvertida >= ? AND $dataConvertida < ?",
-      whereArgs: [dataInicio, dataFim],
-      orderBy: '$dataConvertida ASC',
+    //Query com JOIN para ordenar por horaInicio do Periodo (horaInicio pertence ao Periodo e não à Aula)
+    final result = await db.rawQuery(
+      '''
+        SELECT Aula.* FROM Aula
+        INNER JOIN Periodo ON Aula.periodoId = Periodo.id
+        WHERE $dataConvertida >= ? AND $dataConvertida < ?
+        ORDER BY $dataConvertida ASC, Periodo.horaInicio ASC
+      ''',
+      [dataInicio, dataFim],
     );
 
     return result.map((e) => Aula.fromMap(e)).toList();
