@@ -1,0 +1,93 @@
+[
+    {
+        "id": 1,
+        "cadeiraId": 3,
+        "sala": "L3",
+        "data": "15-11-2025",
+        "horaInicio": "08:30",
+        "horaFim": "10:00",
+        "tipo": "Quiz",
+        "epoca": "Normal",
+        "informacao": "Presencial, Google Forms, Computador",
+        "nota": null,
+        "concluido": 1
+    },
+    {
+        "id": 2,
+        "cadeiraId": 3,
+        "sala": "L3",
+        "data": "06-12-2025",
+        "horaInicio": "08:00",
+        "horaFim": "10:00",
+        "tipo": "Quiz",
+        "epoca": "Normal",
+        "informacao": "Presencial, Google Forms, Computador",
+        "nota": null,
+        "concluido": 1
+    },
+    {
+        "id": 5,
+        "cadeiraId": 2,
+        "sala": "A2",
+        "data": "17-12-2025",
+        "horaInicio": "19:00",
+        "horaFim": "20:00",
+        "tipo": "Exame",
+        "epoca": "Normal",
+        "informacao": "Presencial, Hora Final Estimado",
+        "nota": null,
+        "concluido": 1
+    },
+    {
+        "id": 6,
+        "cadeiraId": 1,
+        "sala": "A2",
+        "data": "19-12-2025",
+        "horaInicio": "19:00",
+        "horaFim": "20:00",
+        "tipo": "Exame",
+        "epoca": "Normal",
+        "informacao": "Presencial, Hora Final Estimado",
+        "nota": null,
+        "concluido": 1
+    },
+    {
+        "id": 7,
+        "cadeiraId": 4,
+        "sala": "A2",
+        "data": "11-02-2026",
+        "horaInicio": "19:00",
+        "horaFim": "20:30",
+        "tipo": "Exame",
+        "epoca": "Normal",
+        "informacao": "Presencial, Hora Final Estimado",
+        "nota": null,
+        "concluido": 1
+    },
+    {
+        "id": 8,
+        "cadeiraId": 5,
+        "sala": "A2",
+        "data": "13-02-2026",
+        "horaInicio": "18:47",
+        "horaFim": "20:30",
+        "tipo": "Exame",
+        "epoca": "Normal",
+        "informacao": "Presencial, Hora Final Estimado",
+        "nota": null,
+        "concluido": 1
+    },
+    {
+        "id": 10,
+        "cadeiraId": 7,
+        "sala": "L3",
+        "data": "27-03-2026",
+        "horaInicio": "16:30",
+        "horaFim": "19:00",
+        "tipo": "Trabalho",
+        "epoca": "Normal",
+        "informacao": "Apresentar Grupo e Trabalho (com relatório)",
+        "nota": null,
+        "concluido": 0
+    }
+]

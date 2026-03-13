@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "diaSemana": "Quinta",
+    "horaInicial": "19:30",
+    "horaFinal": "22:00"
+  },
+  {
+    "id": 2,
+    "diaSemana": "Sexta",
+    "horaInicial": "14:00",
+    "horaFinal": "16:30"
+  },
+  {
+    "id": 3,
+    "diaSemana": "Sexta",
+    "horaInicial": "16:30",
+    "horaFinal": "19:00"
+  },
+  {
+    "id": 4,
+    "diaSemana": "Sexta",
+    "horaInicial": "19:00",
+    "horaFinal": "21:30"
+  },
+  {
+    "id": 5,
+    "diaSemana": "Sábado",
+    "horaInicial": "08:00",
+    "horaFinal": "10:30"
+  },
+  {
+    "id": 6,
+    "diaSemana": "Sábado",
+    "horaInicial": "10:30",
+    "horaFinal": "13:00"
+  }
+]
