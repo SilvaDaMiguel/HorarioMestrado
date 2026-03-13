@@ -22,3 +22,12 @@ A aplicação foi organizada de forma modular para facilitar a manutenção e a 
 -> models/ → classes que representam os dados (Aula, Cadeira, Período) <br>
 -> pages/ → ecrãs principais e suas subpáginas <br>
 -> variables/ → constantes globais (cores, ícones, tamanhos, enums) <br>
+
+<br><br>
+#📥 Downloads <br>
+
+Pode descarregar a aplicação no link abaixo:
+* [**Descarregar APK (v3.2)**](https://github.com/SilvaDaMiguel/HorarioMestrado/releases/tag/v3.2/app-release.apk)
+
+Pode também descarregar os JSONs das Cadeiras & Períodos 2025/2027 (se fizer sentido para tal)
+* [**Descarregar JSONs (Cadeiras & Períodos)**](https://github.com/SilvaDaMiguel/HorarioMestrado/releases/tag/JSONs)
