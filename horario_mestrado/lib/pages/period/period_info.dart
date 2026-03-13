@@ -55,10 +55,17 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
         //Dados carregados
         Periodo periodo = snapshot.data!;
 
-        return Scaffold(
-          appBar: MinhaAppBar(
-            nome: 'Informação do Período',
-            icon: iconEditar,
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (!didPop) {
+              Navigator.pop(context, true);
+            }
+          },
+          child: Scaffold(
+            appBar: MinhaAppBar(
+              nome: 'Informação do Período',
+              icon: iconEditar,
             //rota: '/periodEdit',
             //argumento: periodo, //Passa o objeto completo
             aoPressionar: () async {
@@ -156,9 +163,10 @@ class _PeriodoInformacaoState extends State<PeriodoInformacao> {
               ],
             ),
           ),
-          bottomNavigationBar: MyNavigationBar(
-            mostrarSelecionado: false,
-            IconSelecionado: 1,
+            bottomNavigationBar: MyNavigationBar(
+              mostrarSelecionado: false,
+              IconSelecionado: 2,
+            ),
           ),
         );
       },

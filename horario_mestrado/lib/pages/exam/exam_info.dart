@@ -68,10 +68,17 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
         final prova = snapshot.data!;
         final cadeira = _cadeira!;
 
-        return Scaffold(
-          appBar: MinhaAppBar(
-            nome: 'Informação da Avaliação',
-            icon: iconEditar,
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (!didPop) {
+              Navigator.pop(context, true);
+            }
+          },
+          child: Scaffold(
+            appBar: MinhaAppBar(
+              nome: 'Informação da Avaliação',
+              icon: iconEditar,
             aoPressionar: () async {
               final provaAtualizada = await Navigator.pushNamed(
                 context,
@@ -239,9 +246,10 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
               ],
             ),
           ),
-          bottomNavigationBar: MyNavigationBar(
-            mostrarSelecionado: false,
-            IconSelecionado: 4,
+            bottomNavigationBar: MyNavigationBar(
+              mostrarSelecionado: false,
+              IconSelecionado: 4,
+            ),
           ),
         );
       },

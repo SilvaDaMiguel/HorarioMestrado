@@ -58,10 +58,17 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
         // DADOS CARREGADOS
         final cadeira = snapshot.data!;
 
-        return Scaffold(
-          appBar: MinhaAppBar(
-            nome: 'Informação da Cadeira',
-            icon: iconEditar,
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (!didPop) {
+              Navigator.pop(context, true);
+            }
+          },
+          child: Scaffold(
+            appBar: MinhaAppBar(
+              nome: 'Informação da Cadeira',
+              icon: iconEditar,
             //rota: '/subjectEdit',
             //argumento: cadeira, //Passa o objeto completo
             aoPressionar: () async {
@@ -200,7 +207,7 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
                         //Tenta apagar a cadeira
                         await _dbService.apagarCadeira(cadeira.id);
 
-                        // Se for bem-sucedido, volta à página das cadeiras
+                        //Se for bem-sucedido, volta à página das cadeiras
                         if (context.mounted) {
                           Navigator.pop(context, true); //Devolve True pois apagou 1 cadeira
 
@@ -230,9 +237,10 @@ class _CadeiraInformacaoState extends State<CadeiraInformacao> {
               ],
             ),
           ),
-          bottomNavigationBar: MyNavigationBar(
-            mostrarSelecionado: false,
-            IconSelecionado: 1,
+            bottomNavigationBar: MyNavigationBar(
+              mostrarSelecionado: false,
+              IconSelecionado: 1,
+            ),
           ),
         );
       },

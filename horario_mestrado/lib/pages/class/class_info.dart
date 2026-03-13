@@ -71,10 +71,17 @@ class _AulaInformacaoState extends State<AulaInformacao> {
         final cadeira = _cadeira!;
         final periodo = _periodo!;
 
-        return Scaffold(
-          appBar: MinhaAppBar(
-            nome: 'Informação da Aula',
-            icon: iconEditar,
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (!didPop) {
+              Navigator.pop(context, true);
+            }
+          },
+          child: Scaffold(
+            appBar: MinhaAppBar(
+              nome: 'Informação da Aula',
+              icon: iconEditar,
             aoPressionar: () async {
               final aulaAtualizada = await Navigator.pushNamed(
                 context,
@@ -209,9 +216,10 @@ class _AulaInformacaoState extends State<AulaInformacao> {
               ],
             ),
           ),
-          bottomNavigationBar: MyNavigationBar(
-            mostrarSelecionado: false,
-            IconSelecionado: 3,
+            bottomNavigationBar: MyNavigationBar(
+              mostrarSelecionado: false,
+              IconSelecionado: 3,
+            ),
           ),
         );
       },
