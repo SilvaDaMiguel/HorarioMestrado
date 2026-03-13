@@ -126,7 +126,7 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
           Future.microtask(() {
             MinhaSnackBar.mostrar(
               Navigator.of(context).context,
-              texto: 'Prova adicionada com sucesso!',
+              texto: 'Avaliação adicionada com sucesso!',
               botao: 'Ver',
               rota: '/examInfo',
               argumento: provaAdicionada.id,
@@ -135,7 +135,7 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
         }
       } catch (e) {
         if (context.mounted) {
-          MinhaSnackBar.mostrar(context, texto: 'Erro ao adicionar prova: $e');
+          MinhaSnackBar.mostrar(context, texto: 'Erro ao adicionar Avaliação: $e');
         }
       }
     }
@@ -148,7 +148,7 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: const MinhaAppBar(nome: 'Adicionar Prova'),
+      appBar: const MinhaAppBar(nome: 'Adicionar Avaliação'),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: comprimento * paddingComprimento,
@@ -328,7 +328,7 @@ class _ProvaAdicionarState extends State<ProvaAdicionar> {
                 ),
               SizedBox(height: altura * distanciaTemas),
               BotaoSubmeter(
-                texto: 'Adicionar Prova',
+                texto: 'Adicionar Avaliação',
                 aoPressionar: _guardarProva,
               ),
             ],

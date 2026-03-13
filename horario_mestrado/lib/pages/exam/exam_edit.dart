@@ -149,13 +149,13 @@ class _ProvaEditarState extends State<ProvaEditar> {
           Future.microtask(() {
             MinhaSnackBar.mostrar(
               Navigator.of(context).context,
-              texto: 'Prova atualizada com sucesso!',
+              texto: 'Avaliação atualizada com sucesso!',
             );
           });
         }
       } catch (e) {
         if (context.mounted) {
-          MinhaSnackBar.mostrar(context, texto: 'Erro ao atualizar prova: $e');
+          MinhaSnackBar.mostrar(context, texto: 'Erro ao atualizar Avaliação: $e');
         }
       }
     }
@@ -168,7 +168,7 @@ class _ProvaEditarState extends State<ProvaEditar> {
     double altura = tamanho.height;
 
     return Scaffold(
-      appBar: const MinhaAppBar(nome: 'Adicionar Prova'),
+      appBar: const MinhaAppBar(nome: 'Editar Avaliação'),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: comprimento * paddingComprimento,

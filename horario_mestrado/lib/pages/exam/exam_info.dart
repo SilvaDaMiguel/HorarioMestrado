@@ -56,12 +56,12 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
         } else if (snapshot.hasError) {
           return Scaffold(
             body: Center(
-              child: Text('Erro ao carregar dados da prova.'),
+              child: Text('Erro ao carregar dados da Avaliação.'),
             ),
           );
         } else if (!snapshot.hasData || _cadeira == null) {
           return const Scaffold(
-            body: Center(child: Text('Prova não encontrada.')),
+            body: Center(child: Text('Avaliação não encontrada.')),
           );
         }
 
@@ -70,7 +70,7 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
 
         return Scaffold(
           appBar: MinhaAppBar(
-            nome: 'Informação da Prova',
+            nome: 'Informação da Avaliação',
             icon: iconEditar,
             aoPressionar: () async {
               final provaAtualizada = await Navigator.pushNamed(
@@ -219,7 +219,7 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
                           Future.microtask(() {
                             MinhaSnackBar.mostrar(
                               Navigator.of(context).context,
-                              texto: 'Prova apagada com sucesso!',
+                              texto: 'Avaliação apagada com sucesso!',
                             );
                           });
                         }
@@ -228,8 +228,8 @@ class _ProvaInformacaoState extends State<ProvaInformacao> {
                           MinhaSnackBar.mostrar(
                             context,
                             texto: e.toString().contains('prova')
-                                ? 'Não é possível apagar a prova porque esta já foi concluída.'
-                                : 'Ocorreu um erro ao apagar a prova.',
+                                ? 'Não é possível apagar a Avaliação porque esta já foi concluída.'
+                                : 'Ocorreu um erro ao apagar a Avaliação.',
                           );
                         }
                       }
