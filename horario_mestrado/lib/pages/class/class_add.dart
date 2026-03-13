@@ -72,6 +72,11 @@ class _AulaAdicionarState extends State<AulaAdicionar> {
     );
     setState(() {
       _periodosDisponiveis = periodos;
+      //Reseta o período selecionado se não existir no novo dia escolhido
+      if (_periodoSelecionado != null &&
+          !_periodosDisponiveis.any((p) => p.id == _periodoSelecionado!.id)) {
+        _periodoSelecionado = null;
+      }
     });
   }
 
