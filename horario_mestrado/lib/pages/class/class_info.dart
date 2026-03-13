@@ -84,7 +84,7 @@ class _AulaInformacaoState extends State<AulaInformacao> {
 
               if (aulaAtualizada is Aula) {
                 setState(() {
-                  _aulaFuture = Future.value(aulaAtualizada);
+                  _aulaFuture = _carregarAula();
                 });
               }
             },

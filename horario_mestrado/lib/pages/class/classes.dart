@@ -32,7 +32,7 @@ class _AulasPageState extends State<AulasPage> {
   @override
   void initState() {
     super.initState();
-    _carregarAulas(); //Inicialmente sem filtro
+    _carregarAulas();
   }
 
   void _carregarAulas() {
