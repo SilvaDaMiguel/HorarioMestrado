@@ -33,7 +33,11 @@ class DataBaseService {
 
   Future<List<Periodo>> obterPeriodos() async {
     final db = await _dbProvider.database;
-    final result = await db.query('Periodo', orderBy: 'diaSemana, horaInicio');
+    final result = await db.query(
+      'Periodo',
+      orderBy:
+          "CASE diaSemana WHEN 'Segunda' THEN 1 WHEN 'Terça' THEN 2 WHEN 'Quarta' THEN 3 WHEN 'Quinta' THEN 4 WHEN 'Sexta' THEN 5 WHEN 'Sábado' THEN 6 WHEN 'Domingo' THEN 7 END ASC, horaInicio ASC",
+    );
     return result.map((e) => Periodo.fromMap(e)).toList();
   }
 
@@ -45,7 +49,7 @@ class DataBaseService {
       where: 'diaSemana = ?', //Condição WHERE
       whereArgs: [filtro],
       orderBy:
-          'diaSemana, horaInicio', //Ordenar por dia da semana e hora de início
+          'horaInicio', //Ordenar por hora de início
     );
 
     return result.map((e) => Periodo.fromMap(e)).toList();
