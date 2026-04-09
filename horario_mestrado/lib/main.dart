@@ -37,14 +37,44 @@ import 'variables/colors.dart';
 import 'variables/enums.dart';
 //DATABASE
 import 'database/storage_json.dart';
+//FUNCTIONS
+import 'functions.dart';
+//NOTIFICATIONS
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+//import 'package:timezone/timezone.dart' as tz;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Pedir permissão para alarmes exatos (Android 13+)
+  final androidPlugin = flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+  
+  bool? allowed = await androidPlugin?.canScheduleExactNotifications();
+  if (allowed == false) {
+    // Abre as definições do sistema para o utilizador permitir
+    await androidPlugin?.requestExactAlarmsPermission();
+  }
+
+  //Inicializa Timezone e Notificações
+  tz.initializeTimeZones();
+  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
   //Inicializa os ficheiros JSON necessários
   await JsonStorage.initJsonFile('${Ficheiros.cadeiras.nomeFicheiro}.json');
   await JsonStorage.initJsonFile('${Ficheiros.periodos.nomeFicheiro}.json');
   await JsonStorage.initJsonFile('${Ficheiros.aulas.nomeFicheiro}.json');
   await JsonStorage.initJsonFile('${Ficheiros.provas.nomeFicheiro}.json');
+
+  // Sincroniza notificações das aulas que já estão na BD
+  await sincronizarTodasAsNotificacoes();
+
   runApp(const MyApp());
 }
 

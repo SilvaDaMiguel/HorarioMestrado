@@ -350,6 +350,8 @@ class DataBaseService {
       aula.toMap(),
     );
 
+    await agendarNotificacaoAula(aula, await obterPeriodoPorId(aula.periodoId));
+    
     return id;
   }
 

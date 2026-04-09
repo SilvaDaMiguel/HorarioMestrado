@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 //VARIABLES
 import 'variables/enums.dart';
+//MODELS
+import 'models/aula.dart';
+import 'models/periodo.dart';
+//DATABASE
+import 'database/database_service.dart';
+
+final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 String formatarDataDDMMYYYY(DateTime dt) {
   final dia = dt.day.toString().padLeft(2, '0');
@@ -193,4 +202,57 @@ bool verificarHoraInicioFim(TimeOfDay horaInicial, TimeOfDay horaFinal) {
 
   //Caso normal
   return inicioMinutos < fimMinutos;
+}
+
+Future<void> sincronizarTodasAsNotificacoes() async {
+  final service = DataBaseService();
+  final listaAulas = await service.obterAulas();
+
+  for (var aula in listaAulas) {
+    try {
+      final periodo = await service.obterPeriodoPorId(aula.periodoId);
+      await agendarNotificacaoAula(aula, periodo);
+    } catch (e) {
+      print("Erro ao agendar aula ${aula.id}: $e");
+    }
+  }
+}
+
+Future<void> agendarNotificacaoAula(Aula aula, Periodo periodo) async {
+  // 1. Parse da data (formato dd-MM-yyyy conforme o seu modelo)
+  List<String> dataPartes = aula.data.split('-');
+  int dia = int.parse(dataPartes[0]);
+  int mes = int.parse(dataPartes[1]);
+  int ano = int.parse(dataPartes[2]);
+
+  // 2. Parse da hora de início do Período (formato HH:mm)
+  List<String> horaPartes = periodo.horaInicio.split(':');
+  int hora = int.parse(horaPartes[0]);
+  int minuto = int.parse(horaPartes[1]);
+
+  // 3. Criar o objeto DateTime da aula
+  DateTime dataHoraAula = DateTime(ano, mes, dia, hora, minuto);
+  
+  // 4. Calcular o momento da notificação (30 minutos antes)
+  DateTime momentoAlerta = dataHoraAula.subtract(const Duration(minutes: 2)); //2 minutos para testes
+
+  // 5. Agendar apenas se o momento do alerta for no futuro
+  if (momentoAlerta.isAfter(DateTime.now())) {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      aula.id, // O ID da aula garante que não há notificações duplicadas
+      'Aula em breve!',
+      'A aula de ${periodo.diaSemana} começa às ${periodo.horaInicio} na sala ${aula.sala}',
+      tz.TZDateTime.from(momentoAlerta, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'canal_aulas',
+          'Notificações de Aulas',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
 }
