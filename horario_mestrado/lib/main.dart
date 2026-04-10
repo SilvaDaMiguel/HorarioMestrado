@@ -39,32 +39,19 @@ import 'variables/enums.dart';
 import 'database/storage_json.dart';
 //FUNCTIONS
 import 'functions.dart';
-//NOTIFICATIONS
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-//import 'package:timezone/timezone.dart' as tz;
+//SERVICES
+import 'services/notification_service.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Pedir permissão para alarmes exatos (Android 13+)
-  final androidPlugin = flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-  
-  bool? allowed = await androidPlugin?.canScheduleExactNotifications();
-  if (allowed == false) {
-    // Abre as definições do sistema para o utilizador permitir
-    await androidPlugin?.requestExactAlarmsPermission();
-  }
+  //Inicializa o serviço de notificações
+  await NotificationService().init();
 
-  //Inicializa Timezone e Notificações
-  tz.initializeTimeZones();
-  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-  const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  // Pedir permissão ao iniciar (opcional, pode ser feito por ação do user)
+  await NotificationService().verificarPermissaoNotificao();
+  await NotificationService().verificarPermissaoAlarmeExato();
 
   //Inicializa os ficheiros JSON necessários
   await JsonStorage.initJsonFile('${Ficheiros.cadeiras.nomeFicheiro}.json');

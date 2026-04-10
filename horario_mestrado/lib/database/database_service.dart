@@ -10,6 +10,8 @@ import '../models/prova.dart';
 import '../variables/enums.dart';
 //FUNCTIONS
 import '../functions.dart';
+//SERVICES
+import '../services/notification_service.dart';
 
 class DataBaseService {
   final DatabaseProvider _dbProvider = DatabaseProvider();
@@ -48,8 +50,7 @@ class DataBaseService {
       'Periodo',
       where: 'diaSemana = ?', //Condição WHERE
       whereArgs: [filtro],
-      orderBy:
-          'horaInicio', //Ordenar por hora de início
+      orderBy: 'horaInicio', //Ordenar por hora de início
     );
 
     return result.map((e) => Periodo.fromMap(e)).toList();
@@ -349,9 +350,13 @@ class DataBaseService {
       '${Ficheiros.aulas.nomeFicheiro}.json',
       aula.toMap(),
     );
+    //TODO: Teste adicionar notificação aula
+    await NotificationService().agendarNotificacaoAula(
+      aula: aula,
+      periodo: await obterPeriodoPorId(aula.periodoId),
+      nomeCadeira: await obterCadeiraPorId(aula.cadeiraId).then((c) => c.nome),
+    );
 
-    await agendarNotificacaoAula(aula, await obterPeriodoPorId(aula.periodoId));
-    
     return id;
   }
 
@@ -392,6 +397,9 @@ class DataBaseService {
     if (linhasAfetadas > 0) {
       await JsonCrud.apagarDadoJSON('${Ficheiros.aulas.nomeFicheiro}.json', id);
     }
+
+    //TODO: TEste apagar notificação ao apagar aula
+    await NotificationService().cancelarNotificacao(id);
 
     return linhasAfetadas;
   }
